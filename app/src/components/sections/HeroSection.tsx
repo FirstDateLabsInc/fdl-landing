@@ -27,11 +27,10 @@ export function HeroSection() {
       aria-labelledby="hero-heading"
     >
       <div className="absolute inset-0 -z-10">
-        <div className="pointer-events-none absolute inset-x-0 top-[-40%] h-[520px] w-full bg-gradient-to-b from-[#ffe362]/70 via-transparent to-transparent blur-[60px]" />
         <div className="pointer-events-none absolute inset-x-0 bottom-[-50%] h-[420px] w-full bg-gradient-to-t from-[#cab5d4]/30 via-transparent to-transparent blur-[90px]" />
       </div>
 
-      <div className="mx-auto flex min-h-screen max-w-6xl items-center px-4 py-16 sm:px-6 md:py-20 lg:px-8">
+      <div className="mx-auto flex max-w-6xl items-start px-4 pt-10 pb-14 sm:px-6 md:pt-12 md:pb-16 lg:px-8">
         <div className="grid w-full items-start gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] lg:gap-12">
           <motion.div
             initial={prefersReducedMotion ? undefined : { opacity: 0, y: 28 }}
@@ -86,16 +85,16 @@ export function HeroSection() {
             initial={prefersReducedMotion ? undefined : { opacity: 0, y: 32 }}
             animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-            className="relative mx-auto w-full max-w-[360px]"
+            className="relative mx-auto flex w-full max-w-[320px] justify-center md:ms-auto md:max-w-[340px] md:justify-end"
           >
-            <div className="relative aspect-[9/18] w-full overflow-hidden">
+            <div className="relative h-[min(520px,70vh)] w-full overflow-hidden md:h-[min(560px,72vh)]">
               <Image
                 src="/images/juliet-voice.png"
                 alt="Juliet voice interface with conversation controls"
                 fill
                 className="object-contain"
                 priority
-                sizes="(max-width: 768px) 100vw, 360px"
+                sizes="(max-width: 768px) 80vw, 340px"
               />
             </div>
           </motion.div>
