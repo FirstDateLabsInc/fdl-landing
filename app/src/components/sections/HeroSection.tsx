@@ -23,7 +23,7 @@ export function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative isolate overflow-hidden bg-[#fffdf6]"
+      className="relative isolate overflow-hidden bg-background"
       aria-labelledby="hero-heading"
     >
       <div className="absolute inset-0 -z-10">
@@ -40,12 +40,12 @@ export function HeroSection() {
             className="flex flex-col items-start gap-6 text-left"
           >
             <div className="space-y-4">
-              <p className="text-sm font-normal tracking-[0.24em] text-slate-500 uppercase">
+              <p className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
                 {heroContent.eyebrow}
               </p>
               <h1
                 id="hero-heading"
-                className="text-left text-3xl leading-tight font-bold tracking-tight text-balance text-slate-900 sm:text-[2.5rem] lg:text-[3rem]"
+                className="max-w-[32ch] text-left text-3xl font-semibold leading-snug tracking-tight text-balance text-foreground sm:text-[2.625rem] lg:text-[2.75rem]"
               >
                 {heroContent.title.map((line, index) => (
                   <span key={index} className="block">
@@ -53,12 +53,12 @@ export function HeroSection() {
                   </span>
                 ))}
               </h1>
-              <p className="max-w-xl text-left text-base text-slate-600 sm:text-lg">
+              <p className="max-w-xl text-left text-base leading-relaxed text-muted-foreground sm:text-lg">
                 {heroContent.description}
               </p>
             </div>
 
-            <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-5">
+            <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-5">
               <Button asChild className="min-w-[180px]">
                 <Link
                   href={heroContent.primaryCta.href}
@@ -70,7 +70,7 @@ export function HeroSection() {
               <Button
                 asChild
                 variant="ghost"
-                className="min-w-[180px] border border-black/5 bg-white/60 text-slate-900 backdrop-blur transition hover:bg-white"
+                className="min-w-[180px] border border-border/60 bg-card/70 text-foreground backdrop-blur transition hover:bg-card"
               >
                 <Link
                   href={heroContent.secondaryCta.href}
