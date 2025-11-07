@@ -72,15 +72,19 @@ export default function Iphone15Pro({
       )}
 
       {src && (
-        <image
-          href={src}
+        <foreignObject
           x="21.25"
           y="19.25"
           width="389.5"
           height="843.5"
-          preserveAspectRatio="xMidYMid slice"
           clipPath="url(#roundedCorners)"
-        />
+        >
+          <img
+            src={src}
+            alt="App screenshot"
+            className="size-full object-cover"
+          />
+        </foreignObject>
       )}
       {videoSrc && (
         <foreignObject

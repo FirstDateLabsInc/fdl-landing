@@ -79,19 +79,27 @@ export default function AnimatedIphone15Pro({
 
       {/* Animated image - only this element animates */}
       {src && (
-        <motion.image
-          key={src}
-          href={src}
+        <foreignObject
           x="21.25"
           y="19.25"
           width="389.5"
           height="843.5"
-          preserveAspectRatio="xMidYMid slice"
           clipPath="url(#roundedCorners)"
-          initial={prefersReducedMotion ? undefined : { opacity: 0 }}
-          animate={prefersReducedMotion ? undefined : { opacity: 1 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        />
+        >
+          <motion.div
+            key={src}
+            className="size-full"
+            initial={prefersReducedMotion ? undefined : { opacity: 0 }}
+            animate={prefersReducedMotion ? undefined : { opacity: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <img
+              src={src}
+              alt="App screenshot"
+              className="size-full object-cover"
+            />
+          </motion.div>
+        </foreignObject>
       )}
 
       {/* Video support - animated if needed */}
