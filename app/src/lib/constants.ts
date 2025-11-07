@@ -218,6 +218,44 @@ export const howItWorksSteps: HowItWorksStep[] = [
   },
 ];
 
+export type WalkthroughStep = {
+  number: number;
+  title: string;
+  description: string;
+  image: string;
+};
+
+export const walkthroughSteps: WalkthroughStep[] = [
+  {
+    number: 1,
+    title: "Fast onboarding + goals",
+    description:
+      "Set intentions and tell Juliet who you want to become on your next dates.",
+    image: "/walkthrough/step-1-onboarding.svg",
+  },
+  {
+    number: 2,
+    title: "Daily voice practice",
+    description:
+      "Choose your Dating Practice Partner and rehearse real scenarios with responsive dialogue.",
+    image: "/walkthrough/step-2-practice.svg",
+  },
+  {
+    number: 3,
+    title: "Upcoming Date Prep",
+    description:
+      "Simulate the real person you're about to meet so you're calm, confident, and ready.",
+    image: "/walkthrough/step-3-date-prep.svg",
+  },
+  {
+    number: 4,
+    title: "Smart debrief",
+    description:
+      "Review actionable insights, track improvements, and unlock weekly challenges tailored to you.",
+    image: "/walkthrough/step-4-debrief.svg",
+  },
+];
+
 export const navigation: Navigation = {
   logoText: "First Date Labs",
   links: [
