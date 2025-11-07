@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { Scrollama, Step } from "react-scrollama";
 
 import Iphone15Pro from "@/components/ui/shadcn-io/iphone-15-pro";
+import AnimatedIphone15Pro from "@/components/ui/shadcn-io/animated-iphone-15-pro";
 import { walkthroughSteps } from "@/lib/constants";
 
 export function MobileAppWalkthroughSection() {
@@ -41,21 +42,10 @@ export function MobileAppWalkthroughSection() {
           {/* Left Column - Sticky iPhone */}
           <div className="sticky top-20 h-[600px]">
             <div className="flex h-full items-center justify-center">
-              <motion.div
-                key={currentStep}
-                initial={
-                  prefersReducedMotion ? undefined : { opacity: 0, scale: 0.95 }
-                }
-                animate={
-                  prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }
-                }
-                transition={{ duration: 0.5, ease: "easeOut" }}
-              >
-                <Iphone15Pro
-                  src={walkthroughSteps[currentStep].image}
-                  className="h-[500px] w-auto"
-                />
-              </motion.div>
+              <AnimatedIphone15Pro
+                src={walkthroughSteps[currentStep].image}
+                className="h-[500px] w-auto"
+              />
             </div>
           </div>
 
