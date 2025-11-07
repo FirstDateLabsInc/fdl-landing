@@ -1,4 +1,5 @@
-import { SVGProps } from "react";
+/* eslint-disable @next/next/no-img-element */
+import { SVGProps, useId } from "react";
 
 export interface Iphone15ProProps extends SVGProps<SVGSVGElement> {
   width?: number;
@@ -14,6 +15,8 @@ export default function Iphone15Pro({
   videoSrc,
   ...props
 }: Iphone15ProProps) {
+  const clipPathId = useId();
+
   return (
     <svg
       width={width}
@@ -77,7 +80,7 @@ export default function Iphone15Pro({
           y="19.25"
           width="389.5"
           height="843.5"
-          clipPath="url(#roundedCorners)"
+          clipPath={`url(#${clipPathId})`}
         >
           <img
             src={src}
@@ -92,7 +95,7 @@ export default function Iphone15Pro({
           y="19.25"
           width="389.5"
           height="843.5"
-          clipPath="url(#roundedCorners)"
+          clipPath={`url(#${clipPathId})`}
         >
           <video
             className="size-full object-cover"
@@ -117,7 +120,7 @@ export default function Iphone15Pro({
         className="fill-[#E5E5E5] dark:fill-[#404040]"
       />
       <defs>
-        <clipPath id="roundedCorners">
+        <clipPath id={clipPathId}>
           <rect
             x="21.25"
             y="19.25"

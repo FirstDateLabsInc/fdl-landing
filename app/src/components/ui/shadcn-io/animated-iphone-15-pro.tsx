@@ -1,6 +1,7 @@
 "use client";
 
-import { SVGProps } from "react";
+/* eslint-disable @next/next/no-img-element */
+import { SVGProps, useId } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 export interface AnimatedIphone15ProProps extends SVGProps<SVGSVGElement> {
@@ -18,6 +19,7 @@ export default function AnimatedIphone15Pro({
   ...props
 }: AnimatedIphone15ProProps) {
   const prefersReducedMotion = useReducedMotion();
+  const clipPathId = useId();
 
   return (
     <svg
@@ -84,7 +86,7 @@ export default function AnimatedIphone15Pro({
           y="19.25"
           width="389.5"
           height="843.5"
-          clipPath="url(#roundedCorners)"
+          clipPath={`url(#${clipPathId})`}
         >
           <motion.div
             key={src}
@@ -110,7 +112,7 @@ export default function AnimatedIphone15Pro({
           y="19.25"
           width="389.5"
           height="843.5"
-          clipPath="url(#roundedCorners)"
+          clipPath={`url(#${clipPathId})`}
           initial={prefersReducedMotion ? undefined : { opacity: 0 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
@@ -142,7 +144,7 @@ export default function AnimatedIphone15Pro({
 
       {/* Clip path definition */}
       <defs>
-        <clipPath id="roundedCorners">
+        <clipPath id={clipPathId}>
           <rect
             x="21.25"
             y="19.25"
