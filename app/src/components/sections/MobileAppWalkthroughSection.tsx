@@ -20,7 +20,7 @@ export function MobileAppWalkthroughSection() {
     <section
       id="how-it-works"
       aria-labelledby="how-it-works-heading"
-      className="bg-[#fff7e6]/60 py-24"
+      className="bg-background/60 py-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -57,7 +57,7 @@ export function MobileAppWalkthroughSection() {
                   <div className="min-h-[400px] py-12">
                     <div className="flex items-start gap-6">
                       {/* Step Number Badge */}
-                      <div className="shadow-soft flex size-16 shrink-0 items-center justify-center rounded-full bg-[#f9d544] text-2xl font-semibold text-slate-900">
+                      <div className="shadow-soft flex size-16 shrink-0 items-center justify-center rounded-full bg-primary text-2xl font-semibold text-slate-900">
                         {step.number}
                       </div>
 
@@ -68,13 +68,6 @@ export function MobileAppWalkthroughSection() {
                         </h3>
                         <p className="mt-3 text-base text-slate-600">
                           {step.description}
-                        </p>
-
-
-
-                        {/* Step Label */}
-                        <p className="mt-2 text-sm font-semibold tracking-[0.25em] text-slate-500 uppercase">
-                          Step {step.number} of {walkthroughSteps.length}
                         </p>
                       </div>
                     </div>
@@ -103,7 +96,7 @@ export function MobileAppWalkthroughSection() {
                   delay: prefersReducedMotion ? 0 : index * 0.1,
                   ease: "easeOut",
                 }}
-                className="shadow-soft overflow-hidden rounded-2xl border border-white/40 bg-white/80 p-6"
+                className="shadow-soft overflow-hidden rounded-2xl border border-background/40 bg-background/80 p-6"
               >
                 {/* iPhone Preview */}
                 <div className="mb-6 flex justify-center">
@@ -113,12 +106,9 @@ export function MobileAppWalkthroughSection() {
                 {/* Step Content */}
                 <div className="space-y-4">
                   <div className="flex items-center gap-4">
-                    <div className="shadow-soft flex size-12 items-center justify-center rounded-full bg-[#f9d544] text-lg font-semibold text-slate-900">
+                    <div className="shadow-soft flex size-12 items-center justify-center rounded-full bg-primary text-lg font-semibold text-slate-900">
                       {step.number}
                     </div>
-                    <p className="text-sm font-semibold tracking-[0.25em] text-slate-500 uppercase">
-                      Step {step.number}
-                    </p>
                   </div>
 
                   <h3 className="text-lg font-semibold text-slate-900">
