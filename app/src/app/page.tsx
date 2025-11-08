@@ -2,7 +2,7 @@ import { HeroSection } from "@/components/sections/HeroSection";
 import { SocialProofSection } from "@/components/sections/SocialProofSection";
 import { ProblemSolutionSection } from "@/components/sections/ProblemSolutionSection";
 import { BenefitsSection } from "@/components/sections/BenefitsSection";
-import { MobileAppWalkthroughSection } from "@/components/sections/MobileAppWalkthroughSection";
+import { HowAppWorksSection } from "@/components/sections/HowAppWorksSection";
 
 export default function HomePage() {
   return (
@@ -12,7 +12,7 @@ export default function HomePage() {
       <SocialProofSection />
       <ProblemSolutionSection />
       <BenefitsSection />
-      <MobileAppWalkthroughSection />
+      <HowAppWorksSection />
       <div id="waitlist" aria-hidden className="sr-only" />
       <div id="login" aria-hidden className="sr-only" />
     </div>

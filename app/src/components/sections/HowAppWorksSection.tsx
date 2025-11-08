@@ -6,9 +6,9 @@ import { Scrollama, Step } from "react-scrollama";
 
 import Iphone15Pro from "@/components/ui/shadcn-io/iphone-15-pro";
 import AnimatedIphone15Pro from "@/components/ui/shadcn-io/animated-iphone-15-pro";
-import { walkthroughSteps } from "@/lib/constants";
+import { howAppWorksSteps } from "@/lib/constants";
 
-export function MobileAppWalkthroughSection() {
+export function HowAppWorksSection() {
   const prefersReducedMotion = useReducedMotion();
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -43,7 +43,7 @@ export function MobileAppWalkthroughSection() {
           <div className="sticky top-20 h-[640px] md:max-w-sm lg:max-w-none">
             <div className="flex h-full items-center justify-center">
               <AnimatedIphone15Pro
-                src={walkthroughSteps[currentStep].image}
+                src={howAppWorksSteps[currentStep].image}
                 className="h-[560px] w-auto lg:h-[640px]"
               />
             </div>
@@ -53,7 +53,7 @@ export function MobileAppWalkthroughSection() {
           {/* Extra top margin keeps Step 1 aligned with the larger sticky phone */}
           <div className="md:mt-[9rem] lg:mt-[11rem]">
             <Scrollama offset={0.5} onStepEnter={onStepEnter}>
-              {walkthroughSteps.map((step, index) => (
+              {howAppWorksSteps.map((step, index) => (
                 <Step data={index} key={step.number}>
                   <div className="min-h-[400px] py-12">
                     <div className="flex items-start gap-6">
@@ -82,7 +82,7 @@ export function MobileAppWalkthroughSection() {
         {/* Mobile Layout (<768px) */}
         <div className="md:hidden">
           <div className="space-y-8">
-            {walkthroughSteps.map((step, index) => (
+            {howAppWorksSteps.map((step, index) => (
               <motion.div
                 key={step.number}
                 initial={
@@ -129,4 +129,4 @@ export function MobileAppWalkthroughSection() {
   );
 }
 
-export default MobileAppWalkthroughSection;
+export default HowAppWorksSection;

@@ -225,7 +225,7 @@ export type WalkthroughStep = {
   image: string;
 };
 
-export const walkthroughSteps: WalkthroughStep[] = [
+export const howAppWorksSteps: WalkthroughStep[] = [
   {
     number: 1,
     title: "Fast onboarding + goals",
