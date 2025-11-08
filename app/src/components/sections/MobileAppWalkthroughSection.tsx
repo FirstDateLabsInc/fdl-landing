@@ -38,19 +38,20 @@ export function MobileAppWalkthroughSection() {
         </div>
 
         {/* Desktop/Tablet Layout (≥768px) */}
-        <div className="hidden md:grid md:grid-cols-[400px_1fr] md:gap-12 lg:gap-16">
+        <div className="hidden md:grid md:grid-cols-[minmax(360px,420px)_1fr] md:gap-12 lg:grid-cols-[minmax(400px,500px)_1fr] lg:gap-16">
           {/* Left Column - Sticky iPhone */}
-          <div className="sticky top-20 h-[600px]">
+          <div className="sticky top-20 h-[640px] md:max-w-sm lg:max-w-none">
             <div className="flex h-full items-center justify-center">
               <AnimatedIphone15Pro
                 src={walkthroughSteps[currentStep].image}
-                className="h-[500px] w-auto"
+                className="h-[560px] w-auto lg:h-[640px]"
               />
             </div>
           </div>
 
           {/* Right Column - Scrollama Steps */}
-          <div>
+          {/* Extra top margin keeps Step 1 aligned with the larger sticky phone */}
+          <div className="md:mt-[9rem] lg:mt-[11rem]">
             <Scrollama offset={0.5} onStepEnter={onStepEnter}>
               {walkthroughSteps.map((step, index) => (
                 <Step data={index} key={step.number}>
