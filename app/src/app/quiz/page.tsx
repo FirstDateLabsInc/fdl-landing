@@ -74,13 +74,6 @@ export default function QuizPage() {
             better in relationships.
           </p>
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm text-slate-500">
-            If you have never had any intimate romantic relationship, please imagine
-            your behavior, or think about how you usually behave with family and
-            friends. To make a more accurate judgment, try to avoid choosing neutral
-            options.
-          </p>
-
           {/* Stats row */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500">
             <div className="flex items-center gap-2">

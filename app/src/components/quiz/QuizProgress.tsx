@@ -4,17 +4,15 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 
 interface QuizProgressProps {
-  currentSection: string;
-  currentQuestionIndex: number;
-  totalQuestionsInSection: number;
+  currentPage: number;
+  totalPages: number;
   overallProgress: number;
   className?: string;
 }
 
 export function QuizProgress({
-  currentSection,
-  currentQuestionIndex,
-  totalQuestionsInSection,
+  currentPage,
+  totalPages,
   overallProgress,
   className,
 }: QuizProgressProps) {
@@ -23,11 +21,11 @@ export function QuizProgress({
       <Progress value={overallProgress} />
 
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">
-          {currentSection}
+        <span className="text-sm text-slate-600">
+          Page {currentPage + 1} of {totalPages}
         </span>
         <span className="text-sm text-slate-600">
-          Question {currentQuestionIndex + 1} of {totalQuestionsInSection}
+          {overallProgress}% Complete
         </span>
       </div>
     </div>

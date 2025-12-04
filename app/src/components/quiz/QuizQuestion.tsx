@@ -12,6 +12,7 @@ interface QuizQuestionProps {
   value: number | string | null;
   onValueChange: (value: number | string) => void;
   className?: string;
+  disableAnimation?: boolean;
 }
 
 export function QuizQuestion({
@@ -19,6 +20,7 @@ export function QuizQuestion({
   value,
   onValueChange,
   className,
+  disableAnimation = false,
 }: QuizQuestionProps) {
   const prefersReducedMotion = useReducedMotion();
 
@@ -30,7 +32,7 @@ export function QuizQuestion({
     onValueChange(scenarioValue);
   };
 
-  const motionProps = prefersReducedMotion
+  const motionProps = (prefersReducedMotion || disableAnimation)
     ? {}
     : {
         initial: { opacity: 0, y: 20 },
@@ -42,10 +44,10 @@ export function QuizQuestion({
   return (
     <motion.div
       key={question.id}
-      className={cn("flex flex-col items-center gap-8", className)}
+      className={cn("flex flex-col items-start gap-6", className)}
       {...motionProps}
     >
-      <h2 className="max-w-xl text-center text-xl font-semibold text-slate-900 sm:text-2xl">
+      <h2 className="w-full text-left text-lg font-semibold text-slate-900 sm:text-xl">
         {question.text}
       </h2>
 
@@ -54,6 +56,7 @@ export function QuizQuestion({
           value={typeof value === "number" ? value : null}
           onValueChange={handleLikertChange}
           labels={{ low: "Strongly Disagree", high: "Strongly Agree" }}
+          className="w-full"
         />
       )}
 

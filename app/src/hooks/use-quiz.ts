@@ -11,24 +11,23 @@ import { allQuestions, getSectionForQuestion } from "@/lib/quiz/questions";
 interface QuizState {
   sessionId: string;
   startedAt: number;
-  currentIndex: number;
+  currentPage: number;
+  shuffledQuestionIds: string[];
   responses: Record<string, number | string>;
 }
 
 interface UseQuizReturn {
   state: QuizState;
   responses: Record<string, number | string>;
-  currentQuestion: QuizQuestion;
-  currentSection: string;
-  currentSectionTitle: string;
-  questionIndexInSection: number;
-  totalQuestionsInSection: number;
+  currentPageQuestions: QuizQuestion[];
+  currentPage: number;
+  totalPages: number;
   setResponse: (questionId: string, value: number | string) => void;
   goToNext: () => void;
   goToPrevious: () => void;
   canGoNext: boolean;
   canGoPrevious: boolean;
-  isLastQuestion: boolean;
+  isLastPage: boolean;
   progress: number;
   clearProgress: () => void;
   hasExistingProgress: boolean;
@@ -39,6 +38,8 @@ interface UseQuizReturn {
 // ============================================================================
 
 const STORAGE_KEY = "juliet-quiz-state";
+const QUESTIONS_PER_PAGE = 6;
+const TOTAL_PAGES = 8;
 
 // ============================================================================
 // HELPERS
@@ -48,11 +49,23 @@ function generateSessionId(): string {
   return `quiz_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 }
 
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 function createInitialState(): QuizState {
+  const shuffledIds = shuffleArray(allQuestions.map(q => q.id));
+
   return {
     sessionId: generateSessionId(),
     startedAt: Date.now(),
-    currentIndex: 0,
+    currentPage: 0,
+    shuffledQuestionIds: shuffledIds,
     responses: {},
   };
 }
@@ -77,7 +90,9 @@ function loadFromStorage(): QuizState | null {
     if (
       typeof parsed.sessionId !== "string" ||
       typeof parsed.startedAt !== "number" ||
-      typeof parsed.currentIndex !== "number" ||
+      typeof parsed.currentPage !== "number" ||
+      !Array.isArray(parsed.shuffledQuestionIds) ||
+      parsed.shuffledQuestionIds.length !== 48 ||
       typeof parsed.responses !== "object"
     ) {
       // Clear corrupted data
@@ -133,35 +148,16 @@ export function useQuiz(resume = true): UseQuizReturn {
     saveToStorage(state);
   }, [state]);
 
-  // Current question data
-  const currentQuestion = useMemo(
-    () => allQuestions[state.currentIndex] ?? allQuestions[0],
-    [state.currentIndex]
-  );
+  // Current page questions
+  const currentPageQuestions = useMemo(() => {
+    const startIndex = state.currentPage * QUESTIONS_PER_PAGE;
+    const endIndex = startIndex + QUESTIONS_PER_PAGE;
 
-  // Section info
-  const sectionInfo = useMemo(() => {
-    const section = getSectionForQuestion(currentQuestion.id);
-    if (!section) {
-      return {
-        id: "unknown",
-        title: "Unknown Section",
-        questionIndex: 0,
-        totalQuestions: 1,
-      };
-    }
-
-    const questionIndex = section.questions.findIndex(
-      (q) => q.id === currentQuestion.id
-    );
-
-    return {
-      id: section.id,
-      title: section.title,
-      questionIndex: questionIndex >= 0 ? questionIndex : 0,
-      totalQuestions: section.questions.length,
-    };
-  }, [currentQuestion]);
+    return state.shuffledQuestionIds
+      .slice(startIndex, endIndex)
+      .map(id => allQuestions.find(q => q.id === id))
+      .filter(Boolean) as QuizQuestion[];
+  }, [state.currentPage, state.shuffledQuestionIds]);
 
   // Response handlers
   const setResponse = useCallback(
@@ -181,26 +177,28 @@ export function useQuiz(resume = true): UseQuizReturn {
   const goToNext = useCallback(() => {
     setState((prev) => ({
       ...prev,
-      currentIndex: Math.min(prev.currentIndex + 1, allQuestions.length - 1),
+      currentPage: Math.min(prev.currentPage + 1, TOTAL_PAGES - 1),
     }));
   }, []);
 
   const goToPrevious = useCallback(() => {
     setState((prev) => ({
       ...prev,
-      currentIndex: Math.max(prev.currentIndex - 1, 0),
+      currentPage: Math.max(prev.currentPage - 1, 0),
     }));
   }, []);
 
   // Navigation state
-  const canGoPrevious = state.currentIndex > 0;
-  const isLastQuestion = state.currentIndex === allQuestions.length - 1;
+  const canGoPrevious = state.currentPage > 0;
+  const isLastPage = state.currentPage === TOTAL_PAGES - 1;
 
-  // Can go next only if current question is answered
+  // Can go next only if all questions on current page are answered
   const canGoNext = useMemo(() => {
-    const currentResponse = state.responses[currentQuestion.id];
-    return currentResponse !== undefined && currentResponse !== null;
-  }, [state.responses, currentQuestion.id]);
+    return currentPageQuestions.every(q => {
+      const response = state.responses[q.id];
+      return response !== undefined && response !== null;
+    });
+  }, [state.responses, currentPageQuestions]);
 
   // Progress percentage
   const progress = useMemo(() => {
@@ -217,17 +215,15 @@ export function useQuiz(resume = true): UseQuizReturn {
   return {
     state,
     responses: state.responses,
-    currentQuestion,
-    currentSection: sectionInfo.id,
-    currentSectionTitle: sectionInfo.title,
-    questionIndexInSection: sectionInfo.questionIndex,
-    totalQuestionsInSection: sectionInfo.totalQuestions,
+    currentPageQuestions,
+    currentPage: state.currentPage,
+    totalPages: TOTAL_PAGES,
     setResponse,
     goToNext,
     goToPrevious,
     canGoNext,
     canGoPrevious,
-    isLastQuestion,
+    isLastPage,
     progress,
     clearProgress,
     hasExistingProgress,

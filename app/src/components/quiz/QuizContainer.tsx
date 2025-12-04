@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { QuizProgress } from "./QuizProgress";
 import { QuizQuestion } from "./QuizQuestion";
@@ -14,6 +14,7 @@ import {
 } from "@/lib/quiz";
 import type { QuizResults } from "@/lib/quiz/types";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import { cn } from "@/lib/utils";
 
 interface QuizContainerProps {
   onComplete: (results: QuizResults, archetype: ArchetypeDefinition) => void;
@@ -22,25 +23,24 @@ interface QuizContainerProps {
 export function QuizContainer({ onComplete }: QuizContainerProps) {
   const {
     responses,
-    currentQuestion,
-    currentSectionTitle,
-    questionIndexInSection,
-    totalQuestionsInSection,
+    currentPageQuestions,
+    currentPage,
+    totalPages,
     setResponse,
     goToNext,
     goToPrevious,
     canGoNext,
     canGoPrevious,
-    isLastQuestion,
+    isLastPage,
     progress,
     clearProgress,
   } = useQuiz();
 
   const handleValueChange = useCallback(
-    (value: number | string) => {
-      setResponse(currentQuestion.id, value);
+    (questionId: string) => (value: number | string) => {
+      setResponse(questionId, value);
     },
-    [setResponse, currentQuestion.id]
+    [setResponse]
   );
 
   const handleSubmit = useCallback(() => {
@@ -64,32 +64,60 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
     onComplete(results, archetype);
   }, [responses, clearProgress, onComplete]);
 
-  const currentValue = responses[currentQuestion.id] ?? null;
-
   return (
-    <div className="mx-auto flex min-h-[calc(100vh-4.5rem)] w-full max-w-2xl flex-col px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto flex min-h-[calc(100vh-4.5rem)] w-full max-w-4xl flex-col px-4 py-8 sm:px-6 lg:px-8">
       <QuizProgress
-        currentSection={currentSectionTitle}
-        currentQuestionIndex={questionIndexInSection}
-        totalQuestionsInSection={totalQuestionsInSection}
+        currentPage={currentPage}
+        totalPages={totalPages}
         overallProgress={progress}
       />
 
-      <div className="flex flex-1 items-center justify-center py-8">
+      <div className="flex flex-1 items-start py-8">
         <AnimatePresence mode="wait">
-          <QuizQuestion
-            key={currentQuestion.id}
-            question={currentQuestion}
-            value={currentValue}
-            onValueChange={handleValueChange}
-          />
+          <motion.div
+            key={currentPage}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="w-full space-y-8"
+          >
+            {currentPageQuestions.map((question, index) => {
+              const isAnswered = responses[question.id] !== undefined && responses[question.id] !== null;
+              // Check if any previous question on this page is answered (for shadow effect)
+              const hasPreviousAnswered = currentPageQuestions
+                .slice(0, index)
+                .some(q => responses[q.id] !== undefined && responses[q.id] !== null);
+
+              return (
+                <div
+                  key={question.id}
+                  className={cn(
+                    "w-full transition-opacity duration-300",
+                    // Add shadow/dim effect if previous question answered but this one isn't
+                    !isAnswered && hasPreviousAnswered && "opacity-40"
+                  )}
+                >
+                  <QuizQuestion
+                    question={question}
+                    value={responses[question.id] ?? null}
+                    onValueChange={handleValueChange(question.id)}
+                    disableAnimation={true}
+                  />
+                  {index < currentPageQuestions.length - 1 && (
+                    <div className="my-8 border-b border-slate-200" />
+                  )}
+                </div>
+              );
+            })}
+          </motion.div>
         </AnimatePresence>
       </div>
 
       <QuizNavigation
         canGoBack={canGoPrevious}
         canGoNext={canGoNext}
-        isLastQuestion={isLastQuestion}
+        isLastQuestion={isLastPage}
         onBack={goToPrevious}
         onNext={goToNext}
         onSubmit={handleSubmit}
