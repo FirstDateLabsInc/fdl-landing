@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { QuizProgress } from "./QuizProgress";
 import { QuizQuestion } from "./QuizQuestion";
 import { QuizNavigation } from "./QuizNavigation";
+import { QuizStatement } from "./QuizStatement";
 import { useQuiz } from "@/hooks/use-quiz";
 import {
   calculateAllResults,
@@ -36,6 +37,17 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
     clearProgress,
   } = useQuiz();
 
+  // Ref for the progress bar section to enable auto-scroll
+  const progressRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to progress bar when page changes (after user clicks Next/Back)
+  useEffect(() => {
+    if (progressRef.current && currentPage > 0) {
+      // Smooth scroll to progress bar section (including % Complete text)
+      progressRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [currentPage]);
+
   const handleValueChange = useCallback(
     (questionId: string) => (value: number | string) => {
       setResponse(questionId, value);
@@ -65,13 +77,21 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
   }, [responses, clearProgress, onComplete]);
 
   return (
-    <div className="mx-auto flex min-h-[calc(100vh-4.5rem)] w-full max-w-4xl flex-col px-4 py-8 sm:px-6 lg:px-8">
-      <QuizProgress
-        currentPage={currentPage}
-        totalPages={totalPages}
-        overallProgress={progress}
-      />
+    <div className="mx-auto flex min-h-[calc(100vh-4.5rem)] w-full max-w-6xl flex-col px-4 py-8 sm:px-6 lg:px-8">
+      {/* 3-Step Info Cards - At the very top */}
+      <div className="mb-8">
+        <QuizStatement />
+      </div>
 
+      <div ref={progressRef} className="scroll-mt-4">
+        <QuizProgress
+          currentPage={currentPage}
+          totalPages={totalPages}
+          overallProgress={progress}
+        />
+      </div>
+
+      {/* Questions Section */}
       <div className="flex flex-1 items-start py-8">
         <AnimatePresence mode="wait">
           <motion.div
