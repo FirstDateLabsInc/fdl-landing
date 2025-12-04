@@ -262,6 +262,7 @@ export const navigation: Navigation = {
     { label: "Home", href: "/" },
     { label: "Press", href: "/press" },
     { label: "Login", href: "/login" },
+    { label: "Quiz", href: "/quiz" },
   ],
   cta: { label: "Get Early Access", href: "/#waitlist" },
 };
