@@ -48,7 +48,7 @@ export function ProfileSummary({ archetype, className }: ProfileSummaryProps) {
   return (
     <motion.div
       className={cn(
-        "bg-gradient-to-br from-[#fffdf6] via-white to-[#cab5d4]/10 p-4",
+        "rounded-2xl bg-white p-5 shadow-soft",
         className
       )}
       {...motionProps}
@@ -61,17 +61,17 @@ export function ProfileSummary({ archetype, className }: ProfileSummaryProps) {
         <h2 className="mt-4 text-3xl font-bold text-slate-900">
           {archetype.name}
         </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-lg leading-relaxed text-slate-600">
-          {archetype.summary}
-        </p>
       </div>
+      <p className="mt-3 text-lg leading-relaxed text-slate-600">
+        {archetype.summary}
+      </p>
 
       {/* Divider */}
       <div className="my-3 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
 
       {/* Strengths Section - Full Width */}
       <div className="mb-3">
-        <h3 className="mb-4 text-center text-sm font-semibold uppercase tracking-[0.35em] text-slate-500">
+        <h3 className="mb-4 text-center text-base font-bold uppercase tracking-[0.35em] text-slate-500">
           Your Strengths
         </h3>
         <motion.ul
@@ -98,7 +98,7 @@ export function ProfileSummary({ archetype, className }: ProfileSummaryProps) {
 
       {/* Growth Areas Section - Full Width */}
       <div>
-        <h3 className="mb-4 text-center text-sm font-semibold uppercase tracking-[0.35em] text-slate-500">
+        <h3 className="mb-4 text-center text-base font-bold uppercase tracking-[0.35em] text-slate-500">
           Growth Areas
         </h3>
         <motion.ul

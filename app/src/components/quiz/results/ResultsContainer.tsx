@@ -75,7 +75,7 @@ export function ResultsContainer({
   return (
     <div
       className={cn(
-        "mx-auto w-full max-w-4xl space-y-2 px-4 py-4 sm:px-6 lg:px-8",
+        "mx-auto w-full max-w-4xl space-y-4 px-4 py-6 sm:px-6 lg:px-8",
         className
       )}
     >
@@ -149,7 +149,7 @@ export function ResultsContainer({
         animate="visible"
         transition={{ delay: 0.5 }}
       >
-        <div className="bg-gradient-to-br from-[#fffdf6] via-white to-[#f9d544]/5 p-3">
+        <div className="rounded-2xl bg-white p-5 shadow-soft">
           <ShareResults shareUrl={shareUrl} archetype={archetype.name} />
         </div>
       </motion.section>

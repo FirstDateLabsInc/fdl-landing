@@ -18,6 +18,10 @@ function QuizQuestionsContent() {
   useEffect(() => {
     if (searchParams.get("new") === "true") {
       clearQuizProgress();
+      // Clear statement acknowledgment so it shows again
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("juliet-quiz-statement-acknowledged");
+      }
       // Remove the query param without reloading
       router.replace("/quiz/questions");
     }

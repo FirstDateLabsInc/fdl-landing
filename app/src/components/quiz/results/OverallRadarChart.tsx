@@ -97,14 +97,14 @@ function GradientProgressBar({
   const endColor = "#cab5d4";
 
   return (
-    <div className="space-y-0.5">
-      <div className="flex items-center justify-between text-base">
+    <div className="space-y-1">
+      <div className="flex items-center justify-between text-lg">
         <span className="text-slate-700">
           {label}: <span className="font-semibold text-slate-900">{detail}</span>
         </span>
         <span className="font-bold text-slate-800">{value}%</span>
       </div>
-      <div className="relative h-3 w-full overflow-hidden rounded-full bg-slate-100">
+      <div className="relative h-3.5 w-full overflow-hidden rounded-full bg-slate-100">
         {shouldAnimate ? (
           <motion.div
             className="absolute inset-y-0 left-0 rounded-full"
@@ -229,11 +229,11 @@ export function OverallRadarChart({
   const colors = ["#f9d544", "#cab5d4", "#f9d544", "#cab5d4", "#f9d544", "#cab5d4"];
 
   return (
-    <div className={cn("bg-gradient-to-br from-[#fffdf6] via-white to-[#f9d544]/5 p-3", className)}>
+    <div className={cn("rounded-2xl bg-white p-5 shadow-soft", className)}>
       {/* Header */}
-      <div className="mb-1 text-center">
-        <h3 className="text-xl font-bold text-slate-900">Your Dating Profile</h3>
-        <p className="text-base text-slate-500">Overall personality overview</p>
+      <div className="mb-2 text-center">
+        <h3 className="text-2xl font-bold text-slate-900">Your Dating Profile</h3>
+        <p className="text-lg text-slate-500">Overall personality overview</p>
       </div>
 
       {/* Chart */}
@@ -340,16 +340,16 @@ export function OverallRadarChart({
                 y={y - 10}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className="fill-slate-800 text-[13px] font-semibold"
+                className="fill-slate-800 text-[15px] font-semibold"
               >
                 {fullLabel} {category}
               </text>
               <text
                 x={x}
-                y={y + 8}
+                y={y + 10}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className="fill-[#cab5d4] text-[16px] font-bold"
+                className="fill-[#cab5d4] text-[18px] font-bold"
               >
                 {value}%
               </text>

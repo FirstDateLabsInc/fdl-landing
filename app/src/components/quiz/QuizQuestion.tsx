@@ -36,7 +36,7 @@ export function QuizQuestion({
         initial: { opacity: 0, y: 20 },
         animate: { opacity: 1, y: 0 },
         exit: { opacity: 0, y: -20 },
-        transition: { duration: 0.3, ease: "easeOut" },
+        transition: { duration: 0.3 },
       };
 
   return (
@@ -45,7 +45,7 @@ export function QuizQuestion({
       className={cn("flex flex-col items-center gap-8", className)}
       {...motionProps}
     >
-      <h2 className="max-w-xl text-center text-2xl font-semibold text-slate-900 sm:text-3xl">
+      <h2 className="max-w-xl text-center text-xl font-semibold text-slate-900 sm:text-2xl">
         {question.text}
       </h2>
 

@@ -72,7 +72,7 @@ export function QuizHeader({
             </p>
             <div className="mt-6 flex gap-3">
               <Button
-                variant="outline"
+                variant="secondary"
                 className="flex-1"
                 onClick={handleCancelExit}
               >

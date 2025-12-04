@@ -74,6 +74,13 @@ export default function QuizPage() {
             better in relationships.
           </p>
 
+          <p className="mx-auto mt-4 max-w-2xl text-sm text-slate-500">
+            If you have never had any intimate romantic relationship, please imagine
+            your behavior, or think about how you usually behave with family and
+            friends. To make a more accurate judgment, try to avoid choosing neutral
+            options.
+          </p>
+
           {/* Stats row */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500">
             <div className="flex items-center gap-2">
@@ -134,15 +141,6 @@ export default function QuizPage() {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Trust signals */}
-        <div className="mt-16 text-center">
-          <p className="text-sm text-slate-500">
-            Based on established psychology research including attachment theory,
-            <br className="hidden sm:block" />
-            communication styles, and the 5 Love Languages framework.
-          </p>
         </div>
       </main>
   );

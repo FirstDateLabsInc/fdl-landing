@@ -26,9 +26,9 @@ interface CategoryRadarChartProps {
 // GEOMETRY HELPERS
 // ============================================================================
 
-const SIZE = 340;
+const SIZE = 400;
 const CENTER = SIZE / 2;
-const RADIUS = 90;
+const RADIUS = 80;
 const LEVELS = 5;
 
 function polarToCartesian(
@@ -138,7 +138,7 @@ export function CategoryRadarChart({
     () =>
       dimensions.map((dim, i) => {
         const angle = i * angleStep;
-        const { x, y } = polarToCartesian(angle, RADIUS + 55);
+        const { x, y } = polarToCartesian(angle, RADIUS + 70);
         return { 
           label: getDisplayLabel(dim.label), 
           value: dim.value,
