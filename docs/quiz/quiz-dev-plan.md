@@ -49,6 +49,38 @@ links: [
 ```
 > Purpose: Adds "Quiz" link to the main navigation bar, making the quiz accessible from the navbar.
 
+### Completed: Phase 1 (Partial) - Data Structure
+
+The quiz data structure has been implemented with TypeScript interfaces and all 48 questions:
+
+| File | Status | Description |
+|------|--------|-------------|
+| `app/src/lib/quiz/types.ts` | **CREATED** | TypeScript interfaces for quiz system |
+| `app/src/lib/quiz/questions.ts` | **CREATED** | All 48 questions with scoring metadata |
+| `app/src/lib/quiz/index.ts` | **CREATED** | Central exports for quiz library |
+
+**File Details:**
+
+**`app/src/lib/quiz/types.ts`** - Core type definitions:
+- `AttachmentDimension`, `CommunicationStyle`, `LoveLanguage`, `IntimacyDimension` - Scoring dimensions
+- `ScoringTarget` - Discriminated union for type-safe scoring per section
+- `LikertQuestion`, `ScenarioQuestion` - Question type definitions with `reverse` flag support
+- `QuizSection`, `QuizSession`, `QuizResponse` - Session and response tracking
+- `QuizResults`, `AttachmentResult`, `CommunicationResult`, etc. - Result type definitions
+- `StoredSession`, `StoredResults` - localStorage schema with version field
+
+**`app/src/lib/quiz/questions.ts`** - Question data (48 questions):
+- 6 sections: Attachment (12), Communication (9), Confidence (5), Emotional (5), Intimacy (6), Love Languages (10)
+- Full question text from `quiz-question.md`
+- Exports: `quizSections`, `allQuestions`, `totalQuestions`
+- Helper functions: `getQuestionById()`, `getSectionById()`, `getSectionForQuestion()`
+
+**`app/src/lib/quiz/index.ts`** - Central export:
+```typescript
+export * from './types';
+export { quizSections, allQuestions, totalQuestions, getQuestionById, getSectionById, getSectionForQuestion } from './questions';
+```
+
 ### Next Implementation Phase
 
 Continue with **Phase 1: UI Components** - Create RadioGroup, LikertScale, and Progress UI primitives.
@@ -136,8 +168,9 @@ app/src/
 │
 ├── lib/
 │   └── quiz/
-│       ├── types.ts                # Quiz TypeScript types
-│       ├── questions.ts            # Question data (from quiz-question.md)
+│       ├── index.ts                # Central exports ✓ CREATED
+│       ├── types.ts                # Quiz TypeScript types ✓ CREATED
+│       ├── questions.ts            # Question data (48 questions) ✓ CREATED
 │       ├── scoring.ts              # Scoring algorithms
 │       └── archetypes.ts           # Result archetypes
 │
@@ -588,15 +621,18 @@ Follow existing design system:
 
 ## Critical Files Summary
 
-| File | Purpose |
-|------|---------|
-| `lib/quiz/questions.ts` | All 48 questions with IDs and metadata |
-| `lib/quiz/scoring.ts` | All scoring algorithms |
-| `components/quiz/QuizContainer.tsx` | Main state machine & orchestration |
-| `components/ui/likert-scale.tsx` | Core input for most questions |
-| `hooks/use-quiz.ts` | State management with localStorage |
-| `app/quiz/questions/page.tsx` | Main quiz flow page |
-| `app/quiz/results/page.tsx` | Results display page |
+| File | Purpose | Status |
+|------|---------|--------|
+| `lib/quiz/index.ts` | Central exports for quiz library | ✓ Done |
+| `lib/quiz/types.ts` | TypeScript interfaces & type definitions | ✓ Done |
+| `lib/quiz/questions.ts` | All 48 questions with IDs and metadata | ✓ Done |
+| `lib/quiz/scoring.ts` | All scoring algorithms | Pending |
+| `lib/quiz/archetypes.ts` | Result archetype definitions | Pending |
+| `components/quiz/QuizContainer.tsx` | Main state machine & orchestration | Pending |
+| `components/ui/likert-scale.tsx` | Core input for most questions | Pending |
+| `hooks/use-quiz.ts` | State management with localStorage | Pending |
+| `app/quiz/questions/page.tsx` | Main quiz flow page | Pending |
+| `app/quiz/results/page.tsx` | Results display page | Pending |
 
 ---
 
