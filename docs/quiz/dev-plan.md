@@ -1,7 +1,7 @@
 # Quiz Feature Implementation Plan
 
 ## Overview
-Build a premium MBTI-style dating personality quiz for Juliet (First Date Labs) with 48 questions across 6 sections, localStorage persistence, and a comprehensive results page with radar chart visualization.
+Build a premium MBTI-style dating personality quiz for Juliet (First Date Labs) with 47 questions across 6 sections, localStorage persistence, and a comprehensive results page with radar chart visualization.
 
 ---
 
@@ -505,7 +505,7 @@ export default function QuizLayout({ children }: { children: React.ReactNode }) 
 **Update to:**
 - Hero section with heading "Discover Your Dating Personality"
 - Subheading explaining quiz value
-- Stats row: "~8 min • 48 questions • 100% private"
+- Stats row: "~8 min • 47 questions • 100% private"
 - Benefits list (what they'll learn about themselves)
 - Primary CTA button: "Start Quiz" → `/quiz/questions`
 - If existing progress detected, show "Resume Quiz" option
