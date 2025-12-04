@@ -1,15 +1,12 @@
-# Quiz Feature - PRD & Architecture Document
+# Quiz Feature - Frontend Development Plan
 
-## Product Requirements Document
+## Overview
 
-### Overview
 A personality and self-awareness quiz for Juliet (First Date Labs), helping users understand their dating personality through a premium, MBTI-style assessment experience.
 
-### Key Metrics
-- **Duration**: ~8-10 minutes
-- **Questions**: 47-49 items across 6 sections
-- **Question Types**: Likert scale (1-5) + scenario/multiple-choice
+**Questions Document**: [`docs/quiz/quiz-question.md`](./quiz-question.md)
 
+---
 ### User Decisions
 | Decision | Choice |
 |----------|--------|
@@ -20,26 +17,89 @@ A personality and self-awareness quiz for Juliet (First Date Labs), helping user
 
 ---
 
-## Quiz Sections
+## Current Implementation Status
+
+### Completed: Phase 0 - Route Setup
+
+The following files have been created/modified to establish the quiz route:
+
+| File | Status | Description |
+|------|--------|-------------|
+| `app/src/app/quiz/page.tsx` | **CREATED** | Blank quiz page (returns `null`) - establishes `/quiz` route |
+| `app/src/lib/constants.ts` | **MODIFIED** | Added Quiz link to navigation (line 265) |
+
+**File Details:**
+
+**`app/src/app/quiz/page.tsx`** (new file)
+```tsx
+export default function QuizPage() {
+  return null;
+}
+```
+> Purpose: Establishes the `/quiz` route for navigation. Currently returns null (blank page) as a placeholder for future quiz landing page content.
+
+**`app/src/lib/constants.ts`** (modified - line 265)
+```typescript
+links: [
+  { label: "Home", href: "/" },
+  { label: "Press", href: "/press" },
+  { label: "Login", href: "/login" },
+  { label: "Quiz", href: "/quiz" },  // ADDED
+],
+```
+> Purpose: Adds "Quiz" link to the main navigation bar, making the quiz accessible from the navbar.
+
+### Next Implementation Phase
+
+Continue with **Phase 1: UI Components** - Create RadioGroup, LikertScale, and Progress UI primitives.
+
+---
+
+## Key Metrics
+
+| Metric | Value |
+|--------|-------|
+| Duration | ~8-10 minutes |
+| Total Questions | 48 items across 6 sections |
+| Question Types | Likert scale (1-5) + scenario/multiple-choice |
+| State Management | localStorage (frontend-only for now) |
+
+---
+
+## Quiz Sections Summary
 
 | Section | Items | Type | Measures |
 |---------|-------|------|----------|
-| Attachment Style | 12 | Likert | Secure, Anxious, Avoidant, Fearful |
-| Communication Style | 9 | 8 Likert + 1 scenario | Direct, Analytical, Expressive, Amiable |
-| Dating Confidence | 4-5 | Likert | 0-100 confidence score |
-| Emotional Availability | 4-5 | Likert | 0-100 availability score |
-| Sexual Attitudes & Intimacy | 8 | Likert | Openness, Boundaries, Style |
-| Love Languages | 10 | Forced choice | Words, Acts, Gifts, Time, Touch |
+| A. Attachment Style | 12 | Likert | Secure, Anxious, Avoidant, Fearful |
+| B. Communication Style | 9 | 8 Likert + 1 scenario | Passive, Aggressive, Passive-Aggressive, Assertive |
+| C. Dating Confidence | 5-6 | Likert | 0-100 confidence score |
+| D. Emotional Availability | 5 | Likert | 0-100 availability score |
+| E. Sexual Attitudes & Intimacy | 6 | Likert | Intimacy Comfort, Boundary Assertiveness |
+| F. Love Languages | 10 | Likert | Words, Acts, Gifts, Time, Touch |
+
+See [`quiz-question.md`](./quiz-question.md) for full question text and scoring dimensions.
 
 ---
 
 ## Technical Architecture
 
+### Navigation Update
+
+Add "Quiz" link to the main navigation bar next to "Login":
+
+```typescript
+// In app/src/lib/constants.ts → navigation.links (line ~261-265)
+links: [
+  { label: "Home", href: "/" },
+  { label: "Press", href: "/press" },
+  { label: "Login", href: "/login" },
+  { label: "Quiz", href: "/quiz" },  // NEW - add after Login
+],
+```
+
 ### Tech Stack Additions
 ```
 New Dependencies:
-├── @supabase/supabase-js    # Supabase client
-├── @supabase/ssr            # Edge-compatible SSR helpers
 └── @radix-ui/react-radio-group  # Accessible radio inputs
 ```
 
@@ -49,26 +109,24 @@ app/src/
 ├── app/quiz/
 │   ├── page.tsx                    # Quiz landing/start page
 │   ├── layout.tsx                  # Minimal header layout
-│   ├── [sessionId]/
-│   │   ├── page.tsx                # Main quiz flow
-│   │   └── loading.tsx             # Loading skeleton
-│   └── results/[sessionId]/
-│       ├── page.tsx                # Results display
-│       └── loading.tsx
+│   ├── questions/
+│   │   └── page.tsx                # Main quiz flow (client component)
+│   └── results/
+│       └── page.tsx                # Results display
 │
 ├── components/
 │   ├── quiz/
 │   │   ├── QuizContainer.tsx       # State machine + orchestration
 │   │   ├── QuizProgress.tsx        # Progress bar + section indicator
-│   │   ├── QuizQuestion.tsx        # Question renderer
-│   │   ├── QuizNavigation.tsx      # Back/Next/Skip buttons
+│   │   ├── QuizQuestion.tsx        # Question renderer (Likert + Scenario)
+│   │   ├── QuizNavigation.tsx      # Back/Next buttons
 │   │   ├── QuizIntro.tsx           # Section intro cards
 │   │   ├── QuizHeader.tsx          # Minimal header (logo + exit)
 │   │   └── results/
 │   │       ├── ResultsContainer.tsx
 │   │       ├── ResultCard.tsx
 │   │       ├── ProfileSummary.tsx
-│   │       ├── RadarChart.tsx      # Personality visualization
+│   │       ├── RadarChart.tsx      # Personality visualization (SVG)
 │   │       └── ShareResults.tsx
 │   │
 │   └── ui/
@@ -77,117 +135,14 @@ app/src/
 │       └── progress.tsx            # NEW: Progress bar
 │
 ├── lib/
-│   ├── supabase/
-│   │   ├── client.ts               # Browser client
-│   │   ├── server.ts               # Edge/server client
-│   │   └── types.ts                # Generated DB types
-│   │
 │   └── quiz/
 │       ├── types.ts                # Quiz TypeScript types
+│       ├── questions.ts            # Question data (from quiz-question.md)
 │       ├── scoring.ts              # Scoring algorithms
-│       ├── archetypes.ts           # Result archetypes
-│       └── constants.ts            # Quiz-specific constants
+│       └── archetypes.ts           # Result archetypes
 │
 └── hooks/
-    └── use-quiz-session.ts         # Quiz state management
-```
-
----
-
-## Database Schema (Supabase)
-
-### Tables
-
-```sql
--- 1. Quiz Sections
-CREATE TABLE quiz_sections (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  slug TEXT UNIQUE NOT NULL,           -- 'attachment-style'
-  title TEXT NOT NULL,
-  description TEXT,
-  order_index INTEGER NOT NULL,
-  estimated_minutes INTEGER DEFAULT 2,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-
--- 2. Quiz Questions
-CREATE TABLE quiz_questions (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  section_id UUID REFERENCES quiz_sections(id) ON DELETE CASCADE,
-  question_text TEXT NOT NULL,
-  question_type TEXT NOT NULL CHECK (question_type IN ('likert', 'scenario')),
-  order_index INTEGER NOT NULL,
-  scoring_dimension TEXT,              -- 'anxious', 'secure', etc.
-  reverse_scored BOOLEAN DEFAULT false,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-
--- 3. Answer Options (for scenario questions)
-CREATE TABLE quiz_options (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  question_id UUID REFERENCES quiz_questions(id) ON DELETE CASCADE,
-  option_text TEXT NOT NULL,
-  option_value TEXT NOT NULL,          -- Maps to category
-  order_index INTEGER NOT NULL
-);
-
--- 4. Quiz Sessions
-CREATE TABLE quiz_sessions (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID,                        -- NULL for anonymous
-  anonymous_id TEXT,                   -- localStorage ID
-  started_at TIMESTAMPTZ DEFAULT now(),
-  completed_at TIMESTAMPTZ,
-  current_section_index INTEGER DEFAULT 0,
-  current_question_index INTEGER DEFAULT 0,
-  is_complete BOOLEAN DEFAULT false
-);
-
--- 5. Quiz Responses
-CREATE TABLE quiz_responses (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  session_id UUID REFERENCES quiz_sessions(id) ON DELETE CASCADE,
-  question_id UUID REFERENCES quiz_questions(id),
-  response_value TEXT NOT NULL,        -- '1'-'5' or option_id
-  response_time_ms INTEGER,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  UNIQUE(session_id, question_id)
-);
-
--- 6. Quiz Results
-CREATE TABLE quiz_results (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  session_id UUID REFERENCES quiz_sessions(id) ON DELETE CASCADE,
-
-  -- Attachment Style
-  attachment_scores JSONB,             -- {secure: 78, anxious: 45, ...}
-  attachment_primary TEXT,
-
-  -- Communication Style
-  communication_style TEXT,
-  communication_scores JSONB,
-
-  -- Confidence & Availability (0-100)
-  dating_confidence_score INTEGER,
-  emotional_availability_score INTEGER,
-
-  -- Intimacy
-  intimacy_scores JSONB,
-
-  -- Love Languages (ranked array)
-  love_languages_ranked JSONB,         -- ['time', 'words', ...]
-
-  -- Profile
-  profile_archetype TEXT,
-  profile_summary TEXT,
-
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-
--- Indexes
-CREATE INDEX idx_sessions_anonymous ON quiz_sessions(anonymous_id);
-CREATE INDEX idx_responses_session ON quiz_responses(session_id);
-CREATE INDEX idx_questions_section ON quiz_questions(section_id, order_index);
+    └── use-quiz.ts                 # Quiz state management (localStorage)
 ```
 
 ---
@@ -196,22 +151,18 @@ CREATE INDEX idx_questions_section ON quiz_questions(section_id, order_index);
 
 ### QuizContainer (Main Orchestrator)
 ```typescript
-// State machine states
 type QuizStatus =
-  | 'loading'      // Fetching questions
   | 'intro'        // Section intro screen
   | 'question'     // Showing a question
   | 'completing'   // Calculating results
   | 'complete';    // Redirect to results
 
-// Core state
 interface QuizState {
   status: QuizStatus;
-  sessionId: string;
   sections: QuizSection[];
   currentSectionIndex: number;
   currentQuestionIndex: number;
-  responses: Map<string, string>;
+  responses: Record<string, number | string>; // questionId -> response
   progress: number; // 0-100
 }
 ```
@@ -219,14 +170,14 @@ interface QuizState {
 ### LikertScale Component
 ```typescript
 interface LikertScaleProps {
-  value?: string;
-  onValueChange: (value: string) => void;
+  value?: number;
+  onValueChange: (value: number) => void;
   labels?: [string, string]; // ['Strongly Disagree', 'Strongly Agree']
   disabled?: boolean;
 }
 ```
 - 5 circular buttons in a row
-- Selected state: gold fill (#f9d544)
+- Selected state: gold fill (`#f9d544`)
 - Keyboard: arrow keys to navigate
 - Accessibility: aria-label for each point
 
@@ -235,10 +186,10 @@ interface LikertScaleProps {
 interface ProgressProps {
   value: number;        // 0-100
   showLabel?: boolean;  // Show percentage
-  showSection?: string; // Current section name
+  sectionName?: string; // Current section name
 }
 ```
-- Thin horizontal bar (h-2)
+- Thin horizontal bar (`h-2`)
 - Gold fill with cream background
 - Animated width transitions
 
@@ -252,7 +203,7 @@ interface RadarChartProps {
   size?: number;
 }
 ```
-- SVG-based pentagon/hexagon
+- SVG-based hexagon (6 dimensions)
 - Gold fill with purple stroke
 - Animated on mount
 
@@ -265,18 +216,8 @@ interface RadarChartProps {
 │ 1. LANDING (/quiz)                                          │
 │    - Hero: "Discover Your Dating Personality"               │
 │    - Benefits list (what you'll learn)                      │
-│    - "~8 min • 47 questions • 100% private"                 │
-│    - [Start Quiz] button                                    │
-│    └── Creates session → Redirects to /quiz/[sessionId]    │
-└─────────────────────────────────────────────────────────────┘
-                              ↓
-┌─────────────────────────────────────────────────────────────┐
-│ 2. SECTION INTRO (between each section)                     │
-│    - Progress bar (28% complete)                            │
-│    - Section icon + title                                   │
-│    - Brief description                                      │
-│    - "9 questions • ~2 min"                                 │
-│    - [Continue] button                                      │
+│    - "~8 min • 48 questions • 100% private"                 │
+│    - [Start Quiz] button → /quiz/questions                  │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
@@ -289,10 +230,10 @@ interface RadarChartProps {
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ 4. QUESTION (Scenario type)                                 │
+│ 4. QUESTION (Scenario type - Communication only)            │
 │    - Same header as Likert                                  │
 │    - Scenario text                                          │
-│    - RadioGroup with 3-4 options (cards)                    │
+│    - RadioGroup with 4 options (cards)                      │
 │    - [← Back] [Next →] navigation                           │
 └─────────────────────────────────────────────────────────────┘
                               ↓
@@ -301,21 +242,21 @@ interface RadarChartProps {
 │    - "Quiz Complete!" message                               │
 │    - Animated loading indicator                             │
 │    - "Calculating your personality profile..."              │
-│    └── POST results → Redirect to /quiz/results/[id]       │
+│    - Save to localStorage → Redirect to /quiz/results       │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ 6. RESULTS (/quiz/results/[sessionId])                      │
+│ 6. RESULTS (/quiz/results)                                  │
 │    - Profile archetype card (emoji + name + summary)        │
 │    - Radar chart (6 dimensions)                             │
 │    - Result cards grid:                                     │
-│      • Attachment Style (with breakdown)                    │
+│      • Attachment Style (with breakdown bars)               │
 │      • Communication Style                                  │
-│      • Dating Confidence (progress bar)                     │
-│      • Emotional Availability (progress bar)                │
+│      • Dating Confidence (progress bar 0-100)               │
+│      • Emotional Availability (progress bar 0-100)          │
 │      • Intimacy Style                                       │
 │      • Love Languages (ranked list)                         │
-│    - [Share Results] [Sign up to save]                      │
+│    - [Share Results] [Retake Quiz]                          │
 │    - [Start Practicing with Juliet] CTA                     │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -325,21 +266,29 @@ interface RadarChartProps {
 ## Scoring Algorithms
 
 ### Attachment Style (12 items → 4 dimensions)
+
+Questions mapped by dimension:
+- **Secure**: S1, S2, S3
+- **Anxious**: AX1, AX2, AX3
+- **Avoidant**: AV1, AV2, AV3
+- **Fearful/Disorganized**: D1, D2, D3
+
 ```typescript
-function scoreAttachment(responses: Response[]): AttachmentResult {
-  const scores = { secure: 0, anxious: 0, avoidant: 0, fearful: 0 };
+function scoreAttachment(responses: Record<string, number>): AttachmentResult {
+  const dimensions = {
+    secure: ['S1', 'S2', 'S3'],
+    anxious: ['AX1', 'AX2', 'AX3'],
+    avoidant: ['AV1', 'AV2', 'AV3'],
+    fearful: ['D1', 'D2', 'D3'],
+  };
 
-  // Each dimension has 3 questions
-  // Average responses (1-5) and normalize to 0-100
-  for (const r of responses) {
-    const value = r.reverse_scored ? (6 - r.value) : r.value;
-    scores[r.dimension] += value;
+  const scores: Record<string, number> = {};
+
+  for (const [dim, questionIds] of Object.entries(dimensions)) {
+    const sum = questionIds.reduce((acc, id) => acc + (responses[id] || 3), 0);
+    // Normalize: (avg - 1) * 25 = 0-100 scale
+    scores[dim] = Math.round(((sum / 3) - 1) * 25);
   }
-
-  // Normalize: (avg - 1) * 25 = 0-100 scale
-  Object.keys(scores).forEach(k => {
-    scores[k] = ((scores[k] / 3) - 1) * 25;
-  });
 
   const primary = Object.entries(scores)
     .sort(([,a], [,b]) => b - a)[0][0];
@@ -348,43 +297,163 @@ function scoreAttachment(responses: Response[]): AttachmentResult {
 }
 ```
 
-### Love Languages (10 items → ranked list)
+### Communication Style (9 items → 4 styles + scenario)
+
+Questions mapped by style:
+- **Passive**: COM_PASSIVE_1, COM_PASSIVE_2
+- **Aggressive**: COM_AGGRESSIVE_1, COM_AGGRESSIVE_2
+- **Passive-Aggressive**: COM_PAGG_1, COM_PAGG_2
+- **Assertive**: COM_ASSERTIVE_1, COM_ASSERTIVE_2
+- **Scenario**: Direct choice (A/B/C/D)
+
 ```typescript
-function scoreLoveLanguages(responses: Response[]): string[] {
-  const counts = { words: 0, acts: 0, gifts: 0, time: 0, touch: 0 };
+function scoreCommunication(responses: Record<string, number | string>): CommunicationResult {
+  const styles = {
+    passive: ['COM_PASSIVE_1', 'COM_PASSIVE_2'],
+    aggressive: ['COM_AGGRESSIVE_1', 'COM_AGGRESSIVE_2'],
+    passiveAggressive: ['COM_PAGG_1', 'COM_PAGG_2'],
+    assertive: ['COM_ASSERTIVE_1', 'COM_ASSERTIVE_2'],
+  };
 
-  // Each response selects a love language
-  responses.forEach(r => counts[r.value]++);
+  const scores: Record<string, number> = {};
 
-  return Object.entries(counts)
+  for (const [style, questionIds] of Object.entries(styles)) {
+    const sum = questionIds.reduce((acc, id) => acc + (responses[id] as number || 3), 0);
+    scores[style] = Math.round(((sum / 2) - 1) * 25);
+  }
+
+  // Scenario response adds weight
+  const scenario = responses['COM_SCENARIO'] as string;
+  if (scenario) {
+    const scenarioMap = { A: 'passive', B: 'aggressive', C: 'passiveAggressive', D: 'assertive' };
+    scores[scenarioMap[scenario]] += 15;
+  }
+
+  const primary = Object.entries(scores)
+    .sort(([,a], [,b]) => b - a)[0][0];
+
+  return { scores, primary };
+}
+```
+
+### Dating Confidence (5-6 items → 0-100 score)
+
+Questions: C1, C2 (reverse), C3, C4 (reverse), C5, C6
+
+```typescript
+function scoreConfidence(responses: Record<string, number>): number {
+  const reverseScored = ['C2', 'C4'];
+  const questionIds = ['C1', 'C2', 'C3', 'C4', 'C5'];
+
+  let sum = 0;
+  for (const id of questionIds) {
+    const value = responses[id] || 3;
+    sum += reverseScored.includes(id) ? (6 - value) : value;
+  }
+
+  return Math.round(((sum / questionIds.length) - 1) * 25);
+}
+```
+
+### Emotional Availability (5 items → 0-100 score)
+
+Questions: EA1, EA2 (reverse), EA3, EA4 (reverse), EA5
+
+```typescript
+function scoreEmotionalAvailability(responses: Record<string, number>): number {
+  const reverseScored = ['EA2', 'EA4'];
+  const questionIds = ['EA1', 'EA2', 'EA3', 'EA4', 'EA5'];
+
+  let sum = 0;
+  for (const id of questionIds) {
+    const value = responses[id] || 3;
+    sum += reverseScored.includes(id) ? (6 - value) : value;
+  }
+
+  return Math.round(((sum / questionIds.length) - 1) * 25);
+}
+```
+
+### Intimacy Style (6 items → 2 sub-scores)
+
+- **Intimacy Comfort**: IC1, IC2, IC3
+- **Boundary Assertiveness**: BA1, BA2, BA3 (reverse)
+
+```typescript
+function scoreIntimacy(responses: Record<string, number>): IntimacyResult {
+  const comfortIds = ['IC1', 'IC2', 'IC3'];
+  const boundaryIds = ['BA1', 'BA2', 'BA3'];
+
+  const comfortSum = comfortIds.reduce((acc, id) => acc + (responses[id] || 3), 0);
+  const comfortScore = Math.round(((comfortSum / 3) - 1) * 25);
+
+  let boundarySum = 0;
+  for (const id of boundaryIds) {
+    const value = responses[id] || 3;
+    boundarySum += id === 'BA3' ? (6 - value) : value;
+  }
+  const boundaryScore = Math.round(((boundarySum / 3) - 1) * 25);
+
+  return { comfort: comfortScore, boundaries: boundaryScore };
+}
+```
+
+### Love Languages (10 items → ranked list)
+
+Questions: LL1-LL10 (2 per language: give + receive)
+
+```typescript
+function scoreLoveLanguages(responses: Record<string, number>): string[] {
+  const languages = {
+    words: ['LL1', 'LL2'],
+    time: ['LL3', 'LL4'],
+    acts: ['LL5', 'LL6'],
+    gifts: ['LL7', 'LL8'],
+    touch: ['LL9', 'LL10'],
+  };
+
+  const scores: Record<string, number> = {};
+
+  for (const [lang, ids] of Object.entries(languages)) {
+    scores[lang] = ids.reduce((acc, id) => acc + (responses[id] || 3), 0);
+  }
+
+  return Object.entries(scores)
     .sort(([,a], [,b]) => b - a)
     .map(([lang]) => lang);
 }
 ```
 
 ### Profile Archetype
+
 ```typescript
-const ARCHETYPES = {
-  'secure-direct-high': {
+const ARCHETYPES: Record<string, Archetype> = {
+  'secure-assertive-high': {
     name: 'The Confident Connector',
     emoji: '🌟',
-    summary: 'You bring authentic confidence to dating...'
+    summary: 'You bring authentic confidence to dating. Your secure attachment and assertive communication create genuine connections.'
   },
-  'anxious-expressive-medium': {
-    name: 'The Passionate Seeker',
-    emoji: '💫',
-    summary: 'Your emotional depth creates meaningful...'
+  'anxious-passive-medium': {
+    name: 'The Devoted Seeker',
+    emoji: '💝',
+    summary: 'Your deep care for others drives your relationships. Building confidence in expressing needs will enhance your connections.'
+  },
+  'avoidant-assertive-high': {
+    name: 'The Independent Spirit',
+    emoji: '🦋',
+    summary: 'You value autonomy while maintaining clear boundaries. Opening up gradually can deepen meaningful connections.'
   },
   // ... 12-16 combinations
 };
 
-function getArchetype(results: Results): Archetype {
-  const attachment = results.attachment_primary;
-  const communication = results.communication_style;
-  const confidence = results.dating_confidence_score >= 70 ? 'high' :
-                     results.dating_confidence_score >= 40 ? 'medium' : 'low';
+function getArchetype(results: QuizResults): Archetype {
+  const attachment = results.attachment.primary;
+  const communication = results.communication.primary;
+  const confidence = results.confidence >= 70 ? 'high' :
+                     results.confidence >= 40 ? 'medium' : 'low';
 
-  return ARCHETYPES[`${attachment}-${communication}-${confidence}`];
+  const key = `${attachment}-${communication}-${confidence}`;
+  return ARCHETYPES[key] || ARCHETYPES['secure-assertive-medium']; // fallback
 }
 ```
 
@@ -392,36 +461,15 @@ function getArchetype(results: Results): Archetype {
 
 ## Implementation Phases
 
-### Phase 1: Foundation (3-4 days)
-**Goal**: Set up Supabase and base infrastructure
-
-**Tasks**:
-1. Create Supabase project, configure env vars in `wrangler.jsonc`
-2. Create database schema (run migrations)
-3. Install dependencies: `@supabase/supabase-js`, `@supabase/ssr`, `@radix-ui/react-radio-group`
-4. Create Supabase clients (`lib/supabase/client.ts`, `lib/supabase/server.ts`)
-5. Generate TypeScript types from DB schema
-6. Add "Quiz" link to navigation in `constants.ts`
-
-**Files to create/modify**:
-- `app/wrangler.jsonc` - add SUPABASE_URL, SUPABASE_ANON_KEY
-- `app/package.json` - add dependencies
-- `app/src/lib/supabase/client.ts` - browser client
-- `app/src/lib/supabase/server.ts` - edge client
-- `app/src/lib/supabase/types.ts` - DB types
-- `app/src/lib/constants.ts` - add quiz nav link
-
----
-
-### Phase 2: UI Components (2-3 days)
+### Phase 1: UI Components
 **Goal**: Build reusable quiz UI primitives
 
 **Tasks**:
-1. Create `RadioGroup` component (Radix-based)
-2. Create `LikertScale` component
-3. Create `Progress` component
-4. Create quiz types in `lib/quiz/types.ts`
-5. Test components in isolation
+1. Install dependency: `@radix-ui/react-radio-group`
+2. Create `RadioGroup` component (Radix-based)
+3. Create `LikertScale` component
+4. Create `Progress` component
+5. Create quiz types in `lib/quiz/types.ts`
 
 **Files to create**:
 - `app/src/components/ui/radio-group.tsx`
@@ -431,110 +479,97 @@ function getArchetype(results: Results): Archetype {
 
 ---
 
-### Phase 3: Quiz Flow (3-4 days)
-**Goal**: Build main quiz experience
+### Phase 2: Question Data & Scoring
+**Goal**: Convert questions to code and implement scoring
 
 **Tasks**:
-1. Create `QuizContainer` with state management
-2. Create `QuizHeader` (minimal: logo + exit)
-3. Create `QuizProgress` component
-4. Create `QuizQuestion` component
-5. Create `QuizNavigation` component
-6. Create `QuizIntro` section intro
-7. Create `use-quiz-session.ts` hook
-8. Create quiz layout (`app/quiz/layout.tsx`)
+1. Create question data structure from `quiz-question.md`
+2. Implement all 6 scoring algorithms
+3. Create archetype definitions
+4. Add "Quiz" link to navigation (next to "Login" in navbar)
 
 **Files to create**:
-- `app/src/app/quiz/layout.tsx`
-- `app/src/components/quiz/QuizContainer.tsx`
-- `app/src/components/quiz/QuizHeader.tsx`
-- `app/src/components/quiz/QuizProgress.tsx`
-- `app/src/components/quiz/QuizQuestion.tsx`
-- `app/src/components/quiz/QuizNavigation.tsx`
-- `app/src/components/quiz/QuizIntro.tsx`
-- `app/src/hooks/use-quiz-session.ts`
-
----
-
-### Phase 4: Pages & Data Flow (2-3 days)
-**Goal**: Create pages and wire up Supabase
-
-**Tasks**:
-1. Create quiz landing page (`/quiz`)
-2. Create quiz session page (`/quiz/[sessionId]`)
-3. Implement session creation (anonymous ID from localStorage)
-4. Implement question fetching from Supabase
-5. Implement response saving (debounced)
-6. Implement session recovery (resume incomplete quiz)
-
-**Files to create**:
-- `app/src/app/quiz/page.tsx`
-- `app/src/app/quiz/[sessionId]/page.tsx`
-- `app/src/app/quiz/[sessionId]/loading.tsx`
-
----
-
-### Phase 5: Results & Scoring (3-4 days)
-**Goal**: Calculate and display results
-
-**Tasks**:
-1. Implement scoring algorithms (`lib/quiz/scoring.ts`)
-2. Create archetype definitions (`lib/quiz/archetypes.ts`)
-3. Create `ResultsContainer` component
-4. Create `ResultCard` component
-5. Create `ProfileSummary` component
-6. Create `RadarChart` component (SVG)
-7. Create results page (`/quiz/results/[sessionId]`)
-8. Implement share functionality
-
-**Files to create**:
+- `app/src/lib/quiz/questions.ts`
 - `app/src/lib/quiz/scoring.ts`
 - `app/src/lib/quiz/archetypes.ts`
-- `app/src/components/quiz/results/ResultsContainer.tsx`
+
+**Files to modify**:
+- `app/src/lib/constants.ts` - add `{ label: "Quiz", href: "/quiz" }` to `navigation.links` array after "Login"
+
+---
+
+### Phase 3: Quiz Flow Components
+**Goal**: Build main quiz experience components
+
+**Tasks**:
+1. Create `QuizHeader` (minimal: logo + exit)
+2. Create `QuizProgress` component
+3. Create `QuizIntro` section intro
+4. Create `QuizQuestion` component (Likert + Scenario)
+5. Create `QuizNavigation` component
+6. Create `QuizContainer` with state machine
+7. Create `use-quiz.ts` hook (localStorage state)
+
+**Files to create**:
+- `app/src/components/quiz/QuizHeader.tsx`
+- `app/src/components/quiz/QuizProgress.tsx`
+- `app/src/components/quiz/QuizIntro.tsx`
+- `app/src/components/quiz/QuizQuestion.tsx`
+- `app/src/components/quiz/QuizNavigation.tsx`
+- `app/src/components/quiz/QuizContainer.tsx`
+- `app/src/hooks/use-quiz.ts`
+
+---
+
+### Phase 4: Results Components
+**Goal**: Build results display
+
+**Tasks**:
+1. Create `ResultCard` component
+2. Create `ProfileSummary` component
+3. Create `RadarChart` component (SVG)
+4. Create `ShareResults` component
+5. Create `ResultsContainer` orchestrator
+
+**Files to create**:
 - `app/src/components/quiz/results/ResultCard.tsx`
 - `app/src/components/quiz/results/ProfileSummary.tsx`
 - `app/src/components/quiz/results/RadarChart.tsx`
 - `app/src/components/quiz/results/ShareResults.tsx`
-- `app/src/app/quiz/results/[sessionId]/page.tsx`
-- `app/src/app/quiz/results/[sessionId]/loading.tsx`
+- `app/src/components/quiz/results/ResultsContainer.tsx`
 
 ---
 
-### Phase 6: Data Seeding & Polish (2-3 days)
-**Goal**: Add real questions and polish UX
+### Phase 5: Pages & Routing
+**Goal**: Create pages and wire everything together
 
 **Tasks**:
-1. Seed all 47-49 questions into Supabase
-2. Add Motion animations (page transitions, answer selection)
-3. Add keyboard navigation (arrows for Likert)
-4. Implement `useReducedMotion` support
-5. Add error boundaries
-6. Test on Cloudflare Workers (`npm run preview`)
-7. Performance optimization (lazy loading)
+1. Create quiz layout (`app/quiz/layout.tsx`)
+2. Create quiz landing page (`/quiz`)
+3. Create quiz questions page (`/quiz/questions`)
+4. Create quiz results page (`/quiz/results`)
 
-**Files to modify**:
-- Supabase dashboard or seed script
-- All quiz components (add animations)
+**Files to create**:
+- `app/src/app/quiz/layout.tsx`
+- `app/src/app/quiz/page.tsx`
+- `app/src/app/quiz/questions/page.tsx`
+- `app/src/app/quiz/results/page.tsx`
 
 ---
 
-## Environment Variables
+### Phase 6: Polish & Animations
+**Goal**: Add animations and polish UX
 
-Add to `wrangler.jsonc`:
-```jsonc
-{
-  "vars": {
-    "NEXT_PUBLIC_SUPABASE_URL": "https://xxx.supabase.co",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbG..."
-  }
-}
-```
+**Tasks**:
+1. Add Motion animations (page transitions, answer selection)
+2. Add keyboard navigation (arrows for Likert)
+3. Implement `useReducedMotion` support
+4. Add error boundaries
+5. Test on Cloudflare Workers (`npm run preview`)
+6. Mobile responsiveness testing
 
-For local development, create `.env.local`:
-```
-NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbG...
-```
+**Files to modify**:
+- All quiz components (add animations)
 
 ---
 
@@ -555,17 +590,28 @@ Follow existing design system:
 
 | File | Purpose |
 |------|---------|
-| `lib/supabase/server.ts` | Edge-compatible Supabase client |
+| `lib/quiz/questions.ts` | All 48 questions with IDs and metadata |
+| `lib/quiz/scoring.ts` | All scoring algorithms |
 | `components/quiz/QuizContainer.tsx` | Main state machine & orchestration |
 | `components/ui/likert-scale.tsx` | Core input for most questions |
-| `lib/quiz/scoring.ts` | All scoring algorithms |
-| `app/quiz/[sessionId]/page.tsx` | Main quiz flow page |
-| `app/quiz/results/[sessionId]/page.tsx` | Results display page |
+| `hooks/use-quiz.ts` | State management with localStorage |
+| `app/quiz/questions/page.tsx` | Main quiz flow page |
+| `app/quiz/results/page.tsx` | Results display page |
 
 ---
 
 ## Next Steps
 
-1. **Client provides**: Full question list (47-49 questions with sections, types, and scoring dimensions)
-2. **Developer starts**: Phase 1 - Supabase setup
-3. **Parallel work**: Designer can review UI mockups based on flow diagrams above
+1. **Phase 1**: Create UI primitives (RadioGroup, LikertScale, Progress)
+2. **Phase 2**: Convert questions to TypeScript and implement scoring
+3. **Phase 3-6**: Build quiz flow, results, pages, and polish
+
+---
+
+## Future Enhancements (Post-MVP)
+
+- [ ] Database integration (Supabase) for persistence
+- [ ] User authentication to save/share results
+- [ ] Session recovery for incomplete quizzes
+- [ ] Analytics tracking
+- [ ] A/B testing different question orders
