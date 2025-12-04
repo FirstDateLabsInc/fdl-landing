@@ -26,9 +26,9 @@ interface CategoryRadarChartProps {
 // GEOMETRY HELPERS
 // ============================================================================
 
-const SIZE = 400;
+const SIZE = 500;
 const CENTER = SIZE / 2;
-const RADIUS = 80;
+const RADIUS = 70;
 const LEVELS = 5;
 
 function polarToCartesian(
@@ -138,13 +138,13 @@ export function CategoryRadarChart({
     () =>
       dimensions.map((dim, i) => {
         const angle = i * angleStep;
-        const { x, y } = polarToCartesian(angle, RADIUS + 70);
-        return { 
-          label: getDisplayLabel(dim.label), 
+        const { x, y } = polarToCartesian(angle, RADIUS + 105);
+        return {
+          label: getDisplayLabel(dim.label),
           value: dim.value,
           isPrimary: dim.isPrimary,
-          x, 
-          y 
+          x,
+          y
         };
       }),
     [dimensions, angleStep]
@@ -154,9 +154,9 @@ export function CategoryRadarChart({
   const dataPoints = getPolygonPoints(dimensions.map((d) => d.value));
 
   return (
-    <div className={cn("rounded-2xl bg-white p-5 shadow-soft", className)}>
+    <div className={cn("rounded-2xl bg-white p-8 shadow-soft", className)}>
       {/* Header */}
-      <div className="mb-3 text-center">
+      <div className="mb-6 text-center">
         <h3 className="text-2xl font-bold text-slate-900">{title}</h3>
         {subtitle && (
           <p className="text-lg text-slate-500">{subtitle}</p>
@@ -164,10 +164,10 @@ export function CategoryRadarChart({
       </div>
 
       {/* Chart */}
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center py-4">
         <svg
           viewBox={`0 0 ${SIZE} ${SIZE}`}
-          className="h-72 w-72 sm:h-80 sm:w-80"
+          className="h-96 w-96 sm:h-[26rem] sm:w-[26rem]"
           role="img"
           aria-label={`Radar chart showing ${title}`}
         >
