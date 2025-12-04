@@ -26,9 +26,9 @@ interface CategoryRadarChartProps {
 // GEOMETRY HELPERS
 // ============================================================================
 
-const SIZE = 280;
+const SIZE = 340;
 const CENTER = SIZE / 2;
-const RADIUS = 100;
+const RADIUS = 90;
 const LEVELS = 5;
 
 function polarToCartesian(
@@ -138,7 +138,7 @@ export function CategoryRadarChart({
     () =>
       dimensions.map((dim, i) => {
         const angle = i * angleStep;
-        const { x, y } = polarToCartesian(angle, RADIUS + 28);
+        const { x, y } = polarToCartesian(angle, RADIUS + 55);
         return { 
           label: getDisplayLabel(dim.label), 
           value: dim.value,
@@ -154,12 +154,12 @@ export function CategoryRadarChart({
   const dataPoints = getPolygonPoints(dimensions.map((d) => d.value));
 
   return (
-    <div className={cn("bg-gradient-to-br from-[#fffdf6] via-white to-[#cab5d4]/5 p-3", className)}>
+    <div className={cn("rounded-2xl bg-white p-5 shadow-soft", className)}>
       {/* Header */}
-      <div className="mb-2 text-center">
-        <h3 className="text-xl font-bold text-slate-900">{title}</h3>
+      <div className="mb-3 text-center">
+        <h3 className="text-2xl font-bold text-slate-900">{title}</h3>
         {subtitle && (
-          <p className="text-base text-slate-500">{subtitle}</p>
+          <p className="text-lg text-slate-500">{subtitle}</p>
         )}
       </div>
 
@@ -167,7 +167,7 @@ export function CategoryRadarChart({
       <div className="flex items-center justify-center">
         <svg
           viewBox={`0 0 ${SIZE} ${SIZE}`}
-          className="h-64 w-64"
+          className="h-72 w-72 sm:h-80 sm:w-80"
           role="img"
           aria-label={`Radar chart showing ${title}`}
         >
@@ -252,11 +252,11 @@ export function CategoryRadarChart({
             <g key={label}>
               <text
                 x={x}
-                y={y - 8}
+                y={y - 10}
                 textAnchor="middle"
                 dominantBaseline="middle"
                 className={cn(
-                  "text-[12px]",
+                  "text-[14px]",
                   isPrimary ? "fill-slate-800 font-semibold" : "fill-slate-500 font-medium"
                 )}
               >
@@ -264,11 +264,11 @@ export function CategoryRadarChart({
               </text>
               <text
                 x={x}
-                y={y + 8}
+                y={y + 10}
                 textAnchor="middle"
                 dominantBaseline="middle"
                 className={cn(
-                  "text-[14px] font-bold",
+                  "text-[16px] font-bold",
                   isPrimary ? "fill-[#cab5d4]" : "fill-slate-400"
                 )}
               >
