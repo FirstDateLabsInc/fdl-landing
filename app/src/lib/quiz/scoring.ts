@@ -18,6 +18,33 @@ import type {
 import { getQuestionById, allQuestions } from './questions';
 
 // ============================================================================
+// REVERSE SCORING VALIDATION
+// ============================================================================
+
+/**
+ * Questions that must have reverse: true in their definitions.
+ * These are negatively-phrased questions where higher raw scores
+ * indicate lower trait presence.
+ */
+const EXPECTED_REVERSED_QUESTIONS = ['C2', 'C4', 'EA2', 'EA4', 'BA3'] as const;
+
+// Validate reverse scoring configuration at module initialization
+(function validateReverseScoringConfig() {
+  for (const questionId of EXPECTED_REVERSED_QUESTIONS) {
+    const question = getQuestionById(questionId);
+    if (!question) {
+      console.warn(`[Quiz Scoring] Reverse scoring validation: Question ${questionId} not found`);
+      continue;
+    }
+    if (!question.reverse) {
+      console.warn(
+        `[Quiz Scoring] Reverse scoring validation: Question ${questionId} should have reverse: true`
+      );
+    }
+  }
+})();
+
+// ============================================================================
 // HELPER FUNCTIONS
 // ============================================================================
 
@@ -133,10 +160,32 @@ export function scoreCommunication(responses: QuizResponse[]): CommunicationResu
     }
   }
 
-  // Handle scenario question (COM_SCENARIO_1)
+  /**
+   * Handle scenario question (COM_SCENARIO_1)
+   *
+   * The scenario question provides a behavioral indicator of communication style
+   * by presenting a real-world situation (date cancellation) with four response options.
+   *
+   * WEIGHTING RATIONALE:
+   * - Likert questions: 2 questions per style, each normalized 0-100, averaged
+   * - Scenario: Adds 25-point bonus to selected style
+   *
+   * This effectively gives the scenario ~2x weight because:
+   * - Base Likert avg of 3 (neutral) = 50 points
+   * - Scenario bonus = 25 points = 50% of base score
+   * - Combined effect: scenario selection can swing primary style determination
+   *
+   * The 25-point value was chosen to:
+   * - Be significant enough to influence primary style determination
+   * - Not completely override Likert responses (capped at 100)
+   * - Represent approximately one additional "strong agree" response worth of weight
+   *
+   * CAPPING:
+   * Scores are capped at 100 via Math.min() to maintain consistent 0-100 scale
+   * and prevent scenario bonus from creating artificially inflated scores.
+   */
   const scenarioResponse = responses.find((r) => r.questionId === 'COM_SCENARIO_1');
   if (scenarioResponse?.selectedKey) {
-    // Map option key to communication style
     const keyToStyle: Record<string, CommunicationStyle> = {
       A: 'passive',
       B: 'aggressive',
@@ -145,9 +194,7 @@ export function scoreCommunication(responses: QuizResponse[]): CommunicationResu
     };
     const selectedStyle = keyToStyle[scenarioResponse.selectedKey];
     if (selectedStyle) {
-      // Apply 2x weight by adding bonus to the selected style
-      // Add equivalent of a "5" response (max score) weighted at 2x
-      const scenarioBonus = 25; // ~25 points boost
+      const scenarioBonus = 25;
       scores[selectedStyle] = Math.min(100, scores[selectedStyle] + scenarioBonus);
     }
   }

@@ -437,7 +437,7 @@ export const quizSections: QuizSection[] = [
 export const allQuestions: QuizQuestion[] = quizSections.flatMap((s) => s.questions);
 
 /** Total number of questions */
-export const totalQuestions = allQuestions.length; // 48
+export const totalQuestions = allQuestions.length; // 47
 
 /** Get question by ID */
 export function getQuestionById(id: string): QuizQuestion | undefined {
