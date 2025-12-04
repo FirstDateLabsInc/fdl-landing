@@ -32,17 +32,73 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
     };
 
     return (
-      <div ref={ref} className={cn("flex items-center gap-3", className)}>
-        {/* Left label */}
-        <span className="text-xs text-slate-600 sm:text-sm whitespace-nowrap">
-          {labels.low}
-        </span>
+      <div ref={ref} className={cn("flex flex-col gap-4 sm:gap-6", className)}>
+        {/* Mobile: Labels on top */}
+        <div className="flex items-center justify-between sm:hidden">
+          <span className="text-xs text-slate-600">
+            {labels.low}
+          </span>
+          <span className="text-xs text-slate-600">
+            {labels.high}
+          </span>
+        </div>
 
-        {/* Radio group */}
+        {/* Desktop: Labels on sides */}
+        <div className="hidden sm:flex sm:items-center sm:gap-3">
+          {/* Left label - desktop only */}
+          <span className="text-sm text-slate-600 whitespace-nowrap">
+            {labels.low}
+          </span>
+
+          {/* Radio group */}
+          <RadioGroupPrimitive.Root
+            value={value?.toString() ?? ""}
+            onValueChange={handleValueChange}
+            className="flex items-center justify-start gap-3 sm:gap-4 lg:gap-6"
+            orientation="horizontal"
+          >
+            {[1, 2, 3, 4, 5].map((num) => {
+              const isSelected = value === num;
+              const opacity = fillOpacities[num as keyof typeof fillOpacities];
+
+              return (
+                <RadioGroupPrimitive.Item
+                  key={num}
+                  value={num.toString()}
+                  className={cn(
+                    "relative size-10 sm:size-12 lg:size-14 rounded-full border-2 transition-all duration-200",
+                    "flex items-center justify-center text-xs sm:text-sm lg:text-base font-medium",
+                    "outline-none focus-visible:ring-2 focus-visible:ring-[#f9d544] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffdf6]",
+                    "cursor-pointer hover:scale-105",
+                    // Default state (unselected)
+                    !isSelected && "border-slate-300 text-slate-600",
+                    // Selected state - clearer color
+                    isSelected && "border-[#f9d544] text-white scale-110 bg-[#f9d544]"
+                  )}
+                  aria-label={`Rating ${num} of 5`}
+                  style={{
+                    backgroundColor: !isSelected
+                      ? `rgba(249, 213, 68, ${opacity})` // Show gradient when unselected
+                      : undefined // Use className background when selected
+                  }}
+                >
+                  <span className="relative z-10 font-semibold">{num}</span>
+                </RadioGroupPrimitive.Item>
+              );
+            })}
+          </RadioGroupPrimitive.Root>
+
+          {/* Right label - desktop only */}
+          <span className="text-sm text-slate-600 whitespace-nowrap">
+            {labels.high}
+          </span>
+        </div>
+
+        {/* Mobile: Radio group centered */}
         <RadioGroupPrimitive.Root
           value={value?.toString() ?? ""}
           onValueChange={handleValueChange}
-          className="flex items-center justify-start gap-4 sm:gap-6"
+          className="flex sm:hidden items-center justify-center gap-2"
           orientation="horizontal"
         >
           {[1, 2, 3, 4, 5].map((num) => {
@@ -54,8 +110,8 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
                 key={num}
                 value={num.toString()}
                 className={cn(
-                  "relative size-12 sm:size-14 rounded-full border-2 transition-all duration-200",
-                  "flex items-center justify-center text-sm sm:text-base font-medium",
+                  "relative size-10 rounded-full border-2 transition-all duration-200",
+                  "flex items-center justify-center text-xs font-medium",
                   "outline-none focus-visible:ring-2 focus-visible:ring-[#f9d544] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffdf6]",
                   "cursor-pointer hover:scale-105",
                   // Default state (unselected)
@@ -75,11 +131,6 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
             );
           })}
         </RadioGroupPrimitive.Root>
-
-        {/* Right label */}
-        <span className="text-xs text-slate-600 sm:text-sm whitespace-nowrap">
-          {labels.high}
-        </span>
       </div>
     );
   }
