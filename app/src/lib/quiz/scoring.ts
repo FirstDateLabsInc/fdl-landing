@@ -116,10 +116,18 @@ export function scoreAttachment(responses: QuizResponse[]): AttachmentResult {
     }
   }
 
-  // Determine primary attachment style (highest score)
-  const primary = dimensions.reduce((highest, dim) =>
-    scores[dim] > scores[highest] ? dim : highest
-  );
+  // Determine primary attachment style(s) - handle ties
+  const maxScore = Math.max(...Object.values(scores));
+  const topStyles = dimensions.filter((dim) => scores[dim] === maxScore);
+
+  let primary: AttachmentDimension | AttachmentDimension[] | 'mixed';
+  if (topStyles.length === 1) {
+    primary = topStyles[0];
+  } else if (topStyles.length === 4) {
+    primary = 'mixed';
+  } else {
+    primary = topStyles; // Array of 2-3 tied styles
+  }
 
   return { scores, primary };
 }
@@ -199,10 +207,18 @@ export function scoreCommunication(responses: QuizResponse[]): CommunicationResu
     }
   }
 
-  // Determine primary communication style (highest score)
-  const primary = styles.reduce((highest, style) =>
-    scores[style] > scores[highest] ? style : highest
-  );
+  // Determine primary communication style(s) - handle ties
+  const maxScore = Math.max(...Object.values(scores));
+  const topStyles = styles.filter((style) => scores[style] === maxScore);
+
+  let primary: CommunicationStyle | CommunicationStyle[] | 'mixed';
+  if (topStyles.length === 1) {
+    primary = topStyles[0];
+  } else if (topStyles.length === 4) {
+    primary = 'mixed';
+  } else {
+    primary = topStyles; // Array of 2-3 tied styles
+  }
 
   return { scores, primary };
 }

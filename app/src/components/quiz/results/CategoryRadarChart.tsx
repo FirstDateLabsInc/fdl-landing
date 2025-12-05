@@ -16,6 +16,10 @@ interface CategoryRadarChartProps {
   subtitle?: string;
   dimensions: CategoryDimension[];
   primaryLabel?: string;
+  /** Primary style(s) - single string, array of tied styles, or 'mixed' if all are equal */
+  primaryStyles?: string | string[] | 'mixed';
+  /** Label to show when all styles are mixed (e.g., "Mixed Attachment Style") */
+  mixedLabel?: string;
   accentColor?: string;
   fillColor?: string;
   animated?: boolean;
@@ -98,6 +102,8 @@ export function CategoryRadarChart({
   subtitle,
   dimensions,
   primaryLabel,
+  primaryStyles,
+  mixedLabel,
   accentColor = "#cab5d4",
   fillColor = "#f9d544",
   animated = true,
@@ -108,9 +114,6 @@ export function CategoryRadarChart({
 
   const n = dimensions.length;
   const angleStep = (2 * Math.PI) / n;
-
-  // Find primary dimension
-  const primary = dimensions.find((d) => d.isPrimary);
 
   // Generate grid levels
   const gridLevels = useMemo(
@@ -280,15 +283,48 @@ export function CategoryRadarChart({
       </div>
 
       {/* Primary indicator */}
-      {primary && primaryLabel && (
-        <div className="mt-4 flex items-center justify-center gap-2">
-          <span 
-            className="h-3 w-3 rounded-full" 
-            style={{ backgroundColor: accentColor }}
-          />
-          <span className="text-sm font-medium text-slate-700">
-            {primaryLabel}: <span className="text-slate-900">{getDisplayLabel(primary.label)}</span>
-          </span>
+      {primaryLabel && (
+        <div className="mt-4 flex flex-col items-center gap-1">
+          {primaryStyles === 'mixed' ? (
+            <>
+              <div className="flex items-center gap-2">
+                <span
+                  className="h-3 w-3 rounded-full"
+                  style={{ backgroundColor: accentColor }}
+                />
+                <span className="text-sm font-medium text-slate-700">
+                  {mixedLabel || 'Mixed Style'}
+                </span>
+              </div>
+              <span className="text-xs text-slate-500">
+                {dimensions.map(d => getDisplayLabel(d.label)).join(', ')}
+              </span>
+            </>
+          ) : Array.isArray(primaryStyles) ? (
+            <div className="flex items-center gap-2">
+              <span
+                className="h-3 w-3 rounded-full"
+                style={{ backgroundColor: accentColor }}
+              />
+              <span className="text-sm font-medium text-slate-700">
+                Primary Styles:{' '}
+                <span className="text-slate-900">
+                  {primaryStyles.map(s => getDisplayLabel(s)).join(', ')}
+                </span>
+              </span>
+            </div>
+          ) : primaryStyles ? (
+            <div className="flex items-center gap-2">
+              <span
+                className="h-3 w-3 rounded-full"
+                style={{ backgroundColor: accentColor }}
+              />
+              <span className="text-sm font-medium text-slate-700">
+                {primaryLabel}:{' '}
+                <span className="text-slate-900">{getDisplayLabel(primaryStyles)}</span>
+              </span>
+            </div>
+          ) : null}
         </div>
       )}
     </div>

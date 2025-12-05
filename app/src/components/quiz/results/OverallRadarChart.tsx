@@ -142,19 +142,65 @@ export function OverallRadarChart({
   const shouldAnimate = animated && !prefersReducedMotion;
 
   // Build 6-dimension profile from results
-  const dimensions = useMemo(() => [
-    { 
-      label: "Attachment", 
-      value: results.attachment.scores[results.attachment.primary],
-      detail: ATTACHMENT_LABELS[results.attachment.primary] || results.attachment.primary,
-      fullLabel: `${ATTACHMENT_LABELS[results.attachment.primary] || results.attachment.primary}`,
+  const dimensions = useMemo(() => {
+    // Helper to get attachment value and label
+    const getAttachmentInfo = () => {
+      const { primary, scores } = results.attachment;
+      if (primary === 'mixed') {
+        // All scores are equal, use any one (they're all the same)
+        const avgScore = scores.secure;
+        return { value: avgScore, detail: "Balanced", fullLabel: "Balanced" };
+      } else if (Array.isArray(primary)) {
+        // Use the score of the first tied style (they're equal)
+        const score = scores[primary[0]];
+        const labels = primary.map(p => ATTACHMENT_LABELS[p] || p);
+        return { value: score, detail: labels.join("/"), fullLabel: labels.join("/") };
+      } else {
+        return {
+          value: scores[primary],
+          detail: ATTACHMENT_LABELS[primary] || primary,
+          fullLabel: ATTACHMENT_LABELS[primary] || primary
+        };
+      }
+    };
+
+    // Helper to get communication value and label
+    const getCommunicationInfo = () => {
+      const { primary, scores } = results.communication;
+      const formatStyle = (s: string) => s.charAt(0).toUpperCase() + s.slice(1).replace('_', '-');
+
+      if (primary === 'mixed') {
+        const avgScore = scores.passive;
+        return { value: avgScore, detail: "Balanced", fullLabel: "Balanced" };
+      } else if (Array.isArray(primary)) {
+        const score = scores[primary[0]];
+        const labels = primary.map(formatStyle);
+        return { value: score, detail: labels.join("/"), fullLabel: labels.join("/") };
+      } else {
+        return {
+          value: scores[primary],
+          detail: formatStyle(primary),
+          fullLabel: formatStyle(primary)
+        };
+      }
+    };
+
+    const attachmentInfo = getAttachmentInfo();
+    const communicationInfo = getCommunicationInfo();
+
+    return [
+    {
+      label: "Attachment",
+      value: attachmentInfo.value,
+      detail: attachmentInfo.detail,
+      fullLabel: attachmentInfo.fullLabel,
       category: "Attachment",
     },
-    { 
-      label: "Communication", 
-      value: results.communication.scores[results.communication.primary],
-      detail: results.communication.primary.charAt(0).toUpperCase() + results.communication.primary.slice(1).replace('_', '-'),
-      fullLabel: results.communication.primary.charAt(0).toUpperCase() + results.communication.primary.slice(1).replace('_', '-'),
+    {
+      label: "Communication",
+      value: communicationInfo.value,
+      detail: communicationInfo.detail,
+      fullLabel: communicationInfo.fullLabel,
       category: "Communication",
     },
     { 
@@ -178,14 +224,15 @@ export function OverallRadarChart({
       fullLabel: results.intimacy.comfort >= 70 ? "Comfortable" : results.intimacy.comfort >= 40 ? "Moderate" : "Cautious",
       category: "Intimacy",
     },
-    { 
-      label: "Boundaries", 
+    {
+      label: "Boundaries",
       value: results.intimacy.boundaries,
       detail: results.intimacy.boundaries >= 70 ? "Strong" : results.intimacy.boundaries >= 40 ? "Growing" : "Flexible",
       fullLabel: results.intimacy.boundaries >= 70 ? "Strong" : results.intimacy.boundaries >= 40 ? "Growing" : "Flexible",
       category: "Boundaries",
     },
-  ], [results]);
+  ];
+  }, [results]);
 
   const n = dimensions.length;
   const angleStep = (2 * Math.PI) / n;

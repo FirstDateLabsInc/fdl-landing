@@ -9,7 +9,7 @@ import { OverallRadarChart } from "./OverallRadarChart";
 import { LoveLanguageSuggestions } from "./LoveLanguageSuggestions";
 import { ShareResults } from "./ShareResults";
 import { cn } from "@/lib/utils";
-import type { QuizResults } from "@/lib/quiz/types";
+import type { QuizResults, AttachmentDimension, CommunicationStyle } from "@/lib/quiz/types";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
 
 interface ResultsContainerProps {
@@ -39,26 +39,32 @@ export function ResultsContainer({
   }, [archetype.id]);
 
   // Prepare attachment dimensions for radar chart
-  const attachmentDimensions = useMemo(
-    () =>
-      Object.entries(results.attachment.scores).map(([name, value]) => ({
-        label: name,
-        value,
-        isPrimary: name === results.attachment.primary,
-      })),
-    [results.attachment]
-  );
+  const attachmentDimensions = useMemo(() => {
+    const { primary } = results.attachment;
+    return Object.entries(results.attachment.scores).map(([name, value]) => ({
+      label: name,
+      value,
+      isPrimary: Array.isArray(primary)
+        ? primary.includes(name as AttachmentDimension)
+        : primary === 'mixed'
+          ? true // all are primary in mixed
+          : name === primary,
+    }));
+  }, [results.attachment]);
 
   // Prepare communication dimensions for radar chart
-  const communicationDimensions = useMemo(
-    () =>
-      Object.entries(results.communication.scores).map(([name, value]) => ({
-        label: name,
-        value,
-        isPrimary: name === results.communication.primary,
-      })),
-    [results.communication]
-  );
+  const communicationDimensions = useMemo(() => {
+    const { primary } = results.communication;
+    return Object.entries(results.communication.scores).map(([name, value]) => ({
+      label: name,
+      value,
+      isPrimary: Array.isArray(primary)
+        ? primary.includes(name as CommunicationStyle)
+        : primary === 'mixed'
+          ? true // all are primary in mixed
+          : name === primary,
+    }));
+  }, [results.communication]);
 
   // Animation variants for staggered section reveal
   const sectionVariants = prefersReducedMotion
@@ -110,6 +116,8 @@ export function ResultsContainer({
           subtitle="How you connect emotionally with others"
           dimensions={attachmentDimensions}
           primaryLabel="Primary Style"
+          primaryStyles={results.attachment.primary}
+          mixedLabel="Mixed Attachment Style"
           accentColor="#cab5d4"
           fillColor="#f9d544"
         />
@@ -127,6 +135,8 @@ export function ResultsContainer({
           subtitle="How you express yourself in relationships"
           dimensions={communicationDimensions}
           primaryLabel="Primary Style"
+          primaryStyles={results.communication.primary}
+          mixedLabel="Mixed Communication Style"
           accentColor="#60a5fa"
           fillColor="#34d399"
         />

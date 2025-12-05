@@ -140,16 +140,16 @@ export interface QuizSession {
 export interface AttachmentResult {
   /** Scores for each dimension (0-100) */
   scores: Record<AttachmentDimension, number>;
-  /** Primary attachment style */
-  primary: AttachmentDimension;
+  /** Primary attachment style - single, array of tied styles, or 'mixed' if all 4 are equal */
+  primary: AttachmentDimension | AttachmentDimension[] | 'mixed';
 }
 
 /** Communication style result */
 export interface CommunicationResult {
   /** Scores for each style (0-100) */
   scores: Record<CommunicationStyle, number>;
-  /** Primary communication style */
-  primary: CommunicationStyle;
+  /** Primary communication style - single, array of tied styles, or 'mixed' if all 4 are equal */
+  primary: CommunicationStyle | CommunicationStyle[] | 'mixed';
 }
 
 /** Intimacy style result */

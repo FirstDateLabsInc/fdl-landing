@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { Heart, MessageCircle, Clock, Gift, Hand, Lightbulb } from "lucide-react";
+import { Heart, MessageCircle, Clock, Gift, Hand, Lightbulb, Check, ArrowRight, Target, Sparkles } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { LoveLanguage, LoveLanguageResult } from "@/lib/quiz/types";
@@ -13,6 +13,13 @@ interface LoveLanguageSuggestionsProps {
 }
 
 // ============================================================================
+// CONSTANTS
+// ============================================================================
+
+const STRONG = 70;
+const LOW = 40;
+
+// ============================================================================
 // LOVE LANGUAGE CONFIG
 // ============================================================================
 
@@ -20,7 +27,18 @@ interface LanguageConfig {
   name: string;
   icon: typeof Heart;
   color: string;
-  suggestions: string[];
+  giveTips: string[];
+  receiveTips: string[];
+  giveInsights: {
+    high: string;
+    moderate: string;
+    low: string;
+  };
+  receiveInsights: {
+    high: string;
+    moderate: string;
+    low: string;
+  };
 }
 
 const LANGUAGE_CONFIG: Record<LoveLanguage, LanguageConfig> = {
@@ -28,63 +46,203 @@ const LANGUAGE_CONFIG: Record<LoveLanguage, LanguageConfig> = {
     name: "Words of Affirmation",
     icon: MessageCircle,
     color: "#f472b6",
-    suggestions: [
+    giveTips: [
       "Send thoughtful good morning texts",
       "Leave encouraging notes in unexpected places",
       "Express specific compliments about their qualities",
-      "Verbalize appreciation for small gestures",
-      "Write heartfelt letters for special occasions",
     ],
+    receiveTips: [
+      "Let your partner know you need verbal encouragement",
+      "Share when compliments make you feel appreciated",
+      "Ask for words of affirmation when you need them",
+    ],
+    giveInsights: {
+      high: "You're great at expressing appreciation and encouragement!",
+      moderate: "You sometimes express love through words.",
+      low: "Consider sharing more verbal appreciation with your partner.",
+    },
+    receiveInsights: {
+      high: "Words of encouragement make you feel deeply loved.",
+      moderate: "You appreciate receiving verbal affirmation.",
+      low: "Let partners know when you need verbal encouragement.",
+    },
   },
   time: {
     name: "Quality Time",
     icon: Clock,
     color: "#60a5fa",
-    suggestions: [
+    giveTips: [
       "Put away phones during conversations",
       "Plan dedicated date nights weekly",
       "Take walks together without distractions",
-      "Learn a new hobby together",
-      "Create rituals like morning coffee chats",
     ],
+    receiveTips: [
+      "Express when you need undivided attention",
+      "Suggest activities you can do together",
+      "Share how quality time makes you feel valued",
+    ],
+    giveInsights: {
+      high: "You prioritize being fully present with loved ones!",
+      moderate: "You value spending time together when possible.",
+      low: "Try dedicating more undivided attention to your partner.",
+    },
+    receiveInsights: {
+      high: "Undivided attention makes you feel truly valued.",
+      moderate: "You enjoy quality time with your partner.",
+      low: "You may want more focused time together.",
+    },
   },
   service: {
     name: "Acts of Service",
     icon: Hand,
     color: "#34d399",
-    suggestions: [
+    giveTips: [
       "Help with tasks before being asked",
       "Take over responsibilities when they're stressed",
       "Cook their favorite meal after a long day",
-      "Handle errands they've been putting off",
-      "Anticipate needs and act proactively",
     ],
+    receiveTips: [
+      "Communicate when you need practical support",
+      "Let your partner know which tasks mean most to you",
+      "Share appreciation when they help out",
+    ],
+    giveInsights: {
+      high: "You naturally show love by helping and doing things for others!",
+      moderate: "You show care through helpful actions sometimes.",
+      low: "Consider helping with tasks to show you care.",
+    },
+    receiveInsights: {
+      high: "Actions speak louder than words for you.",
+      moderate: "You appreciate when partners help out.",
+      low: "Communicate when you need practical support.",
+    },
   },
   gifts: {
     name: "Receiving Gifts",
     icon: Gift,
     color: "#fbbf24",
-    suggestions: [
+    giveTips: [
       "Remember small things they mention wanting",
       "Bring home thoughtful surprises occasionally",
       "Mark special occasions with meaningful gifts",
-      "Create handmade items with personal touch",
-      "Keep a note of their wishlist items",
     ],
+    receiveTips: [
+      "Share what kind of gifts make you feel loved",
+      "Let partners know it's the thought that counts",
+      "Express gratitude when receiving thoughtful items",
+    ],
+    giveInsights: {
+      high: "You love finding the perfect gift to show you care!",
+      moderate: "You occasionally express love through thoughtful gifts.",
+      low: "Small, thoughtful gifts can mean a lot to your partner.",
+    },
+    receiveInsights: {
+      high: "Thoughtful gifts make you feel remembered and valued.",
+      moderate: "You appreciate receiving meaningful presents.",
+      low: "Gifts aren't your main love language, but they're nice.",
+    },
   },
   touch: {
     name: "Physical Touch",
     icon: Heart,
     color: "#f87171",
-    suggestions: [
+    giveTips: [
       "Hold hands when walking together",
       "Offer comforting hugs during tough times",
       "Sit close during movies or conversations",
-      "Give back rubs without being asked",
-      "Create physical connection throughout the day",
     ],
+    receiveTips: [
+      "Ask for physical affection when you need it",
+      "Share what types of touch feel most comforting",
+      "Let your partner know when closeness matters to you",
+    ],
+    giveInsights: {
+      high: "You naturally express love through physical connection!",
+      moderate: "You use physical touch to show affection at times.",
+      low: "Physical touch may not be your go-to way to show love.",
+    },
+    receiveInsights: {
+      high: "Physical closeness makes you feel secure and loved.",
+      moderate: "You enjoy physical affection from your partner.",
+      low: "Physical touch isn't your primary need, but it matters.",
+    },
   },
 };
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+interface ImprovementArea {
+  lang: LoveLanguage;
+  type: "give" | "receive";
+  score: number;
+}
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
+function getGiveInsight(lang: LoveLanguage, score: number): { text: string; isPositive: boolean } {
+  const config = LANGUAGE_CONFIG[lang];
+  if (score >= STRONG) {
+    return { text: config.giveInsights.high, isPositive: true };
+  } else if (score < LOW) {
+    return { text: config.giveInsights.low, isPositive: false };
+  }
+  return { text: config.giveInsights.moderate, isPositive: true };
+}
+
+function getReceiveInsight(lang: LoveLanguage, score: number): { text: string; isPositive: boolean } {
+  const config = LANGUAGE_CONFIG[lang];
+  if (score >= STRONG) {
+    return { text: config.receiveInsights.high, isPositive: true };
+  } else if (score < LOW) {
+    return { text: config.receiveInsights.low, isPositive: false };
+  }
+  return { text: config.receiveInsights.moderate, isPositive: true };
+}
+
+function findImprovementAreas(loveLanguages: LoveLanguageResult): ImprovementArea[] {
+  const areas: ImprovementArea[] = [];
+
+  for (const lang of loveLanguages.ranked) {
+    const { give, receive } = loveLanguages.giveReceive[lang];
+    if (give < STRONG) {
+      areas.push({ lang, type: "give", score: give });
+    }
+    if (receive < STRONG) {
+      areas.push({ lang, type: "receive", score: receive });
+    }
+  }
+
+  // Sort by score ascending (lowest first - needs most help)
+  areas.sort((a, b) => a.score - b.score);
+
+  return areas;
+}
+
+function getTipsForArea(area: ImprovementArea): string[] {
+  const config = LANGUAGE_CONFIG[area.lang];
+  const tips = area.type === "give" ? config.giveTips : config.receiveTips;
+  // Return all 3 tips for this area
+  return tips;
+}
+
+// ============================================================================
+// MINI PROGRESS BAR
+// ============================================================================
+
+function MiniProgressBar({ value, color }: { value: number; color: string }) {
+  return (
+    <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
+      <div
+        className="h-full rounded-full transition-all"
+        style={{ width: `${value}%`, backgroundColor: color }}
+      />
+    </div>
+  );
+}
 
 // ============================================================================
 // COMPONENT
@@ -96,14 +254,43 @@ export function LoveLanguageSuggestions({
 }: LoveLanguageSuggestionsProps) {
   const prefersReducedMotion = useReducedMotion();
 
-  // Get top 2 love languages to focus suggestions on
-  const topLanguages = useMemo(() => {
-    const sorted = [...loveLanguages.ranked].slice(0, 2);
-    return sorted.map((lang) => ({
-      key: lang,
-      ...LANGUAGE_CONFIG[lang],
-    }));
-  }, [loveLanguages.ranked]);
+  // Get strong languages (combined score >= 70%) - up to 3
+  const strongLanguages = useMemo(() => {
+    return loveLanguages.ranked
+      .filter((lang) => loveLanguages.scores[lang] >= STRONG)
+      .slice(0, 3)
+      .map((lang) => ({
+        key: lang,
+        ...LANGUAGE_CONFIG[lang],
+        give: loveLanguages.giveReceive[lang].give,
+        receive: loveLanguages.giveReceive[lang].receive,
+        combinedScore: loveLanguages.scores[lang],
+      }));
+  }, [loveLanguages]);
+
+  // Find improvement areas (scores below STRONG threshold)
+  const improvementAreas = useMemo(() => {
+    return findImprovementAreas(loveLanguages).slice(0, 3);
+  }, [loveLanguages]);
+
+  // Check if all areas are strong
+  const allStrong = improvementAreas.length === 0;
+
+  // Generate personalized opening paragraph
+  const openingParagraph = useMemo(() => {
+    if (strongLanguages.length === 0) {
+      return "Here are some areas where you can grow in expressing and receiving love.";
+    }
+
+    const names = strongLanguages.map(l => l.name);
+    if (names.length === 1) {
+      return `You value ${names[0]} - this is a strength in how you connect!`;
+    } else if (names.length === 2) {
+      return `You value ${names[0]} and ${names[1]} - these are your strengths in love!`;
+    } else {
+      return `You value ${names[0]}, ${names[1]}, and ${names[2]} - love flows naturally for you!`;
+    }
+  }, [strongLanguages]);
 
   const containerVariants = prefersReducedMotion
     ? {}
@@ -131,79 +318,155 @@ export function LoveLanguageSuggestions({
 
   return (
     <div className={cn("rounded-2xl bg-white p-6 shadow-soft", className)}>
-      {/* Header */}
-      <div className="mb-6 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#f9d544]/20 to-[#cab5d4]/20">
-          <Lightbulb className="h-5 w-5 text-[#cab5d4]" />
+      {/* Header - Centered and larger */}
+      <div className="mb-6 flex flex-col items-center text-center">
+        <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#f9d544]/20 to-[#cab5d4]/20">
+          <Lightbulb className="h-6 w-6 text-[#cab5d4]" />
         </div>
-        <div>
-          <h3 className="text-lg font-semibold text-slate-900">Love Language Tips</h3>
-          <p className="text-sm text-slate-500">Ways to connect based on your preferences</p>
-        </div>
+        <h3 className="text-2xl font-bold text-slate-900">Love Language Tips</h3>
+        <p className="text-sm text-slate-500">Ways to connect based on your preferences</p>
       </div>
 
-      {/* Suggestions for top languages */}
-      <div className="space-y-6">
-        {topLanguages.map((language, langIndex) => {
-          const Icon = language.icon;
-          return (
-            <div key={language.key}>
-              {/* Language header */}
-              <div className="mb-3 flex items-center gap-2">
-                <div 
-                  className="flex h-7 w-7 items-center justify-center rounded-full"
-                  style={{ backgroundColor: `${language.color}20` }}
-                >
-                  <Icon 
-                    className="h-3.5 w-3.5" 
-                    style={{ color: language.color }}
-                  />
+      {/* Personalized opening */}
+      <p className="mb-6 text-sm text-slate-600">
+        {openingParagraph}
+      </p>
+
+      {/* Strong languages section - Only show languages with 70%+ */}
+      {strongLanguages.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-emerald-500" />
+            <span className="text-lg font-semibold text-slate-800">Your Strengths</span>
+          </div>
+          <div className="space-y-4">
+            {strongLanguages.map((language) => {
+              const Icon = language.icon;
+
+              return (
+                <div key={language.key} className="rounded-xl bg-emerald-50/50 p-4">
+                  {/* Language header */}
+                  <div className="mb-2 flex items-center gap-2">
+                    <div
+                      className="flex h-8 w-8 items-center justify-center rounded-full"
+                      style={{ backgroundColor: `${language.color}20` }}
+                    >
+                      <Icon
+                        className="h-4 w-4"
+                        style={{ color: language.color }}
+                      />
+                    </div>
+                    <span className="font-semibold text-slate-800">
+                      {language.name}
+                    </span>
+                    <span className="ml-auto rounded-full bg-[#f9d544]/20 px-2 py-0.5 text-xs font-medium text-slate-700">
+                      Primary
+                    </span>
+                  </div>
+
+                  {/* Score and encouragement */}
+                  <div className="flex items-center gap-2 pl-10">
+                    <MiniProgressBar value={language.combinedScore} color={language.color} />
+                    <span className="text-sm font-medium text-slate-700">{language.combinedScore}%</span>
+                  </div>
+                  <p className="mt-2 flex items-center gap-1.5 pl-10 text-sm text-emerald-600">
+                    <Check className="h-4 w-4 shrink-0" />
+                    Keep it up! This is one of your strongest love languages.
+                  </p>
                 </div>
-                <span className="text-sm font-semibold text-slate-800">
-                  {language.name}
-                </span>
-                {langIndex === 0 && (
-                  <span className="ml-auto rounded-full bg-[#f9d544]/20 px-2 py-0.5 text-xs font-medium text-slate-700">
-                    Primary
-                  </span>
-                )}
-              </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
-              {/* Suggestions list */}
-              <motion.ul
-                className="space-y-2 pl-9"
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                {language.suggestions.slice(0, 3).map((suggestion, i) => (
-                  <motion.li
-                    key={i}
-                    variants={itemVariants}
-                    className="flex items-start gap-2 text-sm text-slate-600"
-                  >
-                    <span 
-                      className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
-                      style={{ backgroundColor: language.color }}
-                    />
-                    {suggestion}
-                  </motion.li>
-                ))}
-              </motion.ul>
-            </div>
-          );
-        })}
-      </div>
+      {/* Areas to Grow - Tips for improvement areas */}
+      {!allStrong && improvementAreas.length > 0 && (
+        <div className="mt-6 rounded-xl border border-slate-100 bg-slate-50/30 p-5">
+          <div className="mb-4 flex items-center gap-2">
+            <Target className="h-5 w-5 text-amber-500" />
+            <span className="text-lg font-semibold text-slate-800">Areas to Grow</span>
+          </div>
+          <p className="mb-4 text-sm text-slate-600">
+            Tips for your lower-scoring areas:
+          </p>
+          <motion.div
+            className="space-y-5"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {improvementAreas.map((area) => {
+              const config = LANGUAGE_CONFIG[area.lang];
+              const Icon = config.icon;
+              const tips = getTipsForArea(area);
+              const typeLabel = area.type === "give" ? "Giving" : "Receiving";
+
+              return (
+                <motion.div
+                  key={`${area.lang}-${area.type}`}
+                  variants={itemVariants}
+                  className="rounded-lg bg-white p-4 shadow-sm"
+                >
+                  <div className="mb-3 flex items-center gap-2">
+                    <div
+                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+                      style={{ backgroundColor: `${config.color}20` }}
+                    >
+                      <Icon className="h-4 w-4" style={{ color: config.color }} />
+                    </div>
+                    <div>
+                      <span className="text-base font-semibold text-slate-800">
+                        {config.name}
+                      </span>
+                      <span className="ml-2 text-sm text-slate-500">
+                        ({typeLabel}: {area.score}%)
+                      </span>
+                    </div>
+                  </div>
+                  <ul className="space-y-2 pl-9">
+                    {tips.map((tip, tipIndex) => (
+                      <li
+                        key={tipIndex}
+                        className="flex items-start gap-2 text-sm text-slate-600"
+                      >
+                        <span
+                          className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={{ backgroundColor: config.color }}
+                        />
+                        <span>{tip}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
+      )}
+
+      {/* All strong - Congratulations message */}
+      {allStrong && (
+        <div className="mt-6 rounded-xl border border-emerald-100 bg-emerald-50/30 p-4">
+          <div className="mb-2 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-emerald-500" />
+            <span className="text-sm font-semibold text-emerald-700">Amazing!</span>
+          </div>
+          <p className="text-sm text-slate-600">
+            You&apos;re doing great across all love languages! Keep nurturing these connections
+            and stay curious about how your partner&apos;s love languages might differ from yours.
+          </p>
+        </div>
+      )}
 
       {/* Pro tip */}
       <div className="mt-6 rounded-xl bg-gradient-to-r from-[#fffdf6] to-[#f9d544]/10 p-4">
         <p className="text-xs text-slate-600">
-          <span className="font-semibold text-slate-700">Pro tip:</span> People often give love 
-          the way they want to receive it. Pay attention to how your partner shows affection 
+          <span className="font-semibold text-slate-700">Pro tip:</span> People often give love
+          the way they want to receive it. Pay attention to how your partner shows affection
           to understand their love language too!
         </p>
       </div>
     </div>
   );
 }
-
