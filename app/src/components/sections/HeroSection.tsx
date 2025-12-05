@@ -9,6 +9,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { smoothScrollToHash } from "@/lib/utils";
 import { heroContent } from "@/lib/constants";
+import cloudflareLoader from "@/lib/cloudflare-image-loader";
 
 export function HeroSection() {
   const prefersReducedMotion = useReducedMotion();
@@ -95,6 +96,7 @@ export function HeroSection() {
                 className="object-contain"
                 priority
                 sizes="(max-width: 768px) 80vw, 340px"
+                loader={cloudflareLoader}
               />
             </div>
           </motion.div>
