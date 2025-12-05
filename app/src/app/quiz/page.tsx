@@ -1,30 +1,7 @@
-"use client";
-
 import Link from "next/link";
 import { Clock, Lock, Sparkles, Heart, Brain, MessageCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { hasQuizProgress } from "@/hooks/use-quiz";
-import { useSyncExternalStore } from "react";
-
-// Subscribe to localStorage changes for quiz progress
-function subscribeToQuizProgress(callback: () => void) {
-  const handler = (e: StorageEvent) => {
-    if (e.key === "juliet-quiz-state") {
-      callback();
-    }
-  };
-  window.addEventListener("storage", handler);
-  return () => window.removeEventListener("storage", handler);
-}
-
-function getQuizProgressSnapshot() {
-  return hasQuizProgress();
-}
-
-function getQuizProgressServerSnapshot() {
-  return false; // Server-side: assume no progress
-}
 
 const QUIZ_BENEFITS = [
   {
@@ -50,23 +27,43 @@ const QUIZ_BENEFITS = [
 ];
 
 export default function QuizPage() {
-  const hasProgress = useSyncExternalStore(
-    subscribeToQuizProgress,
-    getQuizProgressSnapshot,
-    getQuizProgressServerSnapshot
-  );
-
   return (
     <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         {/* Hero */}
         <div className="text-center">
-          <span className="inline-block text-5xl" role="img" aria-label="sparkles">
-            ✨
-          </span>
+          {/* Hopeful sparkle icon */}
+          <div className="relative inline-flex items-center justify-center h-16 w-16">
+            {/* Main sparkle - gradient gold */}
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z"
+                fill="url(#sparkleGradient)"
+              />
+              <defs>
+                <linearGradient id="sparkleGradient" x1="4" y1="2" x2="20" y2="18">
+                  <stop offset="0%" stopColor="#ffe362" />
+                  <stop offset="100%" stopColor="#f9d544" />
+                </linearGradient>
+              </defs>
+            </svg>
+            {/* Secondary smaller sparkles for brilliance */}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="absolute -top-1 -right-1 opacity-70">
+              <path
+                d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z"
+                fill="#ffb347"
+              />
+            </svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="absolute -bottom-1 -left-2 opacity-50">
+              <path
+                d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z"
+                fill="#cab5d4"
+              />
+            </svg>
+          </div>
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
             Discover Your
             <br />
-            <span className="text-[#cab5d4]">Dating Personality</span>
+            <span className="text-[#cab5d4]">Free Dating Personality</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-600">
             Our science-backed quiz reveals your attachment style, communication
@@ -90,23 +87,15 @@ export default function QuizPage() {
             </div>
           </div>
 
-          {/* CTA buttons */}
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          {/* CTA button */}
+          <div className="mt-10 flex justify-center">
             <Button
               asChild
               size="lg"
               className="bg-[#f9d544] px-8 text-slate-900 hover:bg-[#ffe362]"
             >
-              <Link href="/quiz/questions">
-                {hasProgress ? "Resume Quiz" : "Start Quiz"}
-              </Link>
+              <Link href="/quiz/questions?new=true">Start Quiz</Link>
             </Button>
-
-            {hasProgress && (
-              <Button asChild variant="ghost" size="lg">
-                <Link href="/quiz/questions?new=true">Start Over</Link>
-              </Button>
-            )}
           </div>
         </div>
 
