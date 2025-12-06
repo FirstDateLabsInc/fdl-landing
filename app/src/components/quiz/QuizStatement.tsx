@@ -7,11 +7,18 @@ import cloudflareLoader from "@/lib/cloudflare-image-loader";
 
 interface QuizStatementProps {
   className?: string;
+  scrollAnchorRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-export function QuizStatement({ className }: QuizStatementProps) {
+export function QuizStatement({ className, scrollAnchorRef }: QuizStatementProps) {
   return (
-    <div className={cn("w-full", className)}>
+    <div className={cn("relative w-full", className)}>
+      {/* Scroll anchor at text content level (below images on desktop) */}
+      <div
+        ref={scrollAnchorRef}
+        className="absolute left-0 top-0 scroll-mt-20 sm:top-32"
+        aria-hidden="true"
+      />
       {/* MOBILE: Compact row layout (hidden on sm+) */}
       <div className="flex flex-col gap-3 sm:hidden">
         {/* Step 1 - Compact Row */}

@@ -40,6 +40,9 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
   // Ref for the progress bar section to enable auto-scroll
   const progressRef = useRef<HTMLDivElement>(null);
 
+  // Refs for each question to enable auto-scroll to next unanswered
+  const questionRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+
   // Auto-scroll to progress bar when page changes (after user clicks Next/Back)
   useEffect(() => {
     if (progressRef.current && currentPage > 0) {
@@ -51,8 +54,27 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
   const handleValueChange = useCallback(
     (questionId: string) => (value: number | string) => {
       setResponse(questionId, value);
+
+      // Auto-scroll to the next unanswered question after answering
+      // Use double rAF to wait for React re-render and animation start
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // Find first unanswered EXCLUDING the one we just answered
+          // (responses is stale in this closure, so we exclude questionId)
+          const nextUnanswered = currentPageQuestions.find(
+            (q) =>
+              q.id !== questionId &&
+              (responses[q.id] === undefined || responses[q.id] === null)
+          );
+
+          if (nextUnanswered) {
+            const ref = questionRefs.current.get(nextUnanswered.id);
+            ref?.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        });
+      });
     },
-    [setResponse]
+    [setResponse, currentPageQuestions, responses]
   );
 
   const handleSubmit = useCallback(() => {
@@ -79,10 +101,10 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
     <div className="mx-auto flex min-h-[calc(100vh-4.5rem)] w-full max-w-6xl flex-col px-4 py-8 sm:px-6 lg:px-8">
       {/* 3-Step Info Cards - At the very top */}
       <div className="mb-8">
-        <QuizStatement />
+        <QuizStatement scrollAnchorRef={progressRef} />
       </div>
 
-      <div ref={progressRef} className="scroll-mt-4">
+      <div>
         <QuizProgress
           currentPage={currentPage}
           totalPages={totalPages}
@@ -109,6 +131,9 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
               return currentPageQuestions.map((question, index) => (
                 <div
                   key={question.id}
+                  ref={(el) => {
+                    if (el) questionRefs.current.set(question.id, el);
+                  }}
                   className={cn(
                     "w-full transition-opacity duration-300",
                     // Dim all questions except the first unanswered (current focus)
