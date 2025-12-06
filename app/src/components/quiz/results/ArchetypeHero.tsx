@@ -58,9 +58,9 @@ export function ArchetypeHero({ archetype, results, className }: ArchetypeHeroPr
       initial="hidden"
       animate="visible"
     >
-      <div className="grid items-center gap-8 lg:grid-cols-3 lg:gap-10">
+      <div className="grid items-stretch gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-12">
         {/* Left: Text Content */}
-        <div className="space-y-6 text-center lg:text-left">
+        <div className="order-2 flex flex-col justify-center space-y-6 text-center md:order-none md:text-left">
           <motion.div variants={itemVariants} className="space-y-2">
             <span className="text-sm font-medium text-slate-500">
               Your Archetype
@@ -80,25 +80,27 @@ export function ArchetypeHero({ archetype, results, className }: ArchetypeHeroPr
 
         {/* Center: Character Image */}
         <motion.div
-          className="relative mx-auto w-full max-w-xs lg:max-w-sm"
+          className="order-1 flex items-center justify-center md:order-none"
           variants={imageVariants}
         >
-          <div className="aspect-3/4 relative">
-            <Image
-              src={archetype.image}
-              alt={archetype.name}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 300px"
-              className="object-contain"
-              loader={cloudflareLoader}
-              priority
-            />
+          <div className="relative w-full max-w-xs sm:max-w-sm lg:max-w-md">
+            <div className="aspect-3/4 relative">
+              <Image
+                src={archetype.image}
+                alt={archetype.name}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 448px"
+                className="object-contain"
+                loader={cloudflareLoader}
+                priority
+              />
+            </div>
           </div>
         </motion.div>
 
         {/* Right: Overall Radar Chart */}
         <motion.div
-          className="flex items-center justify-center"
+          className="order-3 flex items-center justify-center md:col-span-2 lg:col-span-1"
           variants={itemVariants}
         >
           <OverallRadarChart
