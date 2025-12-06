@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import cloudflareLoader from "@/lib/cloudflare-image-loader";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
 
 interface ProfileSummaryProps {
@@ -55,10 +57,18 @@ export function ProfileSummary({ archetype, className }: ProfileSummaryProps) {
     >
       {/* Archetype Header - Centered */}
       <div className="text-center">
-        <span className="text-6xl" role="img" aria-label="archetype icon">
-          {archetype.emoji}
-        </span>
-        <h2 className="mt-4 text-3xl font-bold text-slate-900">
+        <div className="relative mx-auto h-32 w-32 sm:h-40 sm:w-40 lg:h-48 lg:w-48">
+          <Image
+            src={archetype.image}
+            alt={archetype.name}
+            fill
+            sizes="(max-width: 640px) 128px, (max-width: 1024px) 160px, 192px"
+            className="object-contain"
+            loader={cloudflareLoader}
+            loading="eager"
+          />
+        </div>
+        <h2 className="mt-4 text-2xl font-bold text-slate-900 sm:text-3xl">
           {archetype.name}
         </h2>
       </div>

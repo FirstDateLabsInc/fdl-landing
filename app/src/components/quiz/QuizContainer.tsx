@@ -62,11 +62,10 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
     // Calculate results
     const results = calculateAllResults(responseArray);
 
-    // Determine archetype
+    // Determine archetype from attachment × communication matrix
     const archetype = getArchetype(
       results.attachment.primary,
-      results.communication.primary,
-      results.confidence
+      results.communication.primary
     );
 
     // Clear quiz progress from localStorage

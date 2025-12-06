@@ -35,6 +35,7 @@ function QuizQuestionsContent() {
           name: archetype.name,
           emoji: archetype.emoji,
           summary: archetype.summary,
+          image: archetype.image,
         },
       };
 

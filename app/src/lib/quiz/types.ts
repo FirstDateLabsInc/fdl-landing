@@ -194,6 +194,8 @@ export interface Archetype {
   emoji: string;
   /** Summary description */
   summary: string;
+  /** Image path for archetype character */
+  image: string;
 }
 
 // ============================================================================

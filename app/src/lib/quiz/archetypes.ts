@@ -1,8 +1,8 @@
 /**
  * Quiz Archetype System
  *
- * Defines personality archetypes based on quiz results.
- * Each archetype combines attachment style, communication style, and confidence level.
+ * Defines 16 personality archetypes based on quiz results.
+ * Each archetype is determined by the 4×4 matrix of attachment style × communication style.
  */
 
 import type { AttachmentDimension, CommunicationStyle, Archetype } from './types';
@@ -11,311 +11,381 @@ import type { AttachmentDimension, CommunicationStyle, Archetype } from './types
 // ARCHETYPE DEFINITIONS
 // ============================================================================
 
-interface ArchetypeDefinition extends Archetype {
+export interface ArchetypeDefinition extends Archetype {
   id: string;
   strengths: string[];
   growthAreas: string[];
 }
 
 const archetypes: ArchetypeDefinition[] = [
-  // SECURE ATTACHMENT
+  // ========================================================================
+  // SECURE ATTACHMENT (4 archetypes)
+  // ========================================================================
   {
-    id: 'steady-connector',
-    name: 'The Steady Connector',
-    emoji: '🌟',
+    id: 'golden-partner',
+    name: 'The Golden Partner',
+    emoji: '🐕',
+    image: '/archetypes/golden-partner-goldenRetriever.png',
     summary:
-      'You bring stability and warmth to relationships. You\'re comfortable with closeness and communicate your needs clearly, creating a safe space for genuine connection.',
+      "Like a golden retriever, you're naturally warm, loyal, and approach relationships with genuine enthusiasm. Your secure foundation combined with assertive communication makes you an ideal partner who creates safety while expressing needs clearly.",
     strengths: [
-      'Naturally builds trust through consistent actions',
-      'Balances independence with intimacy',
-      'Handles conflict constructively',
-      'Makes partners feel valued and secure',
+      'Creates warm, welcoming relationship atmosphere',
+      'Communicates needs clearly and kindly',
+      'Handles conflict with grace and directness',
+      'Provides consistent emotional support',
     ],
     growthAreas: [
-      'May need to practice patience with less secure partners',
-      'Could benefit from recognizing your own needs more often',
+      'May need to slow down for partners who need more processing time',
+      'Could benefit from recognizing when others are not as naturally secure',
     ],
   },
   {
-    id: 'confident-anchor',
-    name: 'The Confident Anchor',
-    emoji: '⚓',
+    id: 'gentle-peacekeeper',
+    name: 'The Gentle Peacekeeper',
+    emoji: '🕊️',
+    image: '/archetypes/gentle-peacekeeper-dove.png',
     summary:
-      'You\'re a grounding presence in relationships with high self-assurance. Your secure attachment and confidence make you a natural at navigating dating with ease.',
+      'Like a peaceful dove, you bring harmony and tranquility to relationships. Your secure attachment provides stability, though your passive nature means you may sometimes prioritize peace over expressing your own needs.',
     strengths: [
-      'Radiates calm energy in dating situations',
-      'Takes initiative without being pushy',
-      'Recovers quickly from dating setbacks',
-      'Creates stability for partners',
+      'Creates calm, drama-free relationship environment',
+      'Naturally supportive and nurturing',
+      'Adaptable and easy to be with',
+      'Makes partners feel accepted unconditionally',
     ],
     growthAreas: [
-      'Be mindful of partners who need more reassurance',
-      'Stay open to feedback even when feeling confident',
-    ],
-  },
-
-  // ANXIOUS ATTACHMENT
-  {
-    id: 'devoted-romantic',
-    name: 'The Devoted Romantic',
-    emoji: '💝',
-    summary:
-      'You love deeply and invest fully in relationships. Your emotional attunement makes you a caring partner, though you sometimes need reassurance of your worth.',
-    strengths: [
-      'Deeply attuned to partner\'s emotions',
-      'Willing to put in effort for the relationship',
-      'Values emotional connection highly',
-      'Remembers important details about partners',
-    ],
-    growthAreas: [
-      'Practice self-soothing when waiting for responses',
-      'Build confidence independent of relationship status',
-      'Trust that silence doesn\'t mean rejection',
+      'Practice voicing your preferences more often',
+      'Remember that expressing needs strengthens rather than threatens relationships',
+      'Assert boundaries before resentment builds',
     ],
   },
   {
-    id: 'careful-romantic',
-    name: 'The Careful Romantic',
-    emoji: '🌸',
+    id: 'direct-director',
+    name: 'The Direct Director',
+    emoji: '🦍',
+    image: '/archetypes/direct-director-gorilla.png',
     summary:
-      'You approach dating thoughtfully, seeking deep connection while managing anxiety about outcomes. Building confidence will help you show your wonderful qualities.',
+      "Like a protective gorilla, you're a confident leader in relationships who takes charge while providing safety. Your secure base gives you emotional stability, though your direct approach can sometimes feel intense to others.",
     strengths: [
-      'Thoughtful and intentional about dating',
-      'Highly empathetic and caring',
-      'Values authentic connection over casual dating',
-      'Willing to be vulnerable',
-    ],
-    growthAreas: [
-      'Work on trusting your instincts more',
-      'Practice showing up authentically without overthinking',
-      'Focus on enjoying the moment rather than predicting outcomes',
-    ],
-  },
-
-  // AVOIDANT ATTACHMENT
-  {
-    id: 'independent-spirit',
-    name: 'The Independent Spirit',
-    emoji: '🦅',
-    summary:
-      'You value your autonomy and bring a refreshing self-sufficiency to relationships. Your challenge is letting others in while maintaining the independence you treasure.',
-    strengths: [
-      'Strong sense of self and boundaries',
-      'Doesn\'t lose identity in relationships',
-      'Low maintenance and flexible',
-      'Values quality time over quantity',
-    ],
-    growthAreas: [
-      'Practice staying engaged when feeling smothered',
-      'Work on verbalizing affection more often',
-      'Allow yourself to need your partner sometimes',
-    ],
-  },
-  {
-    id: 'private-protector',
-    name: 'The Private Protector',
-    emoji: '🛡️',
-    summary:
-      'You guard your heart carefully and need trust before opening up. This protectiveness served you well, but letting walls down gradually can deepen connections.',
-    strengths: [
-      'Self-reliant and resilient',
-      'Selective about who gets close (high standards)',
-      'Doesn\'t overwhelm partners with demands',
-      'Calm under pressure',
-    ],
-    growthAreas: [
-      'Challenge yourself to share feelings proactively',
-      'Recognize when distance becomes a defense mechanism',
-      'Practice leaning on others for support',
-    ],
-  },
-
-  // DISORGANIZED ATTACHMENT
-  {
-    id: 'complex-soul',
-    name: 'The Complex Soul',
-    emoji: '🌊',
-    summary:
-      'You experience relationships intensely, sometimes pulled between wanting closeness and needing space. Understanding these patterns is your path to more stable connections.',
-    strengths: [
-      'Deeply passionate when committed',
-      'Highly self-aware once patterns are recognized',
-      'Resilient despite past challenges',
-      'Capable of profound emotional depth',
-    ],
-    growthAreas: [
-      'Develop consistent routines in communication',
-      'Notice when hot-cold patterns emerge',
-      'Work on regulating intense emotions before acting',
-      'Consider therapy to understand attachment roots',
-    ],
-  },
-  {
-    id: 'searching-soul',
-    name: 'The Searching Soul',
-    emoji: '🔮',
-    summary:
-      'You\'re on a journey to understand your relationship patterns. Your inconsistent tendencies aren\'t flaws—they\'re signals pointing toward what you truly need.',
-    strengths: [
-      'Open to growth and self-discovery',
-      'Authentic in showing complex emotions',
-      'Seeking meaningful connections',
-      'Not afraid of the hard questions',
-    ],
-    growthAreas: [
-      'Build confidence through small wins',
-      'Create predictability in your dating behaviors',
-      'Practice communicating when feeling conflicted',
-      'Seek support in understanding past influences',
-    ],
-  },
-
-  // COMMUNICATION-FOCUSED ARCHETYPES
-  {
-    id: 'diplomatic-dater',
-    name: 'The Diplomatic Dater',
-    emoji: '🤝',
-    summary:
-      'You prefer keeping the peace in relationships, sometimes at the cost of your own needs. Learning to voice preferences kindly will strengthen your connections.',
-    strengths: [
-      'Easy-going and adaptable',
-      'Creates harmonious dating experiences',
-      'Good at reading social situations',
-      'Avoids unnecessary drama',
-    ],
-    growthAreas: [
-      'Practice stating preferences directly',
-      'Recognize that healthy conflict can strengthen bonds',
-      'Speak up when boundaries are crossed',
-    ],
-  },
-  {
-    id: 'fiery-heart',
-    name: 'The Fiery Heart',
-    emoji: '🔥',
-    summary:
-      'You feel things deeply and express yourself passionately. Channeling that intensity into constructive communication will help partners see your caring side.',
-    strengths: [
-      'Honest and direct about feelings',
-      'Passionate and engaged',
+      'Takes decisive action in relationships',
+      'Provides strong, protective presence',
+      'Addresses problems head-on without avoidance',
       'Partners always know where they stand',
-      'Fights for what matters',
     ],
     growthAreas: [
-      'Practice pausing before responding in conflict',
-      'Work on softening delivery while keeping honesty',
-      'Listen fully before defending your position',
+      'Practice softening delivery while keeping directness',
+      'Allow partners to lead sometimes',
+      'Recognize when intensity overwhelms rather than helps',
     ],
   },
   {
-    id: 'subtle-communicator',
-    name: 'The Subtle Communicator',
-    emoji: '🎭',
+    id: 'playful-tease',
+    name: 'The Playful Tease',
+    emoji: '🦊',
+    image: '/archetypes/playful-tease-fox.png',
     summary:
-      'You express displeasure indirectly, often hoping partners will figure out what\'s wrong. Learning direct communication will reduce frustration on both sides.',
+      "Like a clever fox, you use humor and wit to navigate relationship dynamics. While you're fundamentally secure, you sometimes express frustrations indirectly through teasing or sarcasm rather than direct communication.",
     strengths: [
-      'Avoids explosive confrontations',
-      'Notices relationship problems early',
-      'Sensitive to partner\'s mistakes',
-      'Creative in expressing feelings',
+      'Keeps relationships fun and playful',
+      'Uses humor to ease tension',
+      'Quick-witted and engaging',
+      'Emotionally stable at the core',
     ],
     growthAreas: [
-      'Practice saying what you mean directly',
-      'Address issues when they\'re small, not later',
-      'Trust that partners want to know your real feelings',
+      'Express frustrations directly rather than through jokes',
+      'Ensure teasing lands as playful, not hurtful',
+      'Practice direct communication when issues matter',
+    ],
+  },
+
+  // ========================================================================
+  // ANXIOUS ATTACHMENT (4 archetypes)
+  // ========================================================================
+  {
+    id: 'open-book',
+    name: 'The Open Book',
+    emoji: '🐕‍🦺',
+    image: '/archetypes/open-book-puppy.png',
+    summary:
+      "Like an eager puppy, you wear your heart on your sleeve with enthusiasm and expressiveness. You're not afraid to share your feelings, though your desire for reassurance can sometimes feel overwhelming to partners.",
+    strengths: [
+      'Openly expresses affection and feelings',
+      'Creates space for emotional vulnerability',
+      'Actively works on relationship issues',
+      'Partners never doubt your investment',
+    ],
+    growthAreas: [
+      'Practice self-soothing before seeking reassurance',
+      'Balance emotional expression with giving space',
+      'Trust that love does not require constant confirmation',
     ],
   },
   {
-    id: 'clear-voice',
-    name: 'The Clear Voice',
-    emoji: '✨',
+    id: 'selfless-giver',
+    name: 'The Selfless Giver',
+    emoji: '🐨',
+    image: '/archetypes/selfless-giver-koala.png',
     summary:
-      'You excel at expressing your needs while respecting others. This healthy communication style is a huge asset in building lasting, honest relationships.',
+      "Like a devoted koala, you cling to relationships with deep attachment and put others' needs first. Your generous nature is a gift, but you may sacrifice too much of yourself hoping it will secure love.",
     strengths: [
-      'States needs and boundaries clearly',
-      'Handles disagreements maturely',
-      'Creates psychological safety for partners',
-      'Models healthy communication',
+      'Deeply caring and attentive to partners',
+      'Remembers every detail about loved ones',
+      'Willing to go the extra mile',
+      'Creates nurturing relationship atmosphere',
     ],
     growthAreas: [
-      'Remember that not everyone communicates as clearly',
-      'Practice patience with partners learning to be assertive',
-      'Stay open to different communication styles',
+      'Practice receiving as much as giving',
+      'Assert your needs without guilt',
+      'Build identity beyond relationship status',
+      'Recognize that self-care is not selfish',
+    ],
+  },
+  {
+    id: 'fiery-pursuer',
+    name: 'The Fiery Pursuer',
+    emoji: '🐆',
+    image: '/archetypes/fiery-pursuer-cheetah.png',
+    summary:
+      'Like a chasing cheetah, you pursue love with intensity and passion. When anxiety meets aggression, you may push too hard for connection, sometimes creating the very distance you fear.',
+    strengths: [
+      'Passionate and all-in when committed',
+      'Fights for the relationship',
+      'Does not let issues go unaddressed',
+      'Highly emotionally engaged',
+    ],
+    growthAreas: [
+      'Practice pause before pursuit',
+      'Channel intensity into positive expressions',
+      'Recognize when pushing drives partners away',
+      'Develop patience with relationship pacing',
+    ],
+  },
+  {
+    id: 'mind-reader',
+    name: 'The Mind Reader',
+    emoji: '🦉',
+    image: '/archetypes/mind-reader-owl.png',
+    summary:
+      "Like a watchful owl, you observe everything and expect partners to decode your unspoken needs. Your anxious attachment drives you to test relationships indirectly rather than stating what you want clearly.",
+    strengths: [
+      'Highly perceptive of relationship dynamics',
+      'Notices subtleties others miss',
+      'Deeply analytical about emotions',
+      'Protective of relationship harmony',
+    ],
+    growthAreas: [
+      'State needs directly instead of hinting',
+      'Avoid testing partners to prove their love',
+      'Trust that asking for what you want is okay',
+      'Address issues when they are small',
+    ],
+  },
+
+  // ========================================================================
+  // AVOIDANT ATTACHMENT (4 archetypes)
+  // ========================================================================
+  {
+    id: 'solo-voyager',
+    name: 'The Solo Voyager',
+    emoji: '🦅',
+    image: '/archetypes/solo-voyager-eagle.png',
+    summary:
+      "Like a soaring eagle, you value your freedom and independence above all. You're confident in who you are and clear about your boundaries, though intimacy often feels like a threat to your autonomy.",
+    strengths: [
+      'Strong sense of self and identity',
+      'Clear about personal boundaries',
+      'Self-sufficient and capable',
+      'Will not lose yourself in relationships',
+    ],
+    growthAreas: [
+      'Practice letting others in without losing yourself',
+      'Recognize that interdependence is not weakness',
+      'Allow yourself to need and be needed',
+      'Stay present when closeness triggers flight',
+    ],
+  },
+  {
+    id: 'quiet-ghost',
+    name: 'The Quiet Ghost',
+    emoji: '🐢',
+    image: '/archetypes/quiet-ghost-turtle.png',
+    summary:
+      'Like a withdrawing turtle, you retreat into your shell when relationships feel too close or demanding. You avoid conflict and connection alike, often disappearing when things get emotionally intense.',
+    strengths: [
+      'Creates no drama or pressure',
+      'Low-maintenance relationship presence',
+      'Self-contained and peaceful',
+      'Values quality over quantity in connection',
+    ],
+    growthAreas: [
+      'Practice staying present during difficult conversations',
+      'Communicate when you need space rather than vanishing',
+      'Recognize withdrawal patterns before they damage bonds',
+      'Build tolerance for emotional closeness gradually',
+    ],
+  },
+  {
+    id: 'iron-fortress',
+    name: 'The Iron Fortress',
+    emoji: '🦔',
+    image: '/archetypes/iron-fortress-armadillo.png',
+    summary:
+      "Like an armored armadillo, you've built impenetrable defenses around your heart. You push others away with harsh words or cold distance, protecting yourself from the vulnerability that love requires.",
+    strengths: [
+      'Extremely self-reliant',
+      'Clear boundaries that never waver',
+      'Does not tolerate disrespect',
+      'Protective of personal space',
+    ],
+    growthAreas: [
+      'Recognize that armor keeps out love too',
+      'Practice vulnerability in small steps',
+      'Soften defensive reactions',
+      'Understand that past hurts do not have to define future relationships',
+    ],
+  },
+  {
+    id: 'cool-mystery',
+    name: 'The Cool Mystery',
+    emoji: '🐈',
+    image: '/archetypes/cool-mystery-cat.png',
+    summary:
+      'Like an aloof cat, you maintain emotional distance while keeping partners guessing. You express displeasure through coldness or withdrawal rather than words, creating an air of mystery that can feel like rejection.',
+    strengths: [
+      'Maintains healthy independence',
+      'Does not create explosive conflict',
+      'Intriguing and hard to read',
+      'Values personal space and quiet',
+    ],
+    growthAreas: [
+      'Express needs and frustrations directly',
+      'Avoid silent treatment as a communication tool',
+      'Let partners understand your emotional world',
+      'Practice warmth even when it feels vulnerable',
+    ],
+  },
+
+  // ========================================================================
+  // DISORGANIZED ATTACHMENT (4 archetypes)
+  // ========================================================================
+  {
+    id: 'self-aware-alchemist',
+    name: 'The Self-Aware Alchemist',
+    emoji: '🐙',
+    image: '/archetypes/self-aware-alchemist-octopus.png',
+    summary:
+      "Like a complex octopus, you're highly intelligent and self-aware despite your chaotic attachment patterns. You can articulate what's happening inside you, even when your behavior contradicts your words.",
+    strengths: [
+      'Highly self-aware about patterns',
+      'Can communicate complex emotions',
+      'Actively working on growth',
+      'Resilient despite challenges',
+    ],
+    growthAreas: [
+      'Align actions with stated intentions',
+      'Build consistency in relationship behaviors',
+      'Use insight to change, not just understand, patterns',
+      'Seek professional support for deeper healing',
+    ],
+  },
+  {
+    id: 'chameleon',
+    name: 'The Chameleon',
+    emoji: '🦎',
+    image: '/archetypes/chameleon-chameleon.png',
+    summary:
+      "Like an adapting chameleon, you shift and change based on who you're with, losing yourself in the process. Your unpredictable attachment patterns combine with passivity to create constant shape-shifting in relationships.",
+    strengths: [
+      'Adaptable to different relationship dynamics',
+      'Non-confrontational',
+      'Open to going with the flow',
+      'Can fit into various social situations',
+    ],
+    growthAreas: [
+      'Develop consistent sense of self',
+      'Practice having opinions and preferences',
+      'Stop abandoning yourself for acceptance',
+      'Build stable identity independent of partners',
+    ],
+  },
+  {
+    id: 'wild-storm',
+    name: 'The Wild Storm',
+    emoji: '🐂',
+    image: '/archetypes/wild-storm-bull.png',
+    summary:
+      'Like a charging bull, your relationships are marked by intense, sometimes destructive energy. You cycle between craving closeness and pushing away with force, creating emotional whiplash for partners.',
+    strengths: [
+      'Deeply passionate when engaged',
+      'Does not pretend emotions do not exist',
+      'Fights for connection in your own way',
+      'Capable of intense love',
+    ],
+    growthAreas: [
+      'Learn emotional regulation techniques',
+      'Pause before reacting in conflict',
+      'Channel intensity into healthy expression',
+      'Seek professional support for trauma healing',
+    ],
+  },
+  {
+    id: 'labyrinth',
+    name: 'The Labyrinth',
+    emoji: '🐍',
+    image: '/archetypes/labyrinth-snake.png',
+    summary:
+      'Like a coiling snake, you are complex and hard to read, sending mixed signals that keep partners confused. Your contradictory attachment patterns express themselves through indirect, sometimes manipulative communication.',
+    strengths: [
+      'Complex emotional intelligence',
+      'Protective of deepest vulnerabilities',
+      'Observant of relationship dynamics',
+      'Survives difficult emotional terrain',
+    ],
+    growthAreas: [
+      'Communicate directly rather than through hints or tests',
+      'Recognize manipulation patterns, even unintentional ones',
+      'Build trust through consistency',
+      'Work with a professional on attachment patterns',
     ],
   },
 ];
 
 // ============================================================================
-// ARCHETYPE LOOKUP
+// ARCHETYPE MATRIX LOOKUP
 // ============================================================================
 
 /**
- * Confidence threshold for high vs low confidence
+ * 4×4 matrix mapping: [attachment][communication] → archetype id
  */
-const CONFIDENCE_THRESHOLD = 60;
+const ARCHETYPE_MATRIX: Record<AttachmentDimension, Record<CommunicationStyle, string>> = {
+  secure: {
+    assertive: 'golden-partner',
+    passive: 'gentle-peacekeeper',
+    aggressive: 'direct-director',
+    passive_aggressive: 'playful-tease',
+  },
+  anxious: {
+    assertive: 'open-book',
+    passive: 'selfless-giver',
+    aggressive: 'fiery-pursuer',
+    passive_aggressive: 'mind-reader',
+  },
+  avoidant: {
+    assertive: 'solo-voyager',
+    passive: 'quiet-ghost',
+    aggressive: 'iron-fortress',
+    passive_aggressive: 'cool-mystery',
+  },
+  disorganized: {
+    assertive: 'self-aware-alchemist',
+    passive: 'chameleon',
+    aggressive: 'wild-storm',
+    passive_aggressive: 'labyrinth',
+  },
+};
 
-/**
- * Get archetype based on attachment, communication, and confidence
- */
-export function getArchetype(
-  attachment: AttachmentDimension,
-  communication: CommunicationStyle,
-  confidence: number
-): ArchetypeDefinition {
-  const highConfidence = confidence >= CONFIDENCE_THRESHOLD;
-
-  // Primary logic: attachment style + confidence level
-  // Secondary factor: communication style for tie-breaking
-
-  // Secure attachment
-  if (attachment === 'secure') {
-    if (communication === 'assertive' || highConfidence) {
-      return findArchetype('confident-anchor');
-    }
-    return findArchetype('steady-connector');
-  }
-
-  // Anxious attachment
-  if (attachment === 'anxious') {
-    if (highConfidence) {
-      return findArchetype('devoted-romantic');
-    }
-    return findArchetype('careful-romantic');
-  }
-
-  // Avoidant attachment
-  if (attachment === 'avoidant') {
-    if (highConfidence || communication === 'assertive') {
-      return findArchetype('independent-spirit');
-    }
-    return findArchetype('private-protector');
-  }
-
-  // Disorganized attachment
-  if (attachment === 'disorganized') {
-    if (highConfidence) {
-      return findArchetype('complex-soul');
-    }
-    return findArchetype('searching-soul');
-  }
-
-  // Communication-focused fallbacks (if attachment doesn't clearly dominate)
-  if (communication === 'passive') {
-    return findArchetype('diplomatic-dater');
-  }
-  if (communication === 'aggressive') {
-    return findArchetype('fiery-heart');
-  }
-  if (communication === 'passive_aggressive') {
-    return findArchetype('subtle-communicator');
-  }
-  if (communication === 'assertive') {
-    return findArchetype('clear-voice');
-  }
-
-  // Default fallback
-  return findArchetype('steady-connector');
-}
+// ============================================================================
+// ARCHETYPE LOOKUP FUNCTIONS
+// ============================================================================
 
 /**
  * Find archetype by ID with fallback
@@ -327,6 +397,38 @@ function findArchetype(id: string): ArchetypeDefinition {
     return archetypes[0];
   }
   return archetype;
+}
+
+/**
+ * Get archetype based on attachment style and communication style
+ * Uses simple 4×4 matrix lookup
+ */
+export function getArchetype(
+  attachment: AttachmentDimension | AttachmentDimension[] | 'mixed',
+  communication: CommunicationStyle | CommunicationStyle[] | 'mixed'
+): ArchetypeDefinition {
+  // Handle array/mixed attachment - use first element or default to 'secure'
+  let attachmentKey: AttachmentDimension;
+  if (Array.isArray(attachment)) {
+    attachmentKey = attachment[0] ?? 'secure';
+  } else if (attachment === 'mixed') {
+    attachmentKey = 'secure';
+  } else {
+    attachmentKey = attachment;
+  }
+
+  // Handle array/mixed communication - use first element or default to 'assertive'
+  let communicationKey: CommunicationStyle;
+  if (Array.isArray(communication)) {
+    communicationKey = communication[0] ?? 'assertive';
+  } else if (communication === 'mixed') {
+    communicationKey = 'assertive';
+  } else {
+    communicationKey = communication;
+  }
+
+  const id = ARCHETYPE_MATRIX[attachmentKey][communicationKey];
+  return findArchetype(id);
 }
 
 /**
@@ -351,7 +453,6 @@ export function toArchetype(definition: ArchetypeDefinition): Archetype {
     name: definition.name,
     emoji: definition.emoji,
     summary: definition.summary,
+    image: definition.image,
   };
 }
-
-export type { ArchetypeDefinition };

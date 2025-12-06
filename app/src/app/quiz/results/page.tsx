@@ -23,6 +23,7 @@ interface StoredResults {
     name: string;
     emoji: string;
     summary: string;
+    image: string;
   };
 }
 
@@ -47,6 +48,7 @@ function parseStoredResults(stored: string): ParsedData | null {
       name: parsed.archetype.name,
       emoji: parsed.archetype.emoji,
       summary: parsed.archetype.summary,
+      image: parsed.archetype.image,
       strengths: [],
       growthAreas: [],
     };
