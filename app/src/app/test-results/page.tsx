@@ -1,11 +1,10 @@
 "use client";
 
-import { useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { getAllArchetypes } from "@/lib/quiz/archetypes";
+import { useCallback, useState } from "react";
+import { getAllArchetypes, type ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import { ResultsContainer } from "@/components/quiz/results";
+import { ArrowLeft } from "lucide-react";
 import type { QuizResults } from "@/lib/quiz/types";
-
-const RESULTS_STORAGE_KEY = "juliet-quiz-results";
 
 // Mock quiz results for testing - complete with all required fields
 function createMockResults(
@@ -97,8 +96,11 @@ const ATTACHMENT_LABELS = ["Secure", "Anxious", "Avoidant", "Disorganized"];
 const COMMUNICATION_LABELS = ["Assertive", "Passive", "Aggressive", "Passive-Aggressive"];
 
 export default function TestResultsPage() {
-  const router = useRouter();
   const allArchetypes = getAllArchetypes();
+
+  // Inline preview state
+  const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeDefinition | null>(null);
+  const [mockResults, setMockResults] = useState<QuizResults | null>(null);
 
   const handlePreview = useCallback(
     (
@@ -109,26 +111,42 @@ export default function TestResultsPage() {
       const archetype = allArchetypes.find((a) => a.id === archetypeId);
       if (!archetype) return;
 
-      const mockResults = createMockResults(attachment, communication);
-
-      const stored = {
-        version: 1,
-        computedAt: Date.now(),
-        results: mockResults,
-        archetype: {
-          id: archetype.id,
-          name: archetype.name,
-          emoji: archetype.emoji,
-          summary: archetype.summary,
-          image: archetype.image,
-        },
-      };
-
-      localStorage.setItem(RESULTS_STORAGE_KEY, JSON.stringify(stored));
-      router.push("/quiz/results");
+      // Set state for inline preview (no navigation needed)
+      setSelectedArchetype(archetype);
+      setMockResults(createMockResults(attachment, communication));
     },
-    [allArchetypes, router]
+    [allArchetypes]
   );
+
+  const handleBack = useCallback(() => {
+    setSelectedArchetype(null);
+    setMockResults(null);
+  }, []);
+
+  // Inline preview mode: render ResultsContainer directly
+  if (selectedArchetype && mockResults) {
+    return (
+      <main className="min-h-screen bg-background">
+        {/* Floating Back Button */}
+        <button
+          onClick={handleBack}
+          className="fixed left-4 top-4 z-50 flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-md transition-all hover:shadow-lg"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Matrix
+        </button>
+
+        {/* Archetype Badge */}
+        <div className="fixed right-4 top-4 z-50 flex items-center gap-2 rounded-lg bg-white px-4 py-2 shadow-md">
+          <span className="text-xl">{selectedArchetype.emoji}</span>
+          <span className="text-sm font-semibold text-slate-900">{selectedArchetype.name}</span>
+        </div>
+
+        {/* Actual Results Page */}
+        <ResultsContainer results={mockResults} archetype={selectedArchetype} />
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-slate-100 p-4 sm:p-8">

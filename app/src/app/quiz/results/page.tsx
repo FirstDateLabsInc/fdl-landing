@@ -41,20 +41,18 @@ function parseStoredResults(stored: string): ParsedData | null {
   try {
     const parsed = JSON.parse(stored) as StoredResults;
 
-    // Look up full archetype definition
-    const fullArchetype = getArchetypeById(parsed.archetype.id);
-    const archetype: ArchetypeDefinition = fullArchetype ?? {
-      id: parsed.archetype.id,
-      name: parsed.archetype.name,
-      emoji: parsed.archetype.emoji,
-      summary: parsed.archetype.summary,
-      image: parsed.archetype.image,
-      strengths: [],
-      growthAreas: [],
-    };
+    // Look up full archetype - NO FALLBACK
+    const archetype = getArchetypeById(parsed.archetype.id);
+
+    // Validate archetype exists and has required new fields
+    if (!archetype?.patternDescription || !archetype?.datingCycle) {
+      console.error('[Quiz Results] Invalid archetype:', parsed.archetype.id);
+      return null;
+    }
 
     return { results: parsed.results, archetype };
-  } catch {
+  } catch (e) {
+    console.error('[Quiz Results] Parse error:', e);
     return null;
   }
 }
