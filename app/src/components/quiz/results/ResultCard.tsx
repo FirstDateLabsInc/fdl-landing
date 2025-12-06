@@ -86,22 +86,27 @@ export function ResultCard(props: ResultCardProps) {
   return (
     <div
       className={cn(
-        "rounded-2xl border-l-4 border-[#f9d544] bg-white p-6 shadow-soft",
+        "group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition-all hover:shadow-md",
         className
       )}
     >
-      <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
-      {description && (
-        <p className="mt-1 text-sm text-slate-600">{description}</p>
-      )}
+      <div className="mb-6">
+        <h3 className="text-lg font-bold text-slate-900">{title}</h3>
+        {description && (
+          <p className="mt-1 text-sm text-slate-500">{description}</p>
+        )}
+      </div>
 
-      <div className="mt-4">
+      <div className="relative z-10">
         {props.type === "score" && <ScoreContent data={props.data} />}
         {props.type === "dimensions" && (
           <DimensionsContent data={props.data} />
         )}
         {props.type === "ranked" && <RankedContent data={props.data} />}
       </div>
+      
+      {/* Decorative gradient blur */}
+      <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-slate-50 blur-2xl transition-colors group-hover:bg-slate-100" />
     </div>
   );
 }

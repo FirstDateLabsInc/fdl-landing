@@ -3,12 +3,12 @@
 import { useMemo, useState, useEffect } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
-import { ProfileSummary } from "./ProfileSummary";
+import { ArchetypeHero } from "./ArchetypeHero";
 import { CategoryRadarChart } from "./CategoryRadarChart";
 import { OverallRadarChart } from "./OverallRadarChart";
 import { LoveLanguageSuggestions } from "./LoveLanguageSuggestions";
 import { ShareResults } from "./ShareResults";
-import { NumberedSection } from "./NumberedSection";
+import { ContentSection } from "./ContentSection";
 import { TraitGrid } from "./TraitGrid";
 import { DatingCycleVisual } from "./DatingCycleVisual";
 import { RedFlagsList } from "./RedFlagsList";
@@ -18,6 +18,7 @@ import { MobileFloatingNav } from "./MobileFloatingNav";
 import { cn } from "@/lib/utils";
 import type { QuizResults, AttachmentDimension, CommunicationStyle } from "@/lib/quiz/types";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import { Sparkles, History, Scale, ShieldAlert, Target, UserCircle, Heart, Share2 } from "lucide-react";
 
 interface ResultsContainerProps {
   results: QuizResults;
@@ -117,7 +118,7 @@ export function ResultsContainer({
         animate="visible"
         className="mb-8"
       >
-        <ProfileSummary archetype={archetype} />
+        <ArchetypeHero archetype={archetype} />
       </motion.section>
 
       {/* MAIN CONTENT: 2-column layout */}
@@ -126,19 +127,25 @@ export function ResultsContainer({
         <div className="min-w-0 flex-1 space-y-8">
           {/* Section 1: Pattern Recognition */}
           <motion.div variants={sectionVariants} initial="hidden" animate="visible">
-            <NumberedSection number={1} title="The Pattern You Recognize" id="pattern">
+            <ContentSection 
+              title="The Pattern You Recognize" 
+              id="pattern"
+              eyebrow="THE PATTERN"
+              icon={Sparkles}
+              variant="highlight"
+            >
               <div className="space-y-6">
-                <p className="text-base leading-relaxed text-foreground">
+                <p className="text-lg leading-relaxed text-slate-700">
                   {archetype.patternDescription}
                 </p>
                 <div>
-                  <h3 className="mb-3 text-sm font-medium text-muted-foreground">
-                    Your Dating Cycle
+                  <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-400">
+                    Your Dating Loop
                   </h3>
                   <DatingCycleVisual steps={archetype.datingCycle} />
                 </div>
               </div>
-            </NumberedSection>
+            </ContentSection>
           </motion.div>
 
           {/* Section 2: Root Cause */}
@@ -148,13 +155,18 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.1 }}
           >
-            <NumberedSection number={2} title="Where This Comes From" id="root-cause">
-              <div className="rounded-xl bg-card p-5 shadow-soft">
-                <p className="text-base leading-relaxed text-foreground">
+            <ContentSection 
+              title="Where This Comes From" 
+              id="root-cause"
+              eyebrow="THE ORIGIN"
+              icon={History}
+            >
+              <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+                <p className="text-lg leading-relaxed text-slate-700">
                   {archetype.rootCause}
                 </p>
               </div>
-            </NumberedSection>
+            </ContentSection>
           </motion.div>
 
           {/* Section 3: Dating Meaning (Strengths + Challenges) */}
@@ -164,24 +176,27 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.2 }}
           >
-            <NumberedSection number={3} title="What This Means for Dating" id="dating-meaning">
-              <div className="space-y-6">
+            <ContentSection 
+              title="What This Means for Dating" 
+              id="dating-meaning"
+              eyebrow="ANALYSIS"
+              icon={Scale}
+            >
+              <div className="space-y-8">
                 <div>
-                  <h3 className="mb-3 flex items-center gap-2 text-sm font-medium text-green-600">
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100">✓</span>
+                  <h3 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-green-600">
                     Your Strengths
                   </h3>
                   <TraitGrid items={archetype.datingMeaning.strengths} type="strength" />
                 </div>
                 <div>
-                  <h3 className="mb-3 flex items-center gap-2 text-sm font-medium text-amber-600">
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-100">!</span>
+                  <h3 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-amber-600">
                     Your Challenges
                   </h3>
                   <TraitGrid items={archetype.datingMeaning.challenges} type="challenge" />
                 </div>
               </div>
-            </NumberedSection>
+            </ContentSection>
           </motion.div>
 
           {/* Section 4: Red Flags */}
@@ -191,9 +206,15 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.3 }}
           >
-            <NumberedSection number={4} title="When This Goes Wrong" id="red-flags">
+            <ContentSection 
+              title="When This Goes Wrong" 
+              id="red-flags"
+              eyebrow="WARNING SIGNS"
+              icon={ShieldAlert}
+              variant="amber"
+            >
               <RedFlagsList items={archetype.redFlags} />
-            </NumberedSection>
+            </ContentSection>
           </motion.div>
 
           {/* Section 5: Coaching Focus */}
@@ -203,12 +224,18 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.4 }}
           >
-            <NumberedSection number={5} title="Your Coaching Focus" id="coaching">
+            <ContentSection 
+              title="Your Coaching Focus" 
+              id="coaching"
+              eyebrow="GROWTH PLAN"
+              icon={Target}
+              variant="green"
+            >
               <CoachingFocusList
                 items={archetype.coachingFocus}
                 ctaText={archetype.callToActionCopy}
               />
-            </NumberedSection>
+            </ContentSection>
           </motion.div>
 
           {/* Section 6: Dating Profile (Radar Charts) */}
@@ -218,10 +245,16 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.5 }}
           >
-            <NumberedSection number={6} title="Your Dating Profile" id="profile">
+            <ContentSection 
+              title="Your Dating Profile" 
+              id="profile"
+              eyebrow="DEEP DIVE"
+              icon={UserCircle}
+              variant="purple"
+            >
               <div className="space-y-6">
                 <OverallRadarChart results={results} />
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-6 sm:grid-cols-2">
                   <CategoryRadarChart
                     title="Attachment Style"
                     subtitle="How you connect emotionally"
@@ -244,7 +277,7 @@ export function ResultsContainer({
                   />
                 </div>
               </div>
-            </NumberedSection>
+            </ContentSection>
           </motion.div>
 
           {/* Section 7: Love Languages */}
@@ -254,9 +287,15 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.6 }}
           >
-            <NumberedSection number={7} title="Your Love Languages" id="love-languages">
+            <ContentSection 
+              title="Your Love Languages" 
+              id="love-languages"
+              eyebrow="CONNECTION"
+              icon={Heart}
+              variant="highlight"
+            >
               <LoveLanguageSuggestions loveLanguages={results.loveLanguages} />
-            </NumberedSection>
+            </ContentSection>
           </motion.div>
 
           {/* Share Results */}

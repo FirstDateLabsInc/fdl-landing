@@ -27,7 +27,7 @@ export interface ArchetypeDefinition extends Archetype {
   callToActionCopy: string;
 }
 
-const archetypes: ArchetypeDefinition[] = [
+export const archetypes: ArchetypeDefinition[] = [
   // ========================================================================
   // SECURE + ASSERTIVE: THE GOLDEN PARTNER
   // ========================================================================

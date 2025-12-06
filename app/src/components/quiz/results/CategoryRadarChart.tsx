@@ -157,7 +157,7 @@ export function CategoryRadarChart({
   const dataPoints = getPolygonPoints(dimensions.map((d) => d.value));
 
   return (
-    <div className={cn("rounded-2xl bg-white p-8 shadow-soft", className)}>
+    <div className={cn("rounded-2xl border border-slate-100 bg-white p-8 shadow-sm transition-shadow hover:shadow-md", className)}>
       {/* Header */}
       <div className="mb-6 text-center">
         <h3 className="text-2xl font-bold text-slate-900">{title}</h3>
