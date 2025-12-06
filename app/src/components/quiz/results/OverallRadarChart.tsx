@@ -4,6 +4,9 @@ import { useMemo } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { OVERALL_RADAR, OVERALL_RADAR_CONFIG } from "@/lib/quiz/radar-geometry";
+import { getDisplayLabel, getScoreDetail, formatCommunicationStyle } from "@/lib/quiz/labels";
+import { GradientProgressBar } from "./GradientProgressBar";
 import type { QuizResults } from "@/lib/quiz/types";
 
 interface OverallRadarChartProps {
@@ -12,122 +15,8 @@ interface OverallRadarChartProps {
   className?: string;
 }
 
-// ============================================================================
-// GEOMETRY HELPERS
-// ============================================================================
-
-const SIZE = 380;
-const CENTER = SIZE / 2;
-const RADIUS = 90;
-const LEVELS = 5;
-
-function polarToCartesian(
-  angle: number,
-  radius: number
-): { x: number; y: number } {
-  const adjustedAngle = angle - Math.PI / 2;
-  return {
-    x: CENTER + radius * Math.cos(adjustedAngle),
-    y: CENTER + radius * Math.sin(adjustedAngle),
-  };
-}
-
-function getPolygonPoints(values: number[], maxValue: number = 100): string {
-  const n = values.length;
-  const angleStep = (2 * Math.PI) / n;
-
-  return values
-    .map((value, i) => {
-      const angle = i * angleStep;
-      const normalizedRadius = (value / maxValue) * RADIUS;
-      const { x, y } = polarToCartesian(angle, normalizedRadius);
-      return `${x},${y}`;
-    })
-    .join(" ");
-}
-
-function getGridPoints(level: number, numAxes: number): string {
-  const radius = (level / LEVELS) * RADIUS;
-  const angleStep = (2 * Math.PI) / numAxes;
-
-  return Array.from({ length: numAxes })
-    .map((_, i) => {
-      const { x, y } = polarToCartesian(i * angleStep, radius);
-      return `${x},${y}`;
-    })
-    .join(" ");
-}
-
-// ============================================================================
-// DISPLAY HELPERS
-// ============================================================================
-
-const ATTACHMENT_LABELS: Record<string, string> = {
-  secure: "Secure",
-  anxious: "Anxious",
-  avoidant: "Avoidant",
-  disorganized: "Fearful",
-};
-
-// ============================================================================
-// GRADIENT PROGRESS BAR COMPONENT
-// ============================================================================
-
-interface GradientProgressBarProps {
-  label: string;
-  detail: string;
-  value: number;
-  index: number;
-  animated?: boolean;
-}
-
-function GradientProgressBar({ 
-  label, 
-  detail, 
-  value, 
-  index, 
-  animated = true 
-}: GradientProgressBarProps) {
-  const prefersReducedMotion = useReducedMotion();
-  const shouldAnimate = animated && !prefersReducedMotion;
-
-  // Progressive gradient colors - smooth transition from yellow to purple
-  const startColor = "#f9d544";
-  const midColor = "#e8c040";
-  const endColor = "#cab5d4";
-
-  return (
-    <div className="space-y-1">
-      <div className="flex items-center justify-between text-lg">
-        <span className="text-slate-700">
-          {label}: <span className="font-semibold text-slate-900">{detail}</span>
-        </span>
-        <span className="font-bold text-slate-800">{value}%</span>
-      </div>
-      <div className="relative h-3.5 w-full overflow-hidden rounded-full bg-slate-100">
-        {shouldAnimate ? (
-          <motion.div
-            className="absolute inset-y-0 left-0 rounded-full"
-            style={{ 
-              background: `linear-gradient(90deg, ${startColor} 0%, ${midColor} 50%, ${endColor} 100%)`,
-            }}
-            initial={{ width: 0 }}
-            animate={{ width: `${value}%` }}
-            transition={{ duration: 0.8, delay: 0.3 + index * 0.08, ease: "easeOut" }}
-          />
-        ) : (
-          <div
-            className="absolute inset-y-0 left-0 rounded-full"
-            style={{ 
-              width: `${value}%`,
-              background: `linear-gradient(90deg, ${startColor} 0%, ${midColor} 50%, ${endColor} 100%)`,
-            }}
-          />
-        )}
-      </div>
-    </div>
-  );
-}
+const { size: SIZE, radius: RADIUS } = OVERALL_RADAR_CONFIG;
+const { center: CENTER, levels: LEVELS, polarToCartesian, getPolygonPoints, getGridPoints } = OVERALL_RADAR;
 
 // ============================================================================
 // COMPONENT
@@ -146,20 +35,18 @@ export function OverallRadarChart({
     // Helper to get attachment value and label
     const getAttachmentInfo = () => {
       const { primary, scores } = results.attachment;
-      if (primary === 'mixed') {
-        // All scores are equal, use any one (they're all the same)
+      if (primary === "mixed") {
         const avgScore = scores.secure;
         return { value: avgScore, detail: "Balanced", fullLabel: "Balanced" };
       } else if (Array.isArray(primary)) {
-        // Use the score of the first tied style (they're equal)
         const score = scores[primary[0]];
-        const labels = primary.map(p => ATTACHMENT_LABELS[p] || p);
+        const labels = primary.map((p) => getDisplayLabel(p));
         return { value: score, detail: labels.join("/"), fullLabel: labels.join("/") };
       } else {
         return {
           value: scores[primary],
-          detail: ATTACHMENT_LABELS[primary] || primary,
-          fullLabel: ATTACHMENT_LABELS[primary] || primary
+          detail: getDisplayLabel(primary),
+          fullLabel: getDisplayLabel(primary),
         };
       }
     };
@@ -167,20 +54,18 @@ export function OverallRadarChart({
     // Helper to get communication value and label
     const getCommunicationInfo = () => {
       const { primary, scores } = results.communication;
-      const formatStyle = (s: string) => s.charAt(0).toUpperCase() + s.slice(1).replace('_', '-');
-
-      if (primary === 'mixed') {
+      if (primary === "mixed") {
         const avgScore = scores.passive;
         return { value: avgScore, detail: "Balanced", fullLabel: "Balanced" };
       } else if (Array.isArray(primary)) {
         const score = scores[primary[0]];
-        const labels = primary.map(formatStyle);
+        const labels = primary.map(formatCommunicationStyle);
         return { value: score, detail: labels.join("/"), fullLabel: labels.join("/") };
       } else {
         return {
           value: scores[primary],
-          detail: formatStyle(primary),
-          fullLabel: formatStyle(primary)
+          detail: formatCommunicationStyle(primary),
+          fullLabel: formatCommunicationStyle(primary),
         };
       }
     };
@@ -189,49 +74,49 @@ export function OverallRadarChart({
     const communicationInfo = getCommunicationInfo();
 
     return [
-    {
-      label: "Attachment",
-      value: attachmentInfo.value,
-      detail: attachmentInfo.detail,
-      fullLabel: attachmentInfo.fullLabel,
-      category: "Attachment",
-    },
-    {
-      label: "Communication",
-      value: communicationInfo.value,
-      detail: communicationInfo.detail,
-      fullLabel: communicationInfo.fullLabel,
-      category: "Communication",
-    },
-    { 
-      label: "Confidence", 
-      value: results.confidence,
-      detail: results.confidence >= 70 ? "High" : results.confidence >= 40 ? "Moderate" : "Building",
-      fullLabel: results.confidence >= 70 ? "High" : results.confidence >= 40 ? "Moderate" : "Building",
-      category: "Confidence",
-    },
-    { 
-      label: "Emotional", 
-      value: results.emotional,
-      detail: results.emotional >= 70 ? "Open" : results.emotional >= 40 ? "Balanced" : "Reserved",
-      fullLabel: results.emotional >= 70 ? "Open" : results.emotional >= 40 ? "Balanced" : "Reserved",
-      category: "Emotional",
-    },
-    { 
-      label: "Intimacy", 
-      value: results.intimacy.comfort,
-      detail: results.intimacy.comfort >= 70 ? "Comfortable" : results.intimacy.comfort >= 40 ? "Moderate" : "Cautious",
-      fullLabel: results.intimacy.comfort >= 70 ? "Comfortable" : results.intimacy.comfort >= 40 ? "Moderate" : "Cautious",
-      category: "Intimacy",
-    },
-    {
-      label: "Boundaries",
-      value: results.intimacy.boundaries,
-      detail: results.intimacy.boundaries >= 70 ? "Strong" : results.intimacy.boundaries >= 40 ? "Growing" : "Flexible",
-      fullLabel: results.intimacy.boundaries >= 70 ? "Strong" : results.intimacy.boundaries >= 40 ? "Growing" : "Flexible",
-      category: "Boundaries",
-    },
-  ];
+      {
+        label: "Attachment",
+        value: attachmentInfo.value,
+        detail: attachmentInfo.detail,
+        fullLabel: attachmentInfo.fullLabel,
+        category: "Attachment",
+      },
+      {
+        label: "Communication",
+        value: communicationInfo.value,
+        detail: communicationInfo.detail,
+        fullLabel: communicationInfo.fullLabel,
+        category: "Communication",
+      },
+      {
+        label: "Confidence",
+        value: results.confidence,
+        detail: getScoreDetail(results.confidence, "confidence"),
+        fullLabel: getScoreDetail(results.confidence, "confidence"),
+        category: "Confidence",
+      },
+      {
+        label: "Emotional",
+        value: results.emotional,
+        detail: getScoreDetail(results.emotional, "emotional"),
+        fullLabel: getScoreDetail(results.emotional, "emotional"),
+        category: "Emotional",
+      },
+      {
+        label: "Intimacy",
+        value: results.intimacy.comfort,
+        detail: getScoreDetail(results.intimacy.comfort, "intimacy"),
+        fullLabel: getScoreDetail(results.intimacy.comfort, "intimacy"),
+        category: "Intimacy",
+      },
+      {
+        label: "Boundaries",
+        value: results.intimacy.boundaries,
+        detail: getScoreDetail(results.intimacy.boundaries, "boundaries"),
+        fullLabel: getScoreDetail(results.intimacy.boundaries, "boundaries"),
+        category: "Boundaries",
+      },
+    ];
   }, [results]);
 
   const n = dimensions.length;
@@ -272,11 +157,18 @@ export function OverallRadarChart({
   // Data polygon points
   const dataPoints = getPolygonPoints(dimensions.map((d) => d.value));
 
-  // Colors for data points
-  const colors = ["#f9d544", "#cab5d4", "#f9d544", "#cab5d4", "#f9d544", "#cab5d4"];
+  // Alternating colors using CSS variables
+  const colors = [
+    "var(--primary)",
+    "var(--secondary)",
+    "var(--primary)",
+    "var(--secondary)",
+    "var(--primary)",
+    "var(--secondary)",
+  ];
 
   return (
-    <div className={cn("rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition-shadow hover:shadow-md", className)}>
+    <div className={cn("card-base p-5", className)}>
       {/* Header */}
       <div className="mb-2 text-center">
         <h3 className="text-2xl font-bold text-slate-900">Your Dating Profile</h3>
@@ -291,15 +183,15 @@ export function OverallRadarChart({
           role="img"
           aria-label="Radar chart showing overall dating profile"
         >
-          {/* Gradient definitions */}
+          {/* Gradient definitions using CSS vars */}
           <defs>
             <linearGradient id="fillGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#f9d544" stopOpacity="0.35" />
-              <stop offset="100%" stopColor="#cab5d4" stopOpacity="0.35" />
+              <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.35" />
+              <stop offset="100%" stopColor="var(--secondary)" stopOpacity="0.35" />
             </linearGradient>
             <linearGradient id="strokeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#f9d544" />
-              <stop offset="100%" stopColor="#cab5d4" />
+              <stop offset="0%" stopColor="var(--primary)" />
+              <stop offset="100%" stopColor="var(--secondary)" />
             </linearGradient>
           </defs>
 
@@ -369,13 +261,7 @@ export function OverallRadarChart({
                 transition={{ duration: 0.3, delay: 0.5 + i * 0.06 }}
               />
             ) : (
-              <circle 
-                key={dim.label} 
-                cx={x} 
-                cy={y} 
-                r={5} 
-                fill={colors[i]}
-              />
+              <circle key={dim.label} cx={x} cy={y} r={5} fill={colors[i]} />
             );
           })}
 
@@ -396,7 +282,7 @@ export function OverallRadarChart({
                 y={y + 10}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className="fill-[#cab5d4] text-[18px] font-bold"
+                className="fill-secondary text-[18px] font-bold"
               >
                 {value}%
               </text>

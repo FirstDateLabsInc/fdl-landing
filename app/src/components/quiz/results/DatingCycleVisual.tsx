@@ -20,7 +20,7 @@ export function DatingCycleVisual({ steps, className }: DatingCycleVisualProps) 
         >
           {/* Node Icon */}
           <div className="absolute -left-[41px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-white ring-4 ring-slate-50">
-            <span className="flex h-full w-full items-center justify-center rounded-full bg-[#f9d544]/20 text-xs font-bold text-slate-800">
+            <span className="flex h-full w-full items-center justify-center rounded-full bg-primary/20 text-xs font-bold text-slate-800">
               {index + 1}
             </span>
           </div>

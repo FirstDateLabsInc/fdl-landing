@@ -2,6 +2,7 @@
 
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { getDisplayLabel } from "@/lib/quiz/labels";
 
 // ============================================================================
 // TYPES
@@ -23,8 +24,6 @@ export interface RankedData {
   name: string;
   value: number;
 }
-
-type ResultCardType = "score" | "dimensions" | "ranked";
 
 interface ResultCardBaseProps {
   title: string;
@@ -48,33 +47,6 @@ interface RankedCardProps extends ResultCardBaseProps {
 }
 
 type ResultCardProps = ScoreCardProps | DimensionsCardProps | RankedCardProps;
-
-// ============================================================================
-// DISPLAY HELPERS
-// ============================================================================
-
-const DIMENSION_LABELS: Record<string, string> = {
-  // Attachment
-  secure: "Secure",
-  anxious: "Anxious",
-  avoidant: "Avoidant",
-  disorganized: "Disorganized",
-  // Communication
-  passive: "Passive",
-  aggressive: "Aggressive",
-  passive_aggressive: "Passive-Aggressive",
-  assertive: "Assertive",
-  // Love Languages
-  words: "Words of Affirmation",
-  time: "Quality Time",
-  service: "Acts of Service",
-  gifts: "Receiving Gifts",
-  touch: "Physical Touch",
-};
-
-function getDisplayLabel(name: string): string {
-  return DIMENSION_LABELS[name] ?? name;
-}
 
 // ============================================================================
 // COMPONENT
@@ -143,7 +115,7 @@ function DimensionsContent({ data }: { data: DimensionData[] }) {
             >
               {getDisplayLabel(item.name)}
               {item.isPrimary && (
-                <span className="ml-2 inline-flex items-center rounded-full bg-[#f9d544]/20 px-2 py-0.5 text-xs font-medium text-slate-900">
+                <span className="ml-2 inline-flex items-center rounded-full bg-primary/20 px-2 py-0.5 text-xs font-medium text-slate-900">
                   Primary
                 </span>
               )}
@@ -166,7 +138,7 @@ function RankedContent({ data }: { data: RankedData[] }) {
             className={cn(
               "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
               item.rank === 1
-                ? "bg-[#f9d544] text-slate-900"
+                ? "bg-primary text-slate-900"
                 : "bg-slate-100 text-slate-600"
             )}
           >

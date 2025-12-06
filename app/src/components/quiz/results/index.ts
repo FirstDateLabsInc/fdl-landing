@@ -3,6 +3,7 @@ export { ProfileSummary } from "./ProfileSummary";
 export { RadarChart } from "./RadarChart";
 export { CategoryRadarChart } from "./CategoryRadarChart";
 export { OverallRadarChart } from "./OverallRadarChart";
+export { GradientProgressBar } from "./GradientProgressBar";
 export { ResultCard } from "./ResultCard";
 export * from "./ArchetypeHero";
 export { ResultsContainer } from "./ResultsContainer";

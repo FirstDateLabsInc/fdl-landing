@@ -4,6 +4,8 @@ import { useMemo } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { CATEGORY_RADAR, CATEGORY_RADAR_CONFIG } from "@/lib/quiz/radar-geometry";
+import { getDisplayLabel } from "@/lib/quiz/labels";
 
 interface CategoryDimension {
   label: string;
@@ -17,7 +19,7 @@ interface CategoryRadarChartProps {
   dimensions: CategoryDimension[];
   primaryLabel?: string;
   /** Primary style(s) - single string, array of tied styles, or 'mixed' if all are equal */
-  primaryStyles?: string | string[] | 'mixed';
+  primaryStyles?: string | string[] | "mixed";
   /** Label to show when all styles are mixed (e.g., "Mixed Attachment Style") */
   mixedLabel?: string;
   accentColor?: string;
@@ -26,72 +28,8 @@ interface CategoryRadarChartProps {
   className?: string;
 }
 
-// ============================================================================
-// GEOMETRY HELPERS
-// ============================================================================
-
-const SIZE = 500;
-const CENTER = SIZE / 2;
-const RADIUS = 70;
-const LEVELS = 5;
-
-function polarToCartesian(
-  angle: number,
-  radius: number
-): { x: number; y: number } {
-  const adjustedAngle = angle - Math.PI / 2;
-  return {
-    x: CENTER + radius * Math.cos(adjustedAngle),
-    y: CENTER + radius * Math.sin(adjustedAngle),
-  };
-}
-
-function getPolygonPoints(values: number[], maxValue: number = 100): string {
-  const n = values.length;
-  const angleStep = (2 * Math.PI) / n;
-
-  return values
-    .map((value, i) => {
-      const angle = i * angleStep;
-      const normalizedRadius = (value / maxValue) * RADIUS;
-      const { x, y } = polarToCartesian(angle, normalizedRadius);
-      return `${x},${y}`;
-    })
-    .join(" ");
-}
-
-function getGridPoints(level: number, numAxes: number): string {
-  const radius = (level / LEVELS) * RADIUS;
-  const angleStep = (2 * Math.PI) / numAxes;
-
-  return Array.from({ length: numAxes })
-    .map((_, i) => {
-      const { x, y } = polarToCartesian(i * angleStep, radius);
-      return `${x},${y}`;
-    })
-    .join(" ");
-}
-
-// ============================================================================
-// DISPLAY HELPERS
-// ============================================================================
-
-const DIMENSION_LABELS: Record<string, string> = {
-  // Attachment
-  secure: "Secure",
-  anxious: "Anxious",
-  avoidant: "Avoidant",
-  disorganized: "Fearful",
-  // Communication
-  passive: "Passive",
-  aggressive: "Aggressive",
-  passive_aggressive: "Indirect",
-  assertive: "Assertive",
-};
-
-function getDisplayLabel(name: string): string {
-  return DIMENSION_LABELS[name] ?? name;
-}
+const { size: SIZE, radius: RADIUS } = CATEGORY_RADAR_CONFIG;
+const { center: CENTER, levels: LEVELS, polarToCartesian, getPolygonPoints, getGridPoints } = CATEGORY_RADAR;
 
 // ============================================================================
 // COMPONENT
@@ -104,8 +42,8 @@ export function CategoryRadarChart({
   primaryLabel,
   primaryStyles,
   mixedLabel,
-  accentColor = "#cab5d4",
-  fillColor = "#f9d544",
+  accentColor = "var(--secondary)",
+  fillColor = "var(--primary)",
   animated = true,
   className,
 }: CategoryRadarChartProps) {
@@ -147,7 +85,7 @@ export function CategoryRadarChart({
           value: dim.value,
           isPrimary: dim.isPrimary,
           x,
-          y
+          y,
         };
       }),
     [dimensions, angleStep]
@@ -157,20 +95,18 @@ export function CategoryRadarChart({
   const dataPoints = getPolygonPoints(dimensions.map((d) => d.value));
 
   return (
-    <div className={cn("rounded-2xl border border-slate-100 bg-white p-8 shadow-sm transition-shadow hover:shadow-md", className)}>
+    <div className={cn("card-base p-8", className)}>
       {/* Header */}
       <div className="mb-6 text-center">
         <h3 className="text-2xl font-bold text-slate-900">{title}</h3>
-        {subtitle && (
-          <p className="text-lg text-slate-500">{subtitle}</p>
-        )}
+        {subtitle && <p className="text-lg text-slate-500">{subtitle}</p>}
       </div>
 
       {/* Chart */}
-      <div className="flex items-center justify-center py-4 overflow-hidden">
+      <div className="flex items-center justify-center overflow-hidden py-4">
         <svg
           viewBox={`0 0 ${SIZE} ${SIZE}`}
-          className="w-full max-w-[320px] sm:max-w-[26rem] aspect-square"
+          className="aspect-square w-full max-w-[320px] sm:max-w-[26rem]"
           role="img"
           aria-label={`Radar chart showing ${title}`}
         >
@@ -205,7 +141,7 @@ export function CategoryRadarChart({
           {shouldAnimate ? (
             <motion.polygon
               points={dataPoints}
-              fill={`${fillColor}30`}
+              fill={`color-mix(in srgb, ${fillColor} 20%, transparent)`}
               stroke={accentColor}
               strokeWidth={2.5}
               initial={{ opacity: 0, scale: 0 }}
@@ -216,7 +152,7 @@ export function CategoryRadarChart({
           ) : (
             <polygon
               points={dataPoints}
-              fill={`${fillColor}30`}
+              fill={`color-mix(in srgb, ${fillColor} 20%, transparent)`}
               stroke={accentColor}
               strokeWidth={2.5}
             />
@@ -240,11 +176,11 @@ export function CategoryRadarChart({
                 transition={{ duration: 0.3, delay: 0.4 + i * 0.08 }}
               />
             ) : (
-              <circle 
-                key={dim.label} 
-                cx={x} 
-                cy={y} 
-                r={dim.isPrimary ? 6 : 4} 
+              <circle
+                key={dim.label}
+                cx={x}
+                cy={y}
+                r={dim.isPrimary ? 6 : 4}
                 fill={dim.isPrimary ? accentColor : fillColor}
               />
             );
@@ -272,7 +208,7 @@ export function CategoryRadarChart({
                 dominantBaseline="middle"
                 className={cn(
                   "text-[16px] font-bold",
-                  isPrimary ? "fill-[#cab5d4]" : "fill-slate-400"
+                  isPrimary ? "fill-secondary" : "fill-slate-400"
                 )}
               >
                 {value}%
@@ -285,7 +221,7 @@ export function CategoryRadarChart({
       {/* Primary indicator */}
       {primaryLabel && (
         <div className="mt-4 flex flex-col items-center gap-1">
-          {primaryStyles === 'mixed' ? (
+          {primaryStyles === "mixed" ? (
             <>
               <div className="flex items-center gap-2">
                 <span
@@ -293,11 +229,11 @@ export function CategoryRadarChart({
                   style={{ backgroundColor: accentColor }}
                 />
                 <span className="text-sm font-medium text-slate-700">
-                  {mixedLabel || 'Mixed Style'}
+                  {mixedLabel || "Mixed Style"}
                 </span>
               </div>
               <span className="text-xs text-slate-500">
-                {dimensions.map(d => getDisplayLabel(d.label)).join(', ')}
+                {dimensions.map((d) => getDisplayLabel(d.label)).join(", ")}
               </span>
             </>
           ) : Array.isArray(primaryStyles) ? (
@@ -307,9 +243,9 @@ export function CategoryRadarChart({
                 style={{ backgroundColor: accentColor }}
               />
               <span className="text-sm font-medium text-slate-700">
-                Primary Styles:{' '}
+                Primary Styles:{" "}
                 <span className="text-slate-900">
-                  {primaryStyles.map(s => getDisplayLabel(s)).join(', ')}
+                  {primaryStyles.map((s) => getDisplayLabel(s)).join(", ")}
                 </span>
               </span>
             </div>
@@ -320,7 +256,7 @@ export function CategoryRadarChart({
                 style={{ backgroundColor: accentColor }}
               />
               <span className="text-sm font-medium text-slate-700">
-                {primaryLabel}:{' '}
+                {primaryLabel}:{" "}
                 <span className="text-slate-900">{getDisplayLabel(primaryStyles)}</span>
               </span>
             </div>
