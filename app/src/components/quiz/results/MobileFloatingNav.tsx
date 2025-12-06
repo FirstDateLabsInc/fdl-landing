@@ -39,8 +39,7 @@ export function MobileFloatingNav({ activeSection, archetype, className }: Mobil
           <div className="mb-2 px-3 py-2 border-b border-gray-100">
              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Navigation</p>
           </div>
-          <div className="space-y-1 max-h-[60vh] overflow-y-auto">
-            {SECTIONS.map((s) => (
+          <div className="space-y-1 max-h-[60vh] overflow-y-auto">{SECTIONS.map((s) => (
               <button
                 key={s.id}
                 onClick={() => {
@@ -48,18 +47,15 @@ export function MobileFloatingNav({ activeSection, archetype, className }: Mobil
                   setIsOpen(false);
                 }}
                 className={cn(
-                  "flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm transition-colors",
+                  "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
                   activeSection === s.id
                     ? "bg-primary/10 font-medium text-foreground"
-                    : "text-muted-foreground hover:bg-muted"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
-                <div className={cn(
-                  "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-medium transition-colors",
-                  activeSection === s.id ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
-                )}>
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/20 text-xs text-muted-foreground">
                   {s.number}
-                </div>
+                </span>
                 <span className="truncate">{s.title}</span>
                 {activeSection === s.id && (
                     <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary" />
