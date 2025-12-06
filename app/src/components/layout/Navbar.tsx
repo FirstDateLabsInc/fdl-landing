@@ -3,15 +3,24 @@
 import { useCallback, useEffect, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { navigation } from "@/lib/constants";
 import { cn, smoothScrollToHash } from "@/lib/utils";
 
+const normalizePath = (href: string) => {
+  const url = new URL(href, "http://placeholder");
+  const cleanedPath = url.pathname.replace(/\/$/, "");
+  return cleanedPath === "" ? "/" : cleanedPath;
+};
+
 export function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const normalizedPathname = normalizePath(pathname);
 
   const handleCtaClick = useCallback(
     (event: ReactMouseEvent<HTMLAnchorElement>) => {
@@ -97,7 +106,7 @@ export function Navbar() {
       <nav className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6 md:grid md:grid-cols-[auto_1fr_auto] md:items-center md:gap-6 md:py-3 lg:px-8">
         <div className="flex items-center justify-between">
           <Link
-            href="#hero"
+            href="/#hero"
             className="flex items-center gap-2 text-lg font-semibold tracking-tight text-slate-900 transition-colors hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:outline-none"
             onClick={closeMenu}
           >
@@ -128,16 +137,23 @@ export function Navbar() {
               : "hidden md:flex"
           )}
         >
-          {navigation.links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="transition-colors hover:text-slate-900 focus-visible:text-slate-900 focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:outline-none"
-              onClick={closeMenu}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navigation.links.map((link) => {
+            const isActive = normalizedPathname === normalizePath(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "transition-colors hover:text-slate-900 focus-visible:text-slate-900 focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:outline-none",
+                  isActive && "text-slate-900"
+                )}
+                aria-current={isActive ? "page" : undefined}
+                onClick={closeMenu}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
 
         <div

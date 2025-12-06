@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useSyncExternalStore } from "react";
+import { useRef, useSyncExternalStore, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { RotateCcw, Share2, Sparkles } from "lucide-react";
@@ -115,11 +115,13 @@ export default function QuizResultsPage() {
   };
 
   // Redirect if no results found
-  if (!data) {
-    // Use effect-free redirect by rendering nothing and pushing in next tick
-    if (typeof window !== "undefined") {
+  useEffect(() => {
+    if (!data && typeof window !== "undefined") {
       router.replace("/quiz");
     }
+  }, [data, router]);
+
+  if (!data) {
     return (
       <main className="flex min-h-[calc(100vh-4.5rem)] items-center justify-center">
         <div className="text-center">
@@ -138,12 +140,12 @@ export default function QuizResultsPage() {
 
         {/* Footer CTAs */}
         <div className="mt-12 flex flex-col items-center gap-4 border-t border-slate-200 pt-8 sm:flex-row sm:justify-center">
-          <Button variant="outline" onClick={handleRetake} className="gap-2">
+          <Button variant="secondary" onClick={handleRetake} className="gap-2">
             <RotateCcw className="h-4 w-4" />
             Retake Quiz
           </Button>
 
-          <Button variant="outline" onClick={handleShare} className="gap-2">
+          <Button variant="secondary" onClick={handleShare} className="gap-2">
             <Share2 className="h-4 w-4" />
             Share Results
           </Button>
