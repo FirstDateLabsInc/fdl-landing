@@ -20,9 +20,9 @@ export function QuizStatement({ className, scrollAnchorRef }: QuizStatementProps
         aria-hidden="true"
       />
       {/* MOBILE: Compact row layout (hidden on sm+) */}
-      <div className="flex flex-col gap-3 sm:hidden">
+      <div className="flex flex-col overflow-hidden rounded-lg shadow-sm sm:hidden">
         {/* Step 1 - Compact Row */}
-        <div className="flex items-start gap-3 rounded-lg border-l-4 border-[#4a9bb5] bg-white p-3 shadow-sm">
+        <div className="flex items-start gap-3 border-l-4 border-[#4a9bb5] bg-white p-3">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#e8f4fc]">
             <span className="text-sm font-semibold text-[#4a9bb5]">1</span>
           </div>
@@ -38,7 +38,7 @@ export function QuizStatement({ className, scrollAnchorRef }: QuizStatementProps
         </div>
 
         {/* Step 2 - Compact Row */}
-        <div className="flex items-start gap-3 rounded-lg border-l-4 border-[#4a9b6b] bg-white p-3 shadow-sm">
+        <div className="flex items-start gap-3 border-y border-slate-100 border-l-4 border-l-[#4a9b6b] bg-white p-3">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#e8f5e9]">
             <span className="text-sm font-semibold text-[#4a9b6b]">2</span>
           </div>
@@ -53,7 +53,7 @@ export function QuizStatement({ className, scrollAnchorRef }: QuizStatementProps
         </div>
 
         {/* Step 3 - Compact Row */}
-        <div className="flex items-start gap-3 rounded-lg border-l-4 border-[#9b6bab] bg-white p-3 shadow-sm">
+        <div className="flex items-start gap-3 border-l-4 border-[#9b6bab] bg-white p-3">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#f3e8f5]">
             <span className="text-sm font-semibold text-[#9b6bab]">3</span>
           </div>
