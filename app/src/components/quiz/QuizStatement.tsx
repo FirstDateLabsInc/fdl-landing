@@ -27,9 +27,6 @@ export function QuizStatement({ className, scrollAnchorRef }: QuizStatementProps
             <span className="text-sm font-semibold text-[#4a9bb5]">1</span>
           </div>
           <div className="flex-1">
-            <h3 className="text-sm font-semibold text-slate-900">
-              Complete Quiz
-            </h3>
             <p className="text-xs leading-relaxed text-slate-600">
               Answer honestly. If no romantic experience, imagine behavior with
               family/friends.
@@ -43,9 +40,6 @@ export function QuizStatement({ className, scrollAnchorRef }: QuizStatementProps
             <span className="text-sm font-semibold text-[#4a9b6b]">2</span>
           </div>
           <div className="flex-1">
-            <h3 className="text-sm font-semibold text-slate-900">
-              View Detailed Results
-            </h3>
             <p className="text-xs leading-relaxed text-slate-600">
               Learn and know what your personality in relationship
             </p>
@@ -58,9 +52,6 @@ export function QuizStatement({ className, scrollAnchorRef }: QuizStatementProps
             <span className="text-sm font-semibold text-[#9b6bab]">3</span>
           </div>
           <div className="flex-1">
-            <h3 className="text-sm font-semibold text-slate-900">
-              Unlock Your Potential
-            </h3>
             <p className="text-xs leading-relaxed text-slate-600">
               Want full reports or tips? Download our app for personalized
               insights
