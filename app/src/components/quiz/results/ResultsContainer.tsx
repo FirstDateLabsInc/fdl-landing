@@ -18,7 +18,6 @@ import { MobileFloatingNav } from "./MobileFloatingNav";
 import { cn } from "@/lib/utils";
 import type { QuizResults, AttachmentDimension, CommunicationStyle } from "@/lib/quiz/types";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
-import { Sparkles, History, Scale, ShieldAlert, Target, UserCircle, Heart, Share2 } from "lucide-react";
 
 interface ResultsContainerProps {
   results: QuizResults;
@@ -124,26 +123,19 @@ export function ResultsContainer({
       {/* MAIN CONTENT: 2-column layout */}
       <div className="flex gap-8">
         {/* Left Column: Scrollable Content */}
-        <div className="min-w-0 flex-1 space-y-8">
+        <div className="min-w-0 flex-1 space-y-16">
           {/* Section 1: Pattern Recognition */}
           <motion.div variants={sectionVariants} initial="hidden" animate="visible">
-            <ContentSection 
-              title="The Pattern You Recognize" 
+            <ContentSection
+              title="The Pattern You Recognize"
               id="pattern"
-              eyebrow="THE PATTERN"
-              icon={Sparkles}
-              variant="highlight"
+              eyebrow="The Pattern"
             >
               <div className="space-y-6">
                 <p className="text-lg leading-relaxed text-slate-700">
                   {archetype.patternDescription}
                 </p>
-                <div>
-                  <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-400">
-                    Your Dating Loop
-                  </h3>
-                  <DatingCycleVisual steps={archetype.datingCycle} />
-                </div>
+                <DatingCycleVisual steps={archetype.datingCycle} />
               </div>
             </ContentSection>
           </motion.div>
@@ -155,17 +147,14 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.1 }}
           >
-            <ContentSection 
-              title="Where This Comes From" 
+            <ContentSection
+              title="Where This Comes From"
               id="root-cause"
-              eyebrow="THE ORIGIN"
-              icon={History}
+              eyebrow="The Origin"
             >
-              <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
-                <p className="text-lg leading-relaxed text-slate-700">
-                  {archetype.rootCause}
-                </p>
-              </div>
+              <p className="text-lg leading-relaxed text-slate-600">
+                {archetype.rootCause}
+              </p>
             </ContentSection>
           </motion.div>
 
@@ -176,23 +165,18 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.2 }}
           >
-            <ContentSection 
-              title="What This Means for Dating" 
+            <ContentSection
+              title="What This Means for Dating"
               id="dating-meaning"
-              eyebrow="ANALYSIS"
-              icon={Scale}
+              eyebrow="Analysis"
             >
-              <div className="space-y-8">
-                <div>
-                  <h3 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-green-600">
-                    Your Strengths
-                  </h3>
+              <div className="space-y-10">
+                <div className="space-y-4">
+                  <h3 className="text-sm font-medium text-slate-500">Strengths</h3>
                   <TraitGrid items={archetype.datingMeaning.strengths} type="strength" />
                 </div>
-                <div>
-                  <h3 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-amber-600">
-                    Your Challenges
-                  </h3>
+                <div className="space-y-4">
+                  <h3 className="text-sm font-medium text-slate-500">Challenges</h3>
                   <TraitGrid items={archetype.datingMeaning.challenges} type="challenge" />
                 </div>
               </div>
@@ -206,12 +190,10 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.3 }}
           >
-            <ContentSection 
-              title="When This Goes Wrong" 
+            <ContentSection
+              title="When This Goes Wrong"
               id="red-flags"
-              eyebrow="WARNING SIGNS"
-              icon={ShieldAlert}
-              variant="amber"
+              eyebrow="Warning Signs"
             >
               <RedFlagsList items={archetype.redFlags} />
             </ContentSection>
@@ -224,12 +206,10 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.4 }}
           >
-            <ContentSection 
-              title="Your Coaching Focus" 
+            <ContentSection
+              title="Your Coaching Focus"
               id="coaching"
-              eyebrow="GROWTH PLAN"
-              icon={Target}
-              variant="green"
+              eyebrow="Growth Plan"
             >
               <CoachingFocusList
                 items={archetype.coachingFocus}
@@ -245,12 +225,10 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.5 }}
           >
-            <ContentSection 
-              title="Your Dating Profile" 
+            <ContentSection
+              title="Your Dating Profile"
               id="profile"
-              eyebrow="DEEP DIVE"
-              icon={UserCircle}
-              variant="purple"
+              eyebrow="Deep Dive"
             >
               <div className="space-y-6">
                 <OverallRadarChart results={results} />
@@ -287,12 +265,10 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.6 }}
           >
-            <ContentSection 
-              title="Your Love Languages" 
+            <ContentSection
+              title="Your Love Languages"
               id="love-languages"
-              eyebrow="CONNECTION"
-              icon={Heart}
-              variant="highlight"
+              eyebrow="Connection"
             >
               <LoveLanguageSuggestions loveLanguages={results.loveLanguages} />
             </ContentSection>
@@ -305,9 +281,7 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.7 }}
           >
-            <div className="rounded-2xl bg-white p-5 shadow-soft">
-              <ShareResults shareUrl={shareUrl} archetype={archetype.name} />
-            </div>
+            <ShareResults shareUrl={shareUrl} archetype={archetype.name} />
           </motion.div>
         </div>
 

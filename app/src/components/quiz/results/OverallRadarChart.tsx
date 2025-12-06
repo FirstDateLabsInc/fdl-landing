@@ -168,11 +168,11 @@ export function OverallRadarChart({
   ];
 
   return (
-    <div className={cn("card-base p-5", className)}>
+    <div className={cn("space-y-6", className)}>
       {/* Header */}
-      <div className="mb-2 text-center">
-        <h3 className="text-2xl font-bold text-slate-900">Your Dating Profile</h3>
-        <p className="text-lg text-slate-500">Overall personality overview</p>
+      <div className="space-y-1">
+        <h3 className="text-lg font-semibold text-slate-900">Overall Profile</h3>
+        <p className="text-sm text-slate-500">Your personality overview</p>
       </div>
 
       {/* Chart */}

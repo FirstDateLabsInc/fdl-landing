@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { archetypes } from "@/lib/quiz/archetypes";
 import { ArchetypesGrid } from "@/components/archetypes/ArchetypesGrid";
 
@@ -29,17 +31,17 @@ export default function AllArchetypesPage() {
       <div className="bg-slate-50 py-32 text-center">
         <div className="mx-auto max-w-3xl px-6">
           <h2 className="mb-6 text-4xl font-bold text-slate-900 md:text-5xl">
-            Don't know your archetype?
+            Don&apos;t know your archetype?
           </h2>
           <p className="mb-10 text-xl text-slate-600">
             Take the free 3-minute quiz to discover your pattern and get your personalized roadmap.
           </p>
-          <a
+          <Link
             href="/"
             className="inline-flex h-14 items-center justify-center rounded-full bg-primary px-10 text-lg font-bold text-slate-900 shadow-xl transition-transform hover:scale-105 hover:brightness-105"
           >
             Take the Quiz
-          </a>
+          </Link>
         </div>
       </div>
     </main>

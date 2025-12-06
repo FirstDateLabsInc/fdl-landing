@@ -1,4 +1,3 @@
-import { Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CoachingFocusListProps {
@@ -7,21 +6,27 @@ interface CoachingFocusListProps {
   className?: string;
 }
 
-export function CoachingFocusList({ items, ctaText, className }: CoachingFocusListProps) {
+export function CoachingFocusList({
+  items,
+  ctaText,
+  className,
+}: CoachingFocusListProps) {
   return (
-    <div className={cn("space-y-4", className)}>
-      <ul className="space-y-3">
+    <div className={cn("space-y-8", className)}>
+      <ol className="space-y-4">
         {items.map((item, index) => (
           <li
             key={index}
-            className="flex gap-3 rounded-lg bg-primary/5 p-3"
+            className="flex items-start gap-4 text-base leading-relaxed text-slate-700"
           >
-            <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-            <p className="text-sm text-foreground">{item}</p>
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm font-medium text-slate-600">
+              {index + 1}
+            </span>
+            {item}
           </li>
         ))}
-      </ul>
-      <button className="w-full rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-shadow hover:shadow-hover">
+      </ol>
+      <button className="w-full rounded-lg bg-slate-900 px-6 py-3.5 text-base font-medium text-white transition-colors hover:bg-slate-800">
         {ctaText}
       </button>
     </div>

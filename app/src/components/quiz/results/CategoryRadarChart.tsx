@@ -95,11 +95,11 @@ export function CategoryRadarChart({
   const dataPoints = getPolygonPoints(dimensions.map((d) => d.value));
 
   return (
-    <div className={cn("card-base p-8", className)}>
+    <div className={cn("space-y-6", className)}>
       {/* Header */}
-      <div className="mb-6 text-center">
-        <h3 className="text-2xl font-bold text-slate-900">{title}</h3>
-        {subtitle && <p className="text-lg text-slate-500">{subtitle}</p>}
+      <div className="space-y-1">
+        <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+        {subtitle && <p className="text-sm text-slate-500">{subtitle}</p>}
       </div>
 
       {/* Chart */}
