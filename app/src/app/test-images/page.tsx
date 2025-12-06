@@ -10,17 +10,16 @@ const archetypeImages = [
   { id: "open-book", name: "The Open Book", file: "open-book-puppy.png" },
   { id: "self-aware-alchemist", name: "The Self-Aware Alchemist", file: "self-aware-alchemist-octopus.png" },
   { id: "selfless-giver", name: "The Selfless Giver", file: "selfless-giver-koala.png" },
-  // Add more as they become available:
-  // { id: "golden-partner", name: "The Golden Partner", file: "golden-partner-goldenRetriever.png" },
-  // { id: "gentle-peacekeeper", name: "The Gentle Peacekeeper", file: "gentle-peacekeeper-dove.png" },
-  // { id: "direct-director", name: "The Direct Director", file: "direct-director-gorilla.png" },
-  // { id: "playful-tease", name: "The Playful Tease", file: "playful-tease-fox.png" },
-  // { id: "fiery-pursuer", name: "The Fiery Pursuer", file: "fiery-pursuer-cheetah.png" },
-  // { id: "mind-reader", name: "The Mind Reader", file: "mind-reader-owl.png" },
-  // { id: "solo-voyager", name: "The Solo Voyager", file: "solo-voyager-eagle.png" },
-  // { id: "quiet-ghost", name: "The Quiet Ghost", file: "quiet-ghost-turtle.png" },
-  // { id: "wild-storm", name: "The Wild Storm", file: "wild-storm-bull.png" },
-  // { id: "labyrinth", name: "The Labyrinth", file: "labyrinth-snake.png" },
+  { id: "golden-partner", name: "The Golden Partner", file: "golden-partner-goldenRetriever.png" },
+  { id: "gentle-peacekeeper", name: "The Gentle Peacekeeper", file: "gentle-peacekeeper-dove.png" },
+  { id: "direct-director", name: "The Direct Director", file: "direct-director-gorilla.png" },
+  { id: "playful-tease", name: "The Playful Tease", file: "playful-tease-fox.png" },
+  { id: "fiery-pursuer", name: "The Fiery Pursuer", file: "fiery-pursuer-cheetah.png" },
+  { id: "mind-reader", name: "The Mind Reader", file: "mind-reader-owl.png" },
+  { id: "solo-voyager", name: "The Solo Voyager", file: "solo-voyager-eagle.png" },
+  { id: "quiet-ghost", name: "The Quiet Ghost", file: "quiet-ghost-turtle.png" },
+  { id: "wild-storm", name: "The Wild Storm", file: "wild-storm-bull.png" },
+  { id: "labyrinth", name: "The Labyrinth", file: "labyrinth-snake.png" },
 ];
 
 export default function TestImagesPage() {
@@ -73,13 +72,9 @@ export default function TestImagesPage() {
           ))}
         </div>
 
-        {/* Missing Images Notice */}
-        <div className="mt-8 rounded-lg border border-amber-200 bg-amber-50 p-4">
-          <p className="font-medium text-amber-800">Missing Images (10 of 16):</p>
-          <p className="mt-1 text-sm text-amber-700">
-            golden-partner, gentle-peacekeeper, direct-director, playful-tease,
-            fiery-pursuer, mind-reader, solo-voyager, quiet-ghost, wild-storm, labyrinth
-          </p>
+        {/* All 16 Images Complete */}
+        <div className="mt-8 rounded-lg border border-green-200 bg-green-50 p-4">
+          <p className="font-medium text-green-800">✓ All 16 archetype images loaded</p>
         </div>
 
         {/* Delete Reminder */}
