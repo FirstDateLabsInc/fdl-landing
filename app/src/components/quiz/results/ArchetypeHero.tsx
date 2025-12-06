@@ -65,14 +65,14 @@ export function ArchetypeHero({ archetype, results, className }: ArchetypeHeroPr
             <span className="text-sm font-medium text-slate-500">
               Your Archetype
             </span>
-            <h1 className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+            <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
               {archetype.name}
             </h1>
           </motion.div>
 
           <motion.p
             variants={itemVariants}
-            className="mx-auto max-w-xl text-lg leading-relaxed text-slate-600 lg:mx-0"
+            className="text-base leading-relaxed text-slate-600 sm:text-lg"
           >
             {archetype.summary}
           </motion.p>

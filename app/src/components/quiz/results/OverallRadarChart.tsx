@@ -179,7 +179,7 @@ export function OverallRadarChart({
       <div className="flex items-center justify-center">
         <svg
           viewBox={`0 0 ${SIZE} ${SIZE}`}
-          className="h-72 w-72 sm:h-80 sm:w-80"
+          className="h-64 w-64 max-w-full sm:h-72 sm:w-72 md:h-80 md:w-80"
           role="img"
           aria-label="Radar chart showing overall dating profile"
         >
