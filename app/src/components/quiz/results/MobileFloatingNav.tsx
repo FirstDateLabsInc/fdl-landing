@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { Menu, X, ChevronUp } from "lucide-react";
+import { X, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SECTIONS } from "./ResultsNavSidebar";
-import Image from "next/image";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
 
 interface MobileFloatingNavProps {
@@ -73,33 +72,22 @@ export function MobileFloatingNav({ activeSection, archetype, className }: Mobil
         {/* Floating Pill Toggle */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex w-full items-center justify-between rounded-2xl bg-white p-2 pl-3 shadow-[0_8px_30px_rgb(0,0,0,0.12)] ring-1 ring-black/5 active:scale-[0.98] transition-all duration-150"
+          className="flex w-auto items-center gap-3 rounded-full bg-white p-2 pr-4 shadow-[0_8px_30px_rgb(0,0,0,0.12)] ring-1 ring-black/5 active:scale-[0.98] transition-all duration-150 mx-auto"
         >
-          <div className="flex items-center gap-3">
-             <div className="h-10 w-10 overflow-hidden rounded-xl bg-gray-100 shrink-0">
-                <Image
-                    src={archetype.image}
-                    alt={archetype.name}
-                    width={40}
-                    height={40}
-                    className="h-full w-full object-cover"
-                />
-             </div>
-             <div className="text-left">
-                <p className="text-xs text-muted-foreground font-medium">Your Archetype</p>
-                <p className="text-sm font-bold text-foreground leading-tight">{archetype.name}</p>
-             </div>
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100/50 text-2xl">
+            {archetype.emoji}
           </div>
           
           <div className={cn(
-            "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
+            "flex h-8 w-8 items-center justify-center rounded-full transition-colors",
             isOpen ? "bg-muted text-foreground" : "bg-transparent text-muted-foreground"
           )}>
-            {isOpen ? (
-              <ChevronUp className="h-5 w-5 rotate-180 transition-transform duration-200" />
-            ) : (
-               <Menu className="h-5 w-5" />
-            )}
+            <ChevronUp 
+              className={cn(
+                "h-5 w-5 transition-transform duration-200", 
+                isOpen ? "rotate-180" : "rotate-0"
+              )} 
+            />
           </div>
         </button>
       </div>
