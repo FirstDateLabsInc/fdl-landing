@@ -167,10 +167,10 @@ export function CategoryRadarChart({
       </div>
 
       {/* Chart */}
-      <div className="flex items-center justify-center py-4">
+      <div className="flex items-center justify-center py-4 overflow-hidden">
         <svg
           viewBox={`0 0 ${SIZE} ${SIZE}`}
-          className="h-96 w-96 sm:h-[26rem] sm:w-[26rem]"
+          className="w-full max-w-[320px] sm:max-w-[26rem] aspect-square"
           role="img"
           aria-label={`Radar chart showing ${title}`}
         >
@@ -330,4 +330,3 @@ export function CategoryRadarChart({
     </div>
   );
 }
-
