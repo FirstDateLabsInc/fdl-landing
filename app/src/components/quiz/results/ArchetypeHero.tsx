@@ -5,14 +5,17 @@ import { motion, useReducedMotion, type Variants } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import cloudflareLoader from "@/lib/cloudflare-image-loader";
+import { OverallRadarChart } from "./OverallRadarChart";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import type { QuizResults } from "@/lib/quiz/types";
 
 interface ArchetypeHeroProps {
   archetype: ArchetypeDefinition;
+  results: QuizResults;
   className?: string;
 }
 
-export function ArchetypeHero({ archetype, className }: ArchetypeHeroProps) {
+export function ArchetypeHero({ archetype, results, className }: ArchetypeHeroProps) {
   const prefersReducedMotion = useReducedMotion();
 
   const containerVariants: Variants = {
@@ -55,7 +58,7 @@ export function ArchetypeHero({ archetype, className }: ArchetypeHeroProps) {
       initial="hidden"
       animate="visible"
     >
-      <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
+      <div className="grid items-center gap-8 lg:grid-cols-3 lg:gap-10">
         {/* Left: Text Content */}
         <div className="space-y-6 text-center lg:text-left">
           <motion.div variants={itemVariants} className="space-y-2">
@@ -75,22 +78,34 @@ export function ArchetypeHero({ archetype, className }: ArchetypeHeroProps) {
           </motion.p>
         </div>
 
-        {/* Right: Character Image */}
+        {/* Center: Character Image */}
         <motion.div
-          className="relative mx-auto w-full max-w-sm lg:max-w-md"
+          className="relative mx-auto w-full max-w-xs lg:max-w-sm"
           variants={imageVariants}
         >
-          <div className="aspect-[3/4] relative">
+          <div className="aspect-3/4 relative">
             <Image
               src={archetype.image}
               alt={archetype.name}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 300px"
               className="object-contain"
               loader={cloudflareLoader}
               priority
             />
           </div>
+        </motion.div>
+
+        {/* Right: Overall Radar Chart */}
+        <motion.div
+          className="flex items-center justify-center"
+          variants={itemVariants}
+        >
+          <OverallRadarChart
+            results={results}
+            animated={true}
+            className="[&>div:last-child]:hidden"
+          />
         </motion.div>
       </div>
     </motion.div>

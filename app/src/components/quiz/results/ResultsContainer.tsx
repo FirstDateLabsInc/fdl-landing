@@ -5,7 +5,6 @@ import { motion, useReducedMotion } from "motion/react";
 
 import { ArchetypeHero } from "./ArchetypeHero";
 import { CategoryRadarChart } from "./CategoryRadarChart";
-import { OverallRadarChart } from "./OverallRadarChart";
 import { LoveLanguageSuggestions } from "./LoveLanguageSuggestions";
 import { ShareResults } from "./ShareResults";
 import { ContentSection } from "./ContentSection";
@@ -117,7 +116,7 @@ export function ResultsContainer({
         animate="visible"
         className="mb-8"
       >
-        <ArchetypeHero archetype={archetype} />
+        <ArchetypeHero archetype={archetype} results={results} />
       </motion.section>
 
       {/* MAIN CONTENT: 2-column layout */}
@@ -230,30 +229,27 @@ export function ResultsContainer({
               id="profile"
               eyebrow="Deep Dive"
             >
-              <div className="space-y-6">
-                <OverallRadarChart results={results} />
-                <div className="grid gap-6 sm:grid-cols-2">
-                  <CategoryRadarChart
-                    title="Attachment Style"
-                    subtitle="How you connect emotionally"
-                    dimensions={attachmentDimensions}
-                    primaryLabel="Primary"
-                    primaryStyles={results.attachment.primary}
-                    mixedLabel="Mixed"
-                    accentColor="var(--secondary)"
-                    fillColor="var(--primary)"
-                  />
-                  <CategoryRadarChart
-                    title="Communication Style"
-                    subtitle="How you express yourself"
-                    dimensions={communicationDimensions}
-                    primaryLabel="Primary"
-                    primaryStyles={results.communication.primary}
-                    mixedLabel="Mixed"
-                    accentColor="var(--chart-2)"
-                    fillColor="var(--chart-3)"
-                  />
-                </div>
+              <div className="grid gap-6 sm:grid-cols-2">
+                <CategoryRadarChart
+                  title="Attachment Style"
+                  subtitle="How you connect emotionally"
+                  dimensions={attachmentDimensions}
+                  primaryLabel="Primary"
+                  primaryStyles={results.attachment.primary}
+                  mixedLabel="Mixed"
+                  accentColor="var(--secondary)"
+                  fillColor="var(--primary)"
+                />
+                <CategoryRadarChart
+                  title="Communication Style"
+                  subtitle="How you express yourself"
+                  dimensions={communicationDimensions}
+                  primaryLabel="Primary"
+                  primaryStyles={results.communication.primary}
+                  mixedLabel="Mixed"
+                  accentColor="var(--chart-2)"
+                  fillColor="var(--chart-3)"
+                />
               </div>
             </ContentSection>
           </motion.div>
@@ -281,7 +277,9 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.7 }}
           >
-            <ShareResults shareUrl={shareUrl} archetype={archetype.name} />
+            <div className="rounded-2xl bg-white p-6 shadow-sm">
+              <ShareResults shareUrl={shareUrl} archetype={archetype.name} />
+            </div>
           </motion.div>
         </div>
 
