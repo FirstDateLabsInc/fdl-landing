@@ -12,8 +12,58 @@ interface QuizStatementProps {
 export function QuizStatement({ className }: QuizStatementProps) {
   return (
     <div className={cn("w-full", className)}>
-      {/* 3-Step Cards - MBTI Style with larger illustrations */}
-      <div className="grid gap-4 sm:grid-cols-3 sm:gap-6">
+      {/* MOBILE: Compact row layout (hidden on sm+) */}
+      <div className="flex flex-col gap-3 sm:hidden">
+        {/* Step 1 - Compact Row */}
+        <div className="flex items-start gap-3 rounded-lg border-l-4 border-[#4a9bb5] bg-white p-3 shadow-sm">
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#e8f4fc]">
+            <span className="text-sm font-semibold text-[#4a9bb5]">1</span>
+          </div>
+          <div className="flex-1">
+            <h3 className="text-sm font-semibold text-slate-900">
+              Complete Quiz
+            </h3>
+            <p className="text-xs leading-relaxed text-slate-600">
+              Answer honestly. If no romantic experience, imagine behavior with
+              family/friends.
+            </p>
+          </div>
+        </div>
+
+        {/* Step 2 - Compact Row */}
+        <div className="flex items-start gap-3 rounded-lg border-l-4 border-[#4a9b6b] bg-white p-3 shadow-sm">
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#e8f5e9]">
+            <span className="text-sm font-semibold text-[#4a9b6b]">2</span>
+          </div>
+          <div className="flex-1">
+            <h3 className="text-sm font-semibold text-slate-900">
+              View Detailed Results
+            </h3>
+            <p className="text-xs leading-relaxed text-slate-600">
+              Learn and know what your personality in relationship
+            </p>
+          </div>
+        </div>
+
+        {/* Step 3 - Compact Row */}
+        <div className="flex items-start gap-3 rounded-lg border-l-4 border-[#9b6bab] bg-white p-3 shadow-sm">
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#f3e8f5]">
+            <span className="text-sm font-semibold text-[#9b6bab]">3</span>
+          </div>
+          <div className="flex-1">
+            <h3 className="text-sm font-semibold text-slate-900">
+              Unlock Your Potential
+            </h3>
+            <p className="text-xs leading-relaxed text-slate-600">
+              Want full reports or tips? Download our app for personalized
+              insights
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* DESKTOP: 3-Step Cards with larger illustrations (hidden on mobile) */}
+      <div className="hidden sm:grid sm:grid-cols-3 sm:gap-6">
         {/* Step 1: Complete Quiz */}
         <div className="group overflow-hidden rounded-xl border border-[#b8ddef]/30 bg-white shadow-sm transition-all hover:shadow-md">
           {/* Illustration Area */}
