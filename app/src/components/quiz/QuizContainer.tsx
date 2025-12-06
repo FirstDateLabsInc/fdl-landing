@@ -101,20 +101,18 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
             transition={{ duration: 0.3 }}
             className="w-full space-y-8"
           >
-            {currentPageQuestions.map((question, index) => {
-              const isAnswered = responses[question.id] !== undefined && responses[question.id] !== null;
-              // Check if any previous question on this page is answered (for shadow effect)
-              const hasPreviousAnswered = currentPageQuestions
-                .slice(0, index)
-                .some(q => responses[q.id] !== undefined && responses[q.id] !== null);
-
-              return (
+            {/* Find the first unanswered question on this page (O(n) single pass) */}
+            {(() => {
+              const firstUnansweredIndex = currentPageQuestions.findIndex(
+                q => responses[q.id] === undefined || responses[q.id] === null
+              );
+              return currentPageQuestions.map((question, index) => (
                 <div
                   key={question.id}
                   className={cn(
                     "w-full transition-opacity duration-300",
-                    // Add shadow/dim effect if previous question answered but this one isn't
-                    !isAnswered && hasPreviousAnswered && "opacity-40"
+                    // Dim all questions except the first unanswered (current focus)
+                    firstUnansweredIndex !== -1 && index !== firstUnansweredIndex && "opacity-40"
                   )}
                 >
                   <QuizQuestion
@@ -127,8 +125,8 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
                     <div className="my-8 border-b border-slate-200" />
                   )}
                 </div>
-              );
-            })}
+              ));
+            })()}
           </motion.div>
         </AnimatePresence>
       </div>
