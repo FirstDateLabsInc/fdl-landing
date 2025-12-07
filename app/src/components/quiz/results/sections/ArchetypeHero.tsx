@@ -5,7 +5,7 @@ import { motion, useReducedMotion, type Variants } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import cloudflareLoader from "@/lib/cloudflare-image-loader";
-import { OverallRadarChart } from "./OverallRadarChart";
+import { OverallRadarChart } from "../charts/OverallRadarChart";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
 import type { QuizResults } from "@/lib/quiz/types";
 

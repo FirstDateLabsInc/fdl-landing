@@ -3,15 +3,15 @@
 import { useMemo, useState, useEffect } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
-import { ArchetypeHero } from "./ArchetypeHero";
-import { CategoryRadarChart } from "./CategoryRadarChart";
-import { LoveLanguageSuggestions } from "./LoveLanguageSuggestions";
-import { ShareResults } from "./ShareResults";
+import { ArchetypeHero } from "../sections/ArchetypeHero";
+import { CategoryRadarChart } from "../charts/CategoryRadarChart";
+import { LoveLanguageSuggestions } from "../sections/LoveLanguageSuggestions";
+import { ShareResults } from "../sections/ShareResults";
 import { ContentSection } from "./ContentSection";
-import { TraitGrid } from "./TraitGrid";
-import { DatingCycleVisual } from "./DatingCycleVisual";
-import { RedFlagsList } from "./RedFlagsList";
-import { CoachingFocusList } from "./CoachingFocusList";
+import { TraitGrid } from "../sections/TraitGrid";
+import { DatingCycleVisual } from "../sections/DatingCycleVisual";
+import { RedFlagsList } from "../sections/RedFlagsList";
+import { CoachingFocusList } from "../sections/CoachingFocusList";
 import { ResultsNavSidebar, SECTIONS } from "./ResultsNavSidebar";
 import { MobileFloatingNav } from "./MobileFloatingNav";
 import { cn } from "@/lib/utils";
