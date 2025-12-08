@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useCallback, useEffect, useMemo } from "react";
-import type { QuizResponse, QuizQuestion } from "@/lib/quiz/types";
+import type { AnswerState, QuizResponse, QuizQuestion } from "@/lib/quiz/types";
 import { allQuestions, getSectionForQuestion } from "@/lib/quiz/questions";
+import { toQuizResponses } from "@/lib/quiz/utils/answer-transform";
 
 // ============================================================================
 // TYPES
@@ -13,12 +14,12 @@ interface QuizState {
   startedAt: number;
   currentPage: number;
   shuffledQuestionIds: string[];
-  responses: Record<string, number | string>;
+  responses: AnswerState;
 }
 
 interface UseQuizReturn {
   state: QuizState;
-  responses: Record<string, number | string>;
+  responses: AnswerState;
   currentPageQuestions: QuizQuestion[];
   currentPage: number;
   totalPages: number;
@@ -100,7 +101,38 @@ function loadFromStorage(): QuizState | null {
       return null;
     }
 
-    return parsed as QuizState;
+    // Migrate legacy response map (number|string) into structured AnswerState
+    const legacyResponses = parsed.responses as Record<string, unknown>;
+    const responses: AnswerState = {};
+    for (const [questionId, value] of Object.entries(legacyResponses)) {
+      if (typeof value === "object" && value !== null && "value" in value) {
+        const obj = value as { value?: number; selectedKey?: string; timestamp?: number };
+        if (typeof obj.value === "number" && typeof obj.timestamp === "number") {
+          responses[questionId] = {
+            value: obj.value,
+            selectedKey: typeof obj.selectedKey === "string" ? obj.selectedKey : undefined,
+            timestamp: obj.timestamp,
+          };
+          continue;
+        }
+      }
+
+      if (typeof value === "number" || typeof value === "string") {
+        responses[questionId] = {
+          value: typeof value === "number" ? value : 0,
+          selectedKey: typeof value === "string" ? value : undefined,
+          timestamp: Date.now(),
+        };
+      }
+    }
+
+    return {
+      sessionId: parsed.sessionId,
+      startedAt: parsed.startedAt,
+      currentPage: parsed.currentPage,
+      shuffledQuestionIds: parsed.shuffledQuestionIds,
+      responses,
+    };
   } catch {
     // Clear corrupted data
     try {
@@ -162,11 +194,16 @@ export function useQuiz(resume = true): UseQuizReturn {
   // Response handlers
   const setResponse = useCallback(
     (questionId: string, value: number | string) => {
+      // O(1) write: overwrite the question entry with a fully-typed answer object
       setState((prev) => ({
         ...prev,
         responses: {
           ...prev.responses,
-          [questionId]: value,
+          [questionId]: {
+            value: typeof value === "number" ? value : 0,
+            selectedKey: typeof value === "string" ? value : undefined,
+            timestamp: Date.now(),
+          },
         },
       }));
     },
@@ -246,11 +283,5 @@ export function getQuizResponses(): QuizResponse[] | null {
   const state = loadFromStorage();
   if (!state) return null;
 
-  const now = Date.now();
-  return Object.entries(state.responses).map(([questionId, value]) => ({
-    questionId,
-    value: typeof value === "number" ? value : 0,
-    selectedKey: typeof value === "string" ? value : undefined,
-    timestamp: now,
-  }));
+  return toQuizResponses(state.responses);
 }

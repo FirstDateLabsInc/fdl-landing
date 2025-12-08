@@ -14,6 +14,7 @@ import type {
   IntimacyResult,
   LoveLanguageResult,
   LoveLanguage,
+  AnswerState,
 } from './types';
 import { getQuestionById, allQuestions } from './questions';
 
@@ -381,11 +382,24 @@ export function getResponseMap(responses: QuizResponse[]): Record<string, number
 /**
  * Convert response map to QuizResponse array
  */
+// Accept both legacy response maps and the new AnswerState for compatibility
 export function mapToResponses(
-  responseMap: Record<string, number | string>
+  responseMap: Record<string, number | string> | AnswerState
 ): QuizResponse[] {
   const now = Date.now();
   return Object.entries(responseMap).map(([questionId, value]) => {
+    // New shape: QuizAnswer object
+    if (typeof value === 'object' && value !== null && 'value' in value) {
+      const answer = value as { value: number; selectedKey?: string; timestamp?: number };
+      return {
+        questionId,
+        value: answer.value,
+        selectedKey: answer.selectedKey,
+        timestamp: answer.timestamp ?? now,
+      };
+    }
+
+    // Legacy map shape: number | string
     const question = getQuestionById(questionId);
     if (question?.type === 'scenario' && typeof value === 'string') {
       return {

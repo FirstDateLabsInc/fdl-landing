@@ -118,6 +118,24 @@ export interface QuizResponse {
   timestamp: number;
 }
 
+// Map-based frontend answer state (questionId → answer)
+export interface QuizAnswer {
+  value: number;
+  timestamp: number;
+  selectedKey?: string;
+}
+
+export type AnswerState = Record<string, QuizAnswer>;
+
+// Compressed DB-friendly shape
+export interface DBAnswerEntry {
+  v: number; // value
+  t: number; // timestamp
+  k?: string; // selectedKey
+}
+
+export type DBAnswerMap = Record<string, DBAnswerEntry>;
+
 /** Quiz session state */
 export interface QuizSession {
   /** Unique session ID */

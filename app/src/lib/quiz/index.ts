@@ -40,3 +40,6 @@ export {
   toArchetype,
   type ArchetypeDefinition,
 } from './archetypes';
+
+// DB score shape (metrics only)
+export type { DBScores } from './types-db';
