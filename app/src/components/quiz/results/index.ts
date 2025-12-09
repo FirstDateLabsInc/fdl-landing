@@ -5,7 +5,6 @@ export { ResultsNavSidebar, SECTIONS } from "./layout/ResultsNavSidebar";
 export { MobileFloatingNav } from "./layout/MobileFloatingNav";
 
 // Charts
-export { RadarChart } from "./charts/RadarChart";
 export { CategoryRadarChart } from "./charts/CategoryRadarChart";
 export { OverallRadarChart } from "./charts/OverallRadarChart";
 export { GradientProgressBar } from "./charts/GradientProgressBar";

@@ -92,8 +92,10 @@ CREATE TABLE public.quiz_results (
     archetype_slug TEXT NOT NULL,
     scores JSONB NOT NULL CHECK (jsonb_typeof(scores) = 'object'),
     answers JSONB NOT NULL CHECK (jsonb_typeof(answers) = 'object'),
-    primary_attachment TEXT GENERATED ALWAYS AS (
-        scores->'attachment'->>'primary'
+    -- JSONB preserves array structure for ties like ["anxious", "avoidant"]
+    -- Use -> (not ->>) to keep JSONB type instead of extracting as TEXT
+    primary_attachment JSONB GENERATED ALWAYS AS (
+        scores->'attachment'->'primary'
     ) STORED,
     
     -- ANALYTICS & ATTRIBUTION
@@ -141,7 +143,11 @@ CREATE INDEX idx_results_fingerprint ON quiz_results(fingerprint_hash)
 CREATE INDEX idx_results_unclaimed_email ON quiz_results(lower(email)) 
     WHERE user_id IS NULL AND email IS NOT NULL;
 
-CREATE INDEX idx_results_attachment ON quiz_results(primary_attachment)
+-- GIN index for JSONB enables efficient containment queries:
+--   WHERE primary_attachment ? 'anxious'  (contains element)
+--   WHERE primary_attachment @> '"secure"' (matches value)
+CREATE INDEX idx_results_attachment ON quiz_results
+    USING GIN (primary_attachment)
     WHERE primary_attachment IS NOT NULL;
 
 CREATE INDEX idx_results_archetype ON quiz_results(archetype_slug);
