@@ -1,0 +1,117 @@
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { getSupabaseServer } from "@/lib/supabase/server";
+import { scoreQuizFromAnswers } from "@/lib/quiz/server/score-quiz";
+import type { SubmitQuizResponse } from "@/lib/api/quiz";
+
+// Zod schema for request validation
+const DBAnswerEntrySchema = z.object({
+  v: z.number().min(1).max(5), // Likert scale value
+  t: z.number().positive(), // timestamp
+  k: z.string().optional(), // selectedKey
+});
+
+const SubmitQuizSchema = z.object({
+  sessionId: z.string().min(1),
+  fingerprintHash: z.string().min(1),
+  answers: z.record(z.string(), DBAnswerEntrySchema),
+  email: z.string().email().optional(),
+  idempotencyKey: z.string().optional(),
+  durationSeconds: z.number().positive().optional(),
+  // UTM tracking fields
+  utmSource: z.string().optional(),
+  utmMedium: z.string().optional(),
+  utmCampaign: z.string().optional(),
+});
+
+export async function POST(
+  request: NextRequest
+): Promise<NextResponse<SubmitQuizResponse>> {
+  try {
+    const rawBody = await request.json();
+    const parsed = SubmitQuizSchema.safeParse(rawBody);
+
+    if (!parsed.success) {
+      console.error("Validation error:", parsed.error.flatten());
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid request payload",
+          errorCode: "VALIDATION_ERROR",
+        },
+        { status: 400 }
+      );
+    }
+
+    const {
+      sessionId,
+      fingerprintHash,
+      answers,
+      email,
+      durationSeconds,
+      idempotencyKey,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+    } = parsed.data;
+
+    // 1. Score quiz server-side
+    const { results, archetypeSlug, confidence, isBalanced } =
+      scoreQuizFromAnswers(answers);
+
+    // 2. Persist to Supabase using service role (bypasses RLS)
+    // RPC validates session internally and returns result UUID
+    const supabase = getSupabaseServer();
+    const { data: resultId, error } = await supabase.rpc("insert_quiz_result", {
+      p_session_id: sessionId,
+      p_archetype_slug: archetypeSlug,
+      p_scores: results,
+      p_answers: answers,
+      p_fingerprint_hash: fingerprintHash || null,
+      p_email: email || null,
+      p_duration_seconds: durationSeconds || null,
+      p_idempotency_key: idempotencyKey || null,
+      p_utm_source: utmSource || null,
+      p_utm_medium: utmMedium || null,
+      p_utm_campaign: utmCampaign || null,
+    });
+
+    if (error) {
+      console.error("Supabase error:", error);
+      // Map Postgres error codes to API error codes
+      const errorCode =
+        error.code === "P0001"
+          ? "INVALID_SESSION"
+          : error.code === "P0002"
+            ? "FINGERPRINT_MISMATCH"
+            : "DATABASE_ERROR";
+      return NextResponse.json(
+        {
+          success: false,
+          error: error.message,
+          errorCode,
+        },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      resultId,
+      archetypeSlug,
+      scores: results,
+      confidence,
+      isBalanced,
+    });
+  } catch (err) {
+    console.error("Quiz submission error:", err);
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Internal server error",
+        errorCode: "INTERNAL_ERROR",
+      },
+      { status: 500 }
+    );
+  }
+}

@@ -19,6 +19,8 @@ export interface TrackingParams {
   utmMedium?: string;
   /** UTM campaign parameter */
   utmCampaign?: string;
+  /** Document referrer URL */
+  referrer?: string;
 }
 
 // ============================================================================

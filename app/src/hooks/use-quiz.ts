@@ -24,6 +24,7 @@ interface UseQuizReturn {
   currentPage: number;
   totalPages: number;
   setResponse: (questionId: string, value: number | string) => void;
+  setSessionId: (serverSessionId: string) => void;
   goToNext: () => void;
   goToPrevious: () => void;
   canGoNext: boolean;
@@ -249,6 +250,14 @@ export function useQuiz(resume = true): UseQuizReturn {
     setState(createInitialState());
   }, []);
 
+  // Update sessionId with server-validated value
+  const setSessionId = useCallback((serverSessionId: string) => {
+    setState((prev) => ({
+      ...prev,
+      sessionId: serverSessionId,
+    }));
+  }, []);
+
   return {
     state,
     responses: state.responses,
@@ -256,6 +265,7 @@ export function useQuiz(resume = true): UseQuizReturn {
     currentPage: state.currentPage,
     totalPages: TOTAL_PAGES,
     setResponse,
+    setSessionId,
     goToNext,
     goToPrevious,
     canGoNext,

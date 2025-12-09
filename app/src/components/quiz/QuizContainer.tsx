@@ -10,11 +10,7 @@ import { QuizStatement } from "./QuizStatement";
 import { useQuiz } from "@/hooks/use-quiz";
 import { serializeAnswers } from "@/lib/quiz/utils/answer-transform";
 import { getArchetypeById } from "@/lib/quiz/data/archetypes";
-import {
-  calculateAllResults,
-  mapToResponses,
-  getArchetype,
-} from "@/lib/quiz";
+import { generateFingerprintHash } from "@/lib/fingerprint";
 import type { QuizResults } from "@/lib/quiz/types";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
 import type {
@@ -34,6 +30,7 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
     currentPage,
     totalPages,
     setResponse,
+    setSessionId,
     goToNext,
     goToPrevious,
     canGoNext,
@@ -45,6 +42,43 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
   } = useQuiz();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [fingerprint, setFingerprint] = useState<string>("");
+  const sessionInitRef = useRef(false);
+
+  // Generate fingerprint and validate session on mount (runs once)
+  useEffect(() => {
+    if (sessionInitRef.current) return;
+    sessionInitRef.current = true;
+
+    async function initSession() {
+      try {
+        const fp = await generateFingerprintHash();
+        setFingerprint(fp);
+
+        // Validate session with server (pass existing client sessionId for resume)
+        const res = await fetch("/api/quiz/session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fingerprintHash: fp,
+            existingSessionId: state.sessionId,
+          }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.sessionId) {
+            setSessionId(data.sessionId);
+          }
+        }
+      } catch (err) {
+        console.error("Session initialization failed:", err);
+        // Continue with client-generated sessionId as fallback
+      }
+    }
+    initSession();
+  }, [state.sessionId, setSessionId]);
 
   // Ref for the progress bar section to enable auto-scroll
   const progressRef = useRef<HTMLDivElement>(null);
@@ -88,13 +122,15 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
 
   const handleSubmit = useCallback(async () => {
     setIsSubmitting(true);
+    setSubmitError(null);
     try {
       // Serialize answers for server-side scoring
       const answerMap = serializeAnswers(responses);
       const payload: SubmitQuizRequest = {
         sessionId: state.sessionId,
-        fingerprintHash: "",
+        fingerprintHash: fingerprint,
         answers: answerMap,
+        idempotencyKey: crypto.randomUUID(),
       };
 
       const res = await fetch("/api/quiz/complete", {
@@ -103,10 +139,12 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
         body: JSON.stringify(payload),
       });
 
-      let serverData: SubmitQuizResponse | null = null;
-      if (res.ok) {
-        serverData = (await res.json()) as SubmitQuizResponse;
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || "Server error");
       }
+
+      const serverData = (await res.json()) as SubmitQuizResponse;
 
       if (serverData?.scores && serverData.archetypeSlug) {
         const archetype = getArchetypeById(serverData.archetypeSlug);
@@ -117,18 +155,19 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
         }
       }
 
-      // Fallback: if server response missing or invalid, do nothing to avoid crashing UI
-      const responseArray = mapToResponses(responses);
-      const results = calculateAllResults(responseArray);
-      const archetype = getArchetype(results);
-      clearProgress();
-      onComplete(results, archetype);
+      // Server returned invalid data
+      throw new Error("Invalid server response");
     } catch (err) {
       console.error("Quiz submission failed", err);
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again."
+      );
     } finally {
       setIsSubmitting(false);
     }
-  }, [responses, state.sessionId, clearProgress, onComplete]);
+  }, [responses, state.sessionId, fingerprint, clearProgress, onComplete]);
 
   return (
     <div className="mx-auto flex min-h-[calc(100vh-4.5rem)] w-full max-w-6xl flex-col px-4 py-8 sm:px-6 lg:px-8">
@@ -188,6 +227,12 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {submitError && (
+        <div className="mb-4 rounded-lg bg-red-50 p-4 text-center text-sm text-red-600">
+          {submitError}
+        </div>
+      )}
 
       <QuizNavigation
         canGoBack={canGoPrevious}

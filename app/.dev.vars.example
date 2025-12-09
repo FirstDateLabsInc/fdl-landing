@@ -1,0 +1,6 @@
+# Cloudflare Workers local development secrets
+# Copy this file to .dev.vars and fill in your values
+# NEVER commit .dev.vars to version control
+
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
