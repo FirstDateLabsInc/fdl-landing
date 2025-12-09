@@ -84,11 +84,8 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
     // Calculate results
     const results = calculateAllResults(responseArray);
 
-    // Determine archetype from attachment × communication matrix
-    const archetype = getArchetype(
-      results.attachment.primary,
-      results.communication.primary
-    );
+    // Determine archetype using joint probability algorithm
+    const archetype = getArchetype(results);
 
     // Clear quiz progress from localStorage
     clearProgress();

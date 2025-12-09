@@ -1,44 +1,24 @@
-import type {
-  Archetype,
-  AttachmentDimension,
-  CommunicationStyle,
-} from "../../types";
+import type { Archetype, QuizResults } from "../../types";
 import type { ArchetypeDefinition } from "./types";
 import { archetypes } from "./definitions";
-import { ARCHETYPE_MATRIX } from "./matrix";
+import { getArchetypeByProbability } from "./joint-probability";
 
-function findArchetype(id: string): ArchetypeDefinition {
-  const archetype = archetypes.find((a) => a.id === id);
-  if (!archetype) {
-    return archetypes[0];
-  }
-  return archetype;
-}
+// Re-export for consumers who need confidence/balanced info
+export {
+  computeArchetypeByProbability,
+  type ArchetypeResult,
+} from "./joint-probability";
 
-export function getArchetype(
-  attachment: AttachmentDimension | AttachmentDimension[] | "mixed",
-  communication: CommunicationStyle | CommunicationStyle[] | "mixed"
-): ArchetypeDefinition {
-  let attachmentKey: AttachmentDimension;
-  if (Array.isArray(attachment)) {
-    attachmentKey = attachment[0] ?? "secure";
-  } else if (attachment === "mixed") {
-    attachmentKey = "secure";
-  } else {
-    attachmentKey = attachment;
-  }
-
-  let communicationKey: CommunicationStyle;
-  if (Array.isArray(communication)) {
-    communicationKey = communication[0] ?? "assertive";
-  } else if (communication === "mixed") {
-    communicationKey = "assertive";
-  } else {
-    communicationKey = communication;
-  }
-
-  const id = ARCHETYPE_MATRIX[attachmentKey][communicationKey];
-  return findArchetype(id);
+/**
+ * Get archetype from quiz results using joint probability algorithm.
+ *
+ * Uses P(attachment) × P(communication) to find the most probable archetype
+ * cell, with epsilon-based tie-breaking for deterministic results.
+ *
+ * For confidence/balanced info, use computeArchetypeByProbability() directly.
+ */
+export function getArchetype(results: QuizResults): ArchetypeDefinition {
+  return getArchetypeByProbability(results);
 }
 
 export function getArchetypeById(id: string): ArchetypeDefinition | undefined {

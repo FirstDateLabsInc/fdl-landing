@@ -6,4 +6,6 @@ export {
   getArchetypeById,
   getAllArchetypes,
   toArchetype,
+  computeArchetypeByProbability,
+  type ArchetypeResult,
 } from "./selectors";
