@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useEffect } from "react";
+import { useCallback, useRef, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { QuizProgress } from "./QuizProgress";
@@ -8,6 +8,8 @@ import { QuizQuestion } from "./QuizQuestion";
 import { QuizNavigation } from "./QuizNavigation";
 import { QuizStatement } from "./QuizStatement";
 import { useQuiz } from "@/hooks/use-quiz";
+import { serializeAnswers } from "@/lib/quiz/utils/answer-transform";
+import { getArchetypeById } from "@/lib/quiz/data/archetypes";
 import {
   calculateAllResults,
   mapToResponses,
@@ -15,6 +17,10 @@ import {
 } from "@/lib/quiz";
 import type { QuizResults } from "@/lib/quiz/types";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import type {
+  SubmitQuizRequest,
+  SubmitQuizResponse,
+} from "@/lib/api/quiz";
 import { cn } from "@/lib/utils";
 
 interface QuizContainerProps {
@@ -35,7 +41,10 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
     isLastPage,
     progress,
     clearProgress,
+    state,
   } = useQuiz();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Ref for the progress bar section to enable auto-scroll
   const progressRef = useRef<HTMLDivElement>(null);
@@ -77,22 +86,49 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
     [setResponse, currentPageQuestions, responses]
   );
 
-  const handleSubmit = useCallback(() => {
-    // Convert response map to QuizResponse array
-    const responseArray = mapToResponses(responses);
+  const handleSubmit = useCallback(async () => {
+    setIsSubmitting(true);
+    try {
+      // Serialize answers for server-side scoring
+      const answerMap = serializeAnswers(responses);
+      const payload: SubmitQuizRequest = {
+        sessionId: state.sessionId,
+        fingerprintHash: "",
+        answers: answerMap,
+      };
 
-    // Calculate results
-    const results = calculateAllResults(responseArray);
+      const res = await fetch("/api/quiz/complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    // Determine archetype using joint probability algorithm
-    const archetype = getArchetype(results);
+      let serverData: SubmitQuizResponse | null = null;
+      if (res.ok) {
+        serverData = (await res.json()) as SubmitQuizResponse;
+      }
 
-    // Clear quiz progress from localStorage
-    clearProgress();
+      if (serverData?.scores && serverData.archetypeSlug) {
+        const archetype = getArchetypeById(serverData.archetypeSlug);
+        if (archetype) {
+          clearProgress();
+          onComplete(serverData.scores as unknown as QuizResults, archetype);
+          return;
+        }
+      }
 
-    // Call completion callback
-    onComplete(results, archetype);
-  }, [responses, clearProgress, onComplete]);
+      // Fallback: if server response missing or invalid, do nothing to avoid crashing UI
+      const responseArray = mapToResponses(responses);
+      const results = calculateAllResults(responseArray);
+      const archetype = getArchetype(results);
+      clearProgress();
+      onComplete(results, archetype);
+    } catch (err) {
+      console.error("Quiz submission failed", err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [responses, state.sessionId, clearProgress, onComplete]);
 
   return (
     <div className="mx-auto flex min-h-[calc(100vh-4.5rem)] w-full max-w-6xl flex-col px-4 py-8 sm:px-6 lg:px-8">

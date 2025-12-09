@@ -67,6 +67,8 @@ export interface SubmitQuizResponse {
   resultId?: string;
   /** Archetype slug computed on the server */
   archetypeSlug?: string;
+  /** Server-computed scores (return to avoid an extra fetch) */
+  scores?: DBScores;
   /** Optional confidence signal (0-1, lower = blended profile) */
   confidence?: number;
   /** Optional flag when both axes are nearly uniform */
