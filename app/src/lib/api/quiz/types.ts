@@ -7,7 +7,7 @@
  */
 
 import type { TrackingParams, CommonErrorCode } from "../shared";
-import type { DBScores, DBAnswerMap } from "@/lib/quiz";
+import type { DBAnswerMap, DBScores } from "@/lib/quiz";
 
 // ============================================================================
 // ERROR CODES
@@ -49,11 +49,7 @@ export interface SubmitQuizRequest extends TrackingParams {
   sessionId: string;
   /** Client fingerprint hash (must match session) */
   fingerprintHash: string;
-  /** Determined archetype slug (e.g., "golden-partner") */
-  archetypeSlug: string;
-  /** Computed scores for all dimensions */
-  scores: DBScores;
-  /** Raw answers for potential re-scoring */
+  /** Raw answers for server-side scoring */
   answers: DBAnswerMap;
   /** Optional: user email for results delivery */
   email?: string;
@@ -69,6 +65,12 @@ export interface SubmitQuizResponse {
   success: boolean;
   /** Unique result ID for retrieval */
   resultId?: string;
+  /** Archetype slug computed on the server */
+  archetypeSlug?: string;
+  /** Optional confidence signal (0-1, lower = blended profile) */
+  confidence?: number;
+  /** Optional flag when both axes are nearly uniform */
+  isBalanced?: boolean;
   /** Error message if submission failed */
   error?: string;
   /** Structured error code for client handling */

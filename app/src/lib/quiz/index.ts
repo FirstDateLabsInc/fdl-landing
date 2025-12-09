@@ -43,3 +43,6 @@ export {
 
 // DB score shape (metrics only)
 export type { DBScores } from './types-db';
+
+// Server-side scoring helper (for Worker use)
+export { scoreQuizFromAnswers, type ScoredQuizResult } from './server/score-quiz';
