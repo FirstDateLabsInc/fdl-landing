@@ -1,7 +1,9 @@
 /**
- * API Types Barrel Export
+ * Quiz API Barrel Export
  */
 export type {
+  // Error codes
+  QuizErrorCode,
   // Session
   CreateSessionRequest,
   CreateSessionResponse,

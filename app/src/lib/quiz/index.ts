@@ -43,15 +43,3 @@ export {
 
 // DB score shape (metrics only)
 export type { DBScores } from './types-db';
-
-// API types (Worker request/response contracts)
-export type {
-  CreateSessionRequest,
-  CreateSessionResponse,
-  SubmitQuizRequest,
-  SubmitQuizResponse,
-  GetResultRequest,
-  GetResultResponse,
-  UpdateEmailRequest,
-  UpdateEmailResponse,
-} from './api';

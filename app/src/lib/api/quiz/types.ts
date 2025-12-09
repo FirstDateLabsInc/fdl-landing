@@ -1,13 +1,25 @@
 /**
- * Worker/API Types
+ * Quiz API Types
  *
  * Request/response contracts for quiz submission and retrieval APIs.
  * These types define the interface between the Next.js frontend and
  * Cloudflare Worker backend.
  */
 
-import type { DBScores } from "../types-db";
-import type { DBAnswerMap } from "../types";
+import type { TrackingParams, CommonErrorCode } from "../shared";
+import type { DBScores, DBAnswerMap } from "@/lib/quiz";
+
+// ============================================================================
+// ERROR CODES
+// ============================================================================
+
+/** Quiz-specific error codes */
+export type QuizErrorCode =
+  | CommonErrorCode
+  | "INVALID_SESSION"
+  | "SESSION_EXPIRED"
+  | "FINGERPRINT_MISMATCH"
+  | "DUPLICATE_SUBMISSION";
 
 // ============================================================================
 // SESSION MANAGEMENT
@@ -32,7 +44,7 @@ export interface CreateSessionResponse {
 // ============================================================================
 
 /** Request to submit completed quiz results */
-export interface SubmitQuizRequest {
+export interface SubmitQuizRequest extends TrackingParams {
   /** Session ID from CreateSessionResponse */
   sessionId: string;
   /** Client fingerprint hash (must match session) */
@@ -43,14 +55,6 @@ export interface SubmitQuizRequest {
   scores: DBScores;
   /** Raw answers for potential re-scoring */
   answers: DBAnswerMap;
-  /** Optional: traffic source identifier */
-  source?: string;
-  /** Optional: UTM source parameter */
-  utmSource?: string;
-  /** Optional: UTM medium parameter */
-  utmMedium?: string;
-  /** Optional: UTM campaign parameter */
-  utmCampaign?: string;
   /** Optional: user email for results delivery */
   email?: string;
   /** Optional: idempotency key to prevent duplicate submissions */
@@ -68,12 +72,7 @@ export interface SubmitQuizResponse {
   /** Error message if submission failed */
   error?: string;
   /** Structured error code for client handling */
-  errorCode?:
-    | "INVALID_SESSION"
-    | "FINGERPRINT_MISMATCH"
-    | "DUPLICATE_SUBMISSION"
-    | "VALIDATION_ERROR"
-    | "RATE_LIMITED";
+  errorCode?: QuizErrorCode;
 }
 
 // ============================================================================
