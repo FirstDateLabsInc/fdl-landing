@@ -128,10 +128,12 @@ export interface QuizAnswer {
 export type AnswerState = Record<string, QuizAnswer>;
 
 // Compressed DB-friendly shape
+// v is optional for scenario questions (only k is meaningful)
+// For likert questions, v is 1-5; for scenarios, k is 'A'|'B'|'C'|'D'
 export interface DBAnswerEntry {
-  v: number; // value
+  v?: number; // value (1-5 for likert, omitted for scenario)
   t: number; // timestamp
-  k?: string; // selectedKey
+  k?: string; // selectedKey (for scenario questions)
 }
 
 export type DBAnswerMap = Record<string, DBAnswerEntry>;

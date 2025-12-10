@@ -9,14 +9,21 @@ import type { DBScores } from "../types-db";
 
 /**
  * Compress frontend answer state into DB-friendly map for JSONB storage
+ * - Likert questions: include v (1-5), omit k
+ * - Scenario questions: include k (A/B/C/D), omit v
  */
 export function serializeAnswers(answers: AnswerState): DBAnswerMap {
   const dbMap: DBAnswerMap = {};
   for (const [questionId, data] of Object.entries(answers)) {
     const entry: DBAnswerEntry = {
-      v: data.value,
       t: data.timestamp,
     };
+    // Only include v for likert questions (value 1-5)
+    // Scenario questions have value=0 which is meaningless
+    if (data.value > 0) {
+      entry.v = data.value;
+    }
+    // Only include k for scenario questions
     if (data.selectedKey) {
       entry.k = data.selectedKey;
     }
@@ -27,6 +34,7 @@ export function serializeAnswers(answers: AnswerState): DBAnswerMap {
 
 /**
  * Expand DB map back to frontend answer state when restoring progress
+ * Handles both old format (v always present) and new format (v optional for scenarios)
  */
 export function deserializeAnswers(dbMap: DBAnswerMap | null | undefined): AnswerState {
   const answers: AnswerState = {};
@@ -34,7 +42,8 @@ export function deserializeAnswers(dbMap: DBAnswerMap | null | undefined): Answe
 
   for (const [questionId, entry] of Object.entries(dbMap)) {
     answers[questionId] = {
-      value: entry.v,
+      // Default to 0 if v is missing (scenario questions)
+      value: entry.v ?? 0,
       timestamp: entry.t,
       selectedKey: entry.k,
     };

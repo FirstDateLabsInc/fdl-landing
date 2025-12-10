@@ -5,11 +5,18 @@ import { scoreQuizFromAnswers } from "@/lib/quiz/server/score-quiz";
 import type { SubmitQuizResponse } from "@/lib/api/quiz";
 
 // Zod schema for request validation
-const DBAnswerEntrySchema = z.object({
-  v: z.number().min(1).max(5), // Likert scale value
-  t: z.number().positive(), // timestamp
-  k: z.string().optional(), // selectedKey
-});
+// v is optional for scenario questions (only k matters)
+// k is optional for likert questions (only v matters)
+const DBAnswerEntrySchema = z
+  .object({
+    v: z.number().min(1).max(5).optional(), // Likert scale value (1-5)
+    t: z.number().positive(), // timestamp
+    k: z.string().optional(), // selectedKey for scenario questions
+  })
+  .refine(
+    (data) => data.v !== undefined || data.k !== undefined,
+    { message: "Answer must have either v (likert) or k (scenario)" }
+  );
 
 const SubmitQuizSchema = z.object({
   sessionId: z.string().min(1),

@@ -48,7 +48,8 @@ const TOTAL_PAGES = 8;
 // ============================================================================
 
 function generateSessionId(): string {
-  return `quiz_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+  // Return empty string - server will provide the real UUID
+  return "";
 }
 
 function shuffleArray<T>(array: T[]): T[] {
