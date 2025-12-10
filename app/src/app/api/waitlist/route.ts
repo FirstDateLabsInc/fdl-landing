@@ -5,12 +5,21 @@ import type {
   JoinWaitlistResponse,
 } from "@/lib/api/waitlist";
 
+/** Response shape from join_waitlist() RPC */
+interface JoinWaitlistRpcResult {
+  success: boolean;
+  id?: string;
+  is_new?: boolean;
+  unsubscribe_token?: string;
+  error?: string;
+}
+
 export async function POST(
   request: NextRequest
 ): Promise<NextResponse<JoinWaitlistResponse>> {
   try {
     const body = (await request.json()) as JoinWaitlistRequest;
-    const { email, utmSource, utmMedium, utmCampaign, referrer } = body;
+    const { email, source, utmSource, utmMedium, utmCampaign, referrer, quizResultId } = body;
 
     if (!email) {
       return NextResponse.json(
@@ -24,22 +33,18 @@ export async function POST(
     }
 
     const supabase = getSupabaseServer();
-    const { error } = await supabase.from("waitlist").insert({
-      email,
-      utm_source: utmSource || null,
-      utm_medium: utmMedium || null,
-      utm_campaign: utmCampaign || null,
-      referrer: referrer || null,
+    const { data, error } = await supabase.rpc("join_waitlist", {
+      p_email: email,
+      p_source: source || "web",
+      p_utm_source: utmSource || null,
+      p_utm_medium: utmMedium || null,
+      p_utm_campaign: utmCampaign || null,
+      p_referrer: referrer || null,
+      p_quiz_result_id: quizResultId || null,
     });
 
     if (error) {
-      // Handle duplicate email gracefully
-      if (error.code === "23505") {
-        return NextResponse.json({
-          success: true, // Still return success - user is already on waitlist
-        });
-      }
-      console.error("Waitlist error:", error);
+      console.error("Waitlist RPC error:", error);
       return NextResponse.json(
         {
           success: false,
@@ -50,7 +55,26 @@ export async function POST(
       );
     }
 
-    return NextResponse.json({ success: true });
+    const result = data as JoinWaitlistRpcResult;
+
+    // RPC returns JSON with success field
+    if (!result.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: result.error || "Invalid email",
+          errorCode: result.error === "invalid_email" ? "INVALID_EMAIL" : "VALIDATION_ERROR",
+        },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      id: result.id,
+      isNew: result.is_new,
+      unsubscribeToken: result.unsubscribe_token,
+    });
   } catch (err) {
     console.error("Waitlist signup failed:", err);
     return NextResponse.json(

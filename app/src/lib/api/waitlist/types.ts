@@ -16,7 +16,9 @@ import type { TrackingParams, CommonErrorCode } from "../shared";
 export type WaitlistErrorCode =
   | CommonErrorCode
   | "INVALID_EMAIL"
-  | "ALREADY_EXISTS";
+  | "ALREADY_EXISTS"
+  | "DATABASE_ERROR"
+  | "INTERNAL_ERROR";
 
 // ============================================================================
 // WAITLIST SIGNUP
@@ -26,12 +28,20 @@ export type WaitlistErrorCode =
 export interface JoinWaitlistRequest extends TrackingParams {
   /** Email address to add to waitlist */
   email: string;
+  /** Optional quiz result ID for attribution */
+  quizResultId?: string;
 }
 
 /** Response from waitlist signup */
 export interface JoinWaitlistResponse {
   /** Whether signup succeeded */
   success: boolean;
+  /** Waitlist entry ID (UUID) */
+  id?: string;
+  /** Whether this is a new signup vs reactivation */
+  isNew?: boolean;
+  /** Unsubscribe token for immediate welcome emails */
+  unsubscribeToken?: string;
   /** Error message if signup failed */
   error?: string;
   /** Structured error code for client handling */

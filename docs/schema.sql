@@ -472,6 +472,245 @@ SELECT cron.schedule(
 
 
 -- ============================================================
+-- 12. TABLE: waitlist
+-- ============================================================
+CREATE TABLE public.waitlist (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active'
+    CHECK (status IN ('pending', 'active', 'unsubscribed', 'converted')),
+
+  -- Attribution
+  source TEXT DEFAULT 'web' CHECK (source IN ('web', 'quiz', 'referral', 'api', 'other')),
+  utm_source TEXT,
+  utm_medium TEXT,
+  utm_campaign TEXT,
+  referrer TEXT,
+
+  -- Quiz integration
+  quiz_result_id UUID REFERENCES quiz_results(id) ON DELETE SET NULL,
+
+  -- Compliance
+  unsubscribe_token UUID NOT NULL DEFAULT gen_random_uuid(),
+  unsubscribed_at TIMESTAMPTZ,
+
+  -- Conversion tracking
+  converted_user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  converted_at TIMESTAMPTZ,
+
+  -- Timestamps
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+COMMENT ON COLUMN waitlist.status IS 'pending reserved for future double opt-in';
+
+-- ============================================================
+-- 13. WAITLIST INDEXES
+-- ============================================================
+-- Case-insensitive uniqueness (single row per email, reactivation via update)
+CREATE UNIQUE INDEX waitlist_email_unique ON waitlist (lower(email));
+
+-- Fast unsubscribe token lookup
+CREATE UNIQUE INDEX waitlist_unsubscribe_token_idx ON waitlist (unsubscribe_token);
+
+-- Active subscribers for campaigns
+CREATE INDEX waitlist_active_created_idx ON waitlist (created_at DESC)
+WHERE status = 'active';
+
+-- UTM analytics
+CREATE INDEX waitlist_utm_idx ON waitlist (utm_source, utm_campaign)
+WHERE utm_source IS NOT NULL;
+
+-- Quiz attribution
+CREATE INDEX waitlist_quiz_result_idx ON waitlist (quiz_result_id)
+WHERE quiz_result_id IS NOT NULL;
+
+-- Conversion reporting
+CREATE INDEX waitlist_converted_idx ON waitlist (converted_at DESC)
+WHERE status = 'converted';
+
+-- ============================================================
+-- 14. WAITLIST TRIGGER
+-- ============================================================
+CREATE TRIGGER waitlist_updated_at
+  BEFORE UPDATE ON waitlist
+  FOR EACH ROW
+  EXECUTE PROCEDURE extensions.moddatetime(updated_at);
+
+-- ============================================================
+-- 15. WAITLIST RLS
+-- ============================================================
+ALTER TABLE waitlist ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "waitlist_service_only" ON waitlist
+  FOR ALL TO service_role
+  USING (true)
+  WITH CHECK (true);
+
+-- ============================================================
+-- 16. WAITLIST FUNCTIONS
+-- ============================================================
+
+-- ───────────────────────────────────────────────────────────
+-- FUNCTION: join_waitlist
+-- Handles new signups AND reactivations (single row per email)
+-- ───────────────────────────────────────────────────────────
+CREATE OR REPLACE FUNCTION join_waitlist(
+  p_email TEXT,
+  p_source TEXT DEFAULT 'web',
+  p_utm_source TEXT DEFAULT NULL,
+  p_utm_medium TEXT DEFAULT NULL,
+  p_utm_campaign TEXT DEFAULT NULL,
+  p_referrer TEXT DEFAULT NULL,
+  p_quiz_result_id UUID DEFAULT NULL
+)
+RETURNS JSON
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_id UUID;
+  v_is_new BOOLEAN;
+  v_unsubscribe_token UUID;
+  v_email_normalized TEXT;
+BEGIN
+  -- Normalize email
+  v_email_normalized := lower(trim(p_email));
+
+  -- Validate email format (stricter regex)
+  IF v_email_normalized !~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$' THEN
+    RETURN json_build_object('success', false, 'error', 'invalid_email');
+  END IF;
+
+  -- Upsert: insert or update existing (including reactivation after unsubscribe)
+  INSERT INTO waitlist (email, source, utm_source, utm_medium, utm_campaign, referrer, quiz_result_id)
+  VALUES (v_email_normalized, p_source, p_utm_source, p_utm_medium, p_utm_campaign, p_referrer, p_quiz_result_id)
+  ON CONFLICT (lower(email))
+  DO UPDATE SET
+    status = 'active',
+    unsubscribed_at = NULL,
+    updated_at = now(),
+    -- First-touch attribution (only update if null)
+    utm_source = COALESCE(waitlist.utm_source, EXCLUDED.utm_source),
+    utm_medium = COALESCE(waitlist.utm_medium, EXCLUDED.utm_medium),
+    utm_campaign = COALESCE(waitlist.utm_campaign, EXCLUDED.utm_campaign),
+    quiz_result_id = COALESCE(waitlist.quiz_result_id, EXCLUDED.quiz_result_id)
+  RETURNING id, (xmax = 0), unsubscribe_token
+  INTO v_id, v_is_new, v_unsubscribe_token;
+
+  RETURN json_build_object(
+    'success', true,
+    'id', v_id,
+    'is_new', v_is_new,
+    'unsubscribe_token', v_unsubscribe_token
+  );
+END;
+$$;
+
+
+-- ───────────────────────────────────────────────────────────
+-- FUNCTION: waitlist_unsubscribe
+-- Token-based unsubscribe
+-- ───────────────────────────────────────────────────────────
+CREATE OR REPLACE FUNCTION waitlist_unsubscribe(p_token UUID)
+RETURNS JSON
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_id UUID;
+BEGIN
+  UPDATE waitlist
+  SET status = 'unsubscribed', unsubscribed_at = now()
+  WHERE unsubscribe_token = p_token AND status = 'active'
+  RETURNING id INTO v_id;
+
+  IF v_id IS NULL THEN
+    RETURN json_build_object('success', false, 'error', 'invalid_or_already_unsubscribed');
+  END IF;
+
+  RETURN json_build_object('success', true, 'id', v_id);
+END;
+$$;
+
+
+-- ───────────────────────────────────────────────────────────
+-- FUNCTION: waitlist_mark_converted
+-- Manual conversion tracking
+-- ───────────────────────────────────────────────────────────
+CREATE OR REPLACE FUNCTION waitlist_mark_converted(
+  p_email TEXT,
+  p_user_id UUID
+)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  UPDATE waitlist
+  SET status = 'converted', converted_user_id = p_user_id, converted_at = now()
+  WHERE lower(email) = lower(trim(p_email)) AND status = 'active';
+
+  RETURN FOUND;
+END;
+$$;
+
+
+-- ───────────────────────────────────────────────────────────
+-- FUNCTION: auto_convert_waitlist
+-- Auto-conversion trigger when user signs up
+-- ───────────────────────────────────────────────────────────
+CREATE OR REPLACE FUNCTION auto_convert_waitlist()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  UPDATE waitlist
+  SET status = 'converted', converted_user_id = NEW.id, converted_at = now()
+  WHERE lower(email) = lower(NEW.email) AND status = 'active';
+  RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER on_user_created_convert_waitlist
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION auto_convert_waitlist();
+
+-- ============================================================
+-- 17. WAITLIST FUNCTION PERMISSIONS
+-- ============================================================
+REVOKE EXECUTE ON FUNCTION join_waitlist FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION join_waitlist TO anon, authenticated;
+
+REVOKE EXECUTE ON FUNCTION waitlist_unsubscribe FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION waitlist_unsubscribe TO anon, authenticated;
+
+REVOKE EXECUTE ON FUNCTION waitlist_mark_converted FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION waitlist_mark_converted TO service_role;
+
+-- ============================================================
+-- 18. WAITLIST ANALYTICS VIEW
+-- ============================================================
+CREATE OR REPLACE VIEW waitlist_stats AS
+SELECT
+  COUNT(*) AS total_signups,
+  COUNT(*) FILTER (WHERE status = 'active') AS active,
+  COUNT(*) FILTER (WHERE status = 'converted') AS converted,
+  COUNT(*) FILTER (WHERE status = 'unsubscribed') AS unsubscribed,
+  ROUND(100.0 * COUNT(*) FILTER (WHERE status = 'converted') / NULLIF(COUNT(*), 0), 2) AS conversion_rate_pct,
+  COUNT(*) FILTER (WHERE created_at >= now() - interval '7 days') AS signups_7d,
+  COUNT(*) FILTER (WHERE created_at >= now() - interval '30 days') AS signups_30d
+FROM waitlist;
+
+
+-- ============================================================
 -- SCHEMA COMPLETE
 -- ============================================================
 
