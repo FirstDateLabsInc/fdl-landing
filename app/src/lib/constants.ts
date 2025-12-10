@@ -54,6 +54,31 @@ export type FaqItem = {
   answer: string;
 };
 
+export type FinalCtaContent = {
+  headline: string;
+  subheadline: string;
+  socialProof: string;
+  quizCta: Cta;
+};
+
+export type FooterLink = {
+  label: string;
+  href: string;
+};
+
+export type FooterColumn = {
+  title: string;
+  links: FooterLink[];
+};
+
+export type FooterContent = {
+  tagline: string;
+  columns: FooterColumn[];
+  social: { platform: string; href: string; icon: "linkedin" | "instagram" | "twitter" }[];
+  contact: string;
+  brandName: string;
+};
+
 export const heroContent: HeroContent = {
   eyebrow: "Built for intentional daters",
   title: ["Get more dates", "Build real connections"],
@@ -258,4 +283,69 @@ export const navigation: Navigation = {
   cta: { label: "Get Early Access", href: "/#waitlist" },
 };
 
-export const faqs: FaqItem[] = [];
+export const faqs: FaqItem[] = [
+  {
+    question: "Will this feel awkward?",
+    answer:
+      "Juliet's warm coaching style and the low-pressure Weekly Challenges make practice feel natural and engaging instead of forced.",
+  },
+  {
+    question: "Is my voice and data private?",
+    answer:
+      "We built a privacy-first experience. Your voice data is used only to improve your sessions and isn't shared with third parties.",
+  },
+  {
+    question: "Does this actually improve real dates?",
+    answer:
+      "Engaged members typically see a 25–30% uplift in second-date conversion within about a month of regular practice.",
+  },
+  {
+    question: "How much time does it take?",
+    answer:
+      "Most people do 3–10 minutes a day. Quick drills before a date can be just a few minutes, with longer sessions when you want them.",
+  },
+];
+
+export const finalCtaContent: FinalCtaContent = {
+  headline: "Ready to ace your next first date?",
+  subheadline:
+    "Join thousands practicing with Juliet. Get early access and start building real dating confidence today.",
+  socialProof: "Join 2,500+ singles already on the waitlist",
+  quizCta: { label: "Take the free quiz", href: "/quiz" },
+};
+
+export const footerContent: FooterContent = {
+  tagline: "Your AI dating coach for meaningful connections",
+  brandName: "First Date Labs",
+  columns: [
+    {
+      title: "Product",
+      links: [
+        { label: "How it Works", href: "#how-it-works" },
+        { label: "Benefits", href: "#benefits" },
+        { label: "FAQ", href: "#faq" },
+      ],
+    },
+    {
+      title: "Company",
+      links: [
+        { label: "About", href: "/about" },
+        { label: "Press", href: "#press" },
+        { label: "Contact", href: "mailto:support@firstdatelabs.com" },
+      ],
+    },
+    {
+      title: "Legal",
+      links: [
+        { label: "Privacy Policy", href: "/privacy" },
+        { label: "Terms of Service", href: "/terms" },
+      ],
+    },
+  ],
+  social: [
+    { platform: "LinkedIn", href: "https://linkedin.com", icon: "linkedin" },
+    { platform: "Instagram", href: "https://instagram.com", icon: "instagram" },
+    { platform: "Twitter", href: "https://twitter.com", icon: "twitter" },
+  ],
+  contact: "support@firstdatelabs.com",
+};
