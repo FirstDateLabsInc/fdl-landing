@@ -43,7 +43,7 @@ export function QuizWaitlistSection({
         />
 
         {/* Trust badge */}
-        <p className="text-secondary mt-4 flex items-start justify-center gap-1.5 text-xs">
+        <p className="text-secondary-dark mt-4 flex items-start justify-center gap-1.5 text-xs">
           <Sparkles className="h-3.5 w-3.5 shrink-0" />
           Nail every first date. Join now to claim your early-bird offer.
         </p>
