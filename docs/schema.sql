@@ -698,6 +698,27 @@ GRANT EXECUTE ON FUNCTION waitlist_mark_converted TO service_role;
 -- ============================================================
 -- 18. WAITLIST ANALYTICS VIEW
 -- ============================================================
+
+/*
+ * VIEW: waitlist_stats
+ * ─────────────────────────────────────────────────────────────
+ * PURPOSE: How healthy is our waitlist? What's the overall conversion rate?
+ *
+ * WHY: Daily health check for waitlist growth and app download pipeline.
+ *      Helps answer "Are we growing?" and "Are signups converting to users?"
+ *
+ * COLUMNS:
+ *   - total_signups:       All-time waitlist entries (any status)
+ *   - active:              Currently subscribed, waiting for app
+ *   - converted:           Downloaded the app (status='converted')
+ *   - unsubscribed:        Opted out of waitlist
+ *   - conversion_rate_pct: % of signups who downloaded app
+ *   - signups_7d:          New signups in last 7 days (growth velocity)
+ *   - signups_30d:         New signups in last 30 days (monthly trend)
+ *
+ * EXAMPLE:
+ *   SELECT * FROM waitlist_stats;
+ */
 CREATE OR REPLACE VIEW waitlist_stats AS
 SELECT
   COUNT(*) AS total_signups,
@@ -708,6 +729,312 @@ SELECT
   COUNT(*) FILTER (WHERE created_at >= now() - interval '7 days') AS signups_7d,
   COUNT(*) FILTER (WHERE created_at >= now() - interval '30 days') AS signups_30d
 FROM waitlist;
+
+-- ============================================================
+-- 19. QUIZ ANALYTICS VIEWS
+-- ============================================================
+
+/*
+ * VIEW: quiz_completion_stats
+ * ─────────────────────────────────────────────────────────────
+ * PURPOSE: Is the quiz being used? Which personality results are most common?
+ *
+ * WHY: Monitor quiz engagement and identify if certain archetypes dominate.
+ *      If one archetype is 80%+ of results, quiz may need rebalancing.
+ *
+ * COLUMNS:
+ *   - total_completions:     All-time quiz completions
+ *   - completions_7d:        Quiz completions in last 7 days
+ *   - completions_30d:       Quiz completions in last 30 days
+ *   - unique_archetypes:     How many different results are being assigned
+ *   - most_common_archetype: The personality type assigned most often
+ *
+ * EXAMPLE:
+ *   SELECT * FROM quiz_completion_stats;
+ *   -- Check if results are balanced: unique_archetypes should be high
+ */
+CREATE OR REPLACE VIEW quiz_completion_stats AS
+SELECT
+  COUNT(*) AS total_completions,
+  COUNT(*) FILTER (WHERE created_at >= now() - interval '7 days') AS completions_7d,
+  COUNT(*) FILTER (WHERE created_at >= now() - interval '30 days') AS completions_30d,
+  COUNT(DISTINCT archetype_slug) AS unique_archetypes,
+  MODE() WITHIN GROUP (ORDER BY archetype_slug) AS most_common_archetype
+FROM quiz_results;
+
+
+/*
+ * VIEW: quiz_to_waitlist_funnel
+ * ─────────────────────────────────────────────────────────────
+ * PURPOSE: Does completing the quiz drive more waitlist signups?
+ *
+ * WHY: Measures whether quiz is an effective lead generation tool.
+ *      Compare quiz_to_waitlist_pct over time to evaluate quiz ROI.
+ *      If quiz users convert to waitlist at higher rate than direct,
+ *      invest more in quiz promotion.
+ *
+ * COLUMNS:
+ *   - quiz_completions:      Total users who finished the quiz
+ *   - quiz_driven_signups:   Waitlist signups that came through quiz
+ *   - direct_signups:        Waitlist signups without taking quiz
+ *   - quiz_to_waitlist_pct:  Conversion rate: quiz → waitlist signup
+ *   - quiz_completions_7d:   Quiz completions in last 7 days
+ *   - quiz_signups_7d:       Quiz-driven signups in last 7 days
+ *
+ * KEY METRIC: quiz_to_waitlist_pct
+ *   - >50%: Quiz is effective at converting to signups
+ *   - <20%: Quiz may be entertainment only, not driving action
+ *
+ * EXAMPLE:
+ *   SELECT quiz_to_waitlist_pct FROM quiz_to_waitlist_funnel;
+ */
+CREATE OR REPLACE VIEW quiz_to_waitlist_funnel AS
+SELECT
+  (SELECT COUNT(*) FROM quiz_results) AS quiz_completions,
+  COUNT(*) FILTER (WHERE quiz_result_id IS NOT NULL) AS quiz_driven_signups,
+  COUNT(*) FILTER (WHERE quiz_result_id IS NULL) AS direct_signups,
+  ROUND(
+    100.0 * COUNT(*) FILTER (WHERE quiz_result_id IS NOT NULL) /
+    NULLIF((SELECT COUNT(*) FROM quiz_results), 0), 2
+  ) AS quiz_to_waitlist_pct,
+  (SELECT COUNT(*) FROM quiz_results WHERE created_at >= now() - interval '7 days') AS quiz_completions_7d,
+  COUNT(*) FILTER (WHERE quiz_result_id IS NOT NULL AND created_at >= now() - interval '7 days') AS quiz_signups_7d
+FROM waitlist
+WHERE status IN ('active', 'converted');
+
+
+/*
+ * VIEW: quiz_to_app_funnel
+ * ─────────────────────────────────────────────────────────────
+ * PURPOSE: Does the quiz ultimately drive app downloads?
+ *
+ * WHY: The ultimate ROI question for the quiz feature.
+ *      Compare quiz_signup_to_app_pct vs direct_signup_to_app_pct:
+ *      - If quiz users convert better → quiz creates higher-intent leads
+ *      - If direct users convert better → quiz may attract window-shoppers
+ *
+ * COLUMNS:
+ *   - total_conversions:       All users who downloaded the app
+ *   - quiz_driven_conversions: App downloads from users who took quiz first
+ *   - direct_conversions:      App downloads from users who skipped quiz
+ *   - quiz_attribution_pct:    % of all app downloads that came through quiz
+ *   - quiz_signup_to_app_pct:  Quiz waitlist → app conversion rate
+ *   - direct_signup_to_app_pct: Direct waitlist → app conversion rate
+ *
+ * KEY INSIGHT: Compare quiz_signup_to_app_pct vs direct_signup_to_app_pct
+ *   - quiz > direct: Quiz creates more committed users
+ *   - quiz < direct: Direct visitors may be more motivated
+ *
+ * EXAMPLE:
+ *   SELECT quiz_signup_to_app_pct, direct_signup_to_app_pct
+ *   FROM quiz_to_app_funnel;
+ */
+CREATE OR REPLACE VIEW quiz_to_app_funnel AS
+SELECT
+  COUNT(*) FILTER (WHERE status = 'converted') AS total_conversions,
+  COUNT(*) FILTER (WHERE status = 'converted' AND quiz_result_id IS NOT NULL) AS quiz_driven_conversions,
+  COUNT(*) FILTER (WHERE status = 'converted' AND quiz_result_id IS NULL) AS direct_conversions,
+  ROUND(
+    100.0 * COUNT(*) FILTER (WHERE status = 'converted' AND quiz_result_id IS NOT NULL) /
+    NULLIF(COUNT(*) FILTER (WHERE status = 'converted'), 0), 2
+  ) AS quiz_attribution_pct,
+  ROUND(
+    100.0 * COUNT(*) FILTER (WHERE status = 'converted' AND quiz_result_id IS NOT NULL) /
+    NULLIF(COUNT(*) FILTER (WHERE quiz_result_id IS NOT NULL), 0), 2
+  ) AS quiz_signup_to_app_pct,
+  ROUND(
+    100.0 * COUNT(*) FILTER (WHERE status = 'converted' AND quiz_result_id IS NULL) /
+    NULLIF(COUNT(*) FILTER (WHERE quiz_result_id IS NULL), 0), 2
+  ) AS direct_signup_to_app_pct
+FROM waitlist;
+
+
+/*
+ * VIEW: conversion_by_archetype
+ * ─────────────────────────────────────────────────────────────
+ * PURPOSE: Which quiz personality types convert best to app downloads?
+ *
+ * WHY: Identify high-value user segments for targeted marketing.
+ *      If "Adventurous Romantic" converts at 40% but "Casual Dater" at 5%,
+ *      prioritize messaging to attract more Adventurous Romantics.
+ *
+ * COLUMNS:
+ *   - archetype_slug:        Quiz result type (personality category)
+ *   - quiz_completions:      Users who got this result
+ *   - waitlist_signups:      Users with this result who joined waitlist
+ *   - app_conversions:       Users with this result who downloaded app
+ *   - quiz_to_waitlist_pct:  This archetype's quiz → waitlist rate
+ *   - waitlist_to_app_pct:   This archetype's waitlist → app rate
+ *   - quiz_to_app_pct:       This archetype's end-to-end conversion
+ *
+ * ACTIONABLE: Find archetypes with high quiz_to_app_pct and target
+ *             marketing to attract similar personality types.
+ *
+ * EXAMPLE:
+ *   SELECT archetype_slug, quiz_to_app_pct
+ *   FROM conversion_by_archetype
+ *   ORDER BY quiz_to_app_pct DESC;
+ */
+CREATE OR REPLACE VIEW conversion_by_archetype AS
+SELECT
+  qr.archetype_slug,
+  COUNT(DISTINCT qr.id) AS quiz_completions,
+  COUNT(DISTINCT w.id) AS waitlist_signups,
+  COUNT(DISTINCT w.id) FILTER (WHERE w.status = 'converted') AS app_conversions,
+  ROUND(100.0 * COUNT(DISTINCT w.id) / NULLIF(COUNT(DISTINCT qr.id), 0), 2) AS quiz_to_waitlist_pct,
+  ROUND(100.0 * COUNT(DISTINCT w.id) FILTER (WHERE w.status = 'converted') / NULLIF(COUNT(DISTINCT w.id), 0), 2) AS waitlist_to_app_pct,
+  ROUND(100.0 * COUNT(DISTINCT w.id) FILTER (WHERE w.status = 'converted') / NULLIF(COUNT(DISTINCT qr.id), 0), 2) AS quiz_to_app_pct
+FROM quiz_results qr
+LEFT JOIN waitlist w ON w.quiz_result_id = qr.id
+GROUP BY qr.archetype_slug
+ORDER BY quiz_completions DESC;
+
+
+/*
+ * VIEW: conversion_by_source
+ * ─────────────────────────────────────────────────────────────
+ * PURPOSE: Which marketing channels drive the highest-converting quiz users?
+ *
+ * WHY: Optimize ad spend by identifying which campaigns produce
+ *      users who actually download the app, not just take the quiz.
+ *      A campaign with 1000 quiz completions but 0% app conversion
+ *      is worse than one with 100 completions at 20% conversion.
+ *
+ * COLUMNS:
+ *   - utm_source:           Traffic source (instagram, tiktok, google, 'direct')
+ *   - utm_campaign:         Campaign name or 'none' if not tagged
+ *   - quiz_completions:     Users from this source who completed quiz
+ *   - waitlist_signups:     Users from this source who joined waitlist
+ *   - app_conversions:      Users from this source who downloaded app
+ *   - quiz_to_waitlist_pct: Source's quiz → waitlist conversion
+ *   - quiz_to_app_pct:      Source's end-to-end conversion (the key metric)
+ *
+ * ACTIONABLE: Double down on sources with high quiz_to_app_pct,
+ *             cut spend on sources with high volume but low conversion.
+ *
+ * EXAMPLE:
+ *   SELECT utm_source, quiz_completions, quiz_to_app_pct
+ *   FROM conversion_by_source
+ *   WHERE quiz_completions > 50
+ *   ORDER BY quiz_to_app_pct DESC;
+ */
+CREATE OR REPLACE VIEW conversion_by_source AS
+SELECT
+  COALESCE(qr.utm_source, 'direct') AS utm_source,
+  COALESCE(qr.utm_campaign, 'none') AS utm_campaign,
+  COUNT(DISTINCT qr.id) AS quiz_completions,
+  COUNT(DISTINCT w.id) AS waitlist_signups,
+  COUNT(DISTINCT w.id) FILTER (WHERE w.status = 'converted') AS app_conversions,
+  ROUND(100.0 * COUNT(DISTINCT w.id) / NULLIF(COUNT(DISTINCT qr.id), 0), 2) AS quiz_to_waitlist_pct,
+  ROUND(100.0 * COUNT(DISTINCT w.id) FILTER (WHERE w.status = 'converted') / NULLIF(COUNT(DISTINCT qr.id), 0), 2) AS quiz_to_app_pct
+FROM quiz_results qr
+LEFT JOIN waitlist w ON w.quiz_result_id = qr.id
+GROUP BY COALESCE(qr.utm_source, 'direct'), COALESCE(qr.utm_campaign, 'none')
+ORDER BY quiz_completions DESC;
+
+
+/*
+ * VIEW: daily_quiz_conversions
+ * ─────────────────────────────────────────────────────────────
+ * PURPOSE: How are quiz conversions trending day-over-day?
+ *
+ * WHY: Spot trends, seasonality, and campaign impacts over time.
+ *      Did a TikTok post cause a spike? Did a bug tank conversions?
+ *      Rolling 90-day window for recent trend analysis.
+ *
+ * COLUMNS:
+ *   - date:                       Calendar date
+ *   - quiz_completions:           Quiz completions on this day
+ *   - waitlist_signups:           All waitlist signups on this day
+ *   - quiz_driven_signups:        Waitlist signups from quiz on this day
+ *   - app_conversions:            App downloads on this day
+ *   - daily_quiz_to_waitlist_pct: That day's quiz → waitlist rate
+ *
+ * USE CASES:
+ *   - Weekly review: SELECT * FROM daily_quiz_conversions LIMIT 7;
+ *   - Find best day: ORDER BY quiz_completions DESC LIMIT 1;
+ *   - Spot drops: Look for days where daily_quiz_to_waitlist_pct crashes
+ *
+ * EXAMPLE:
+ *   SELECT date, quiz_completions, quiz_driven_signups, daily_quiz_to_waitlist_pct
+ *   FROM daily_quiz_conversions
+ *   WHERE date >= now() - interval '7 days';
+ */
+CREATE OR REPLACE VIEW daily_quiz_conversions AS
+SELECT
+  d.date,
+  COALESCE(q.completions, 0) AS quiz_completions,
+  COALESCE(w.signups, 0) AS waitlist_signups,
+  COALESCE(w.quiz_signups, 0) AS quiz_driven_signups,
+  COALESCE(c.conversions, 0) AS app_conversions,
+  ROUND(100.0 * COALESCE(w.quiz_signups, 0) / NULLIF(COALESCE(q.completions, 0), 0), 2) AS daily_quiz_to_waitlist_pct
+FROM (
+  SELECT generate_series(
+    (now() - interval '90 days')::date,
+    now()::date,
+    '1 day'::interval
+  )::date AS date
+) d
+LEFT JOIN (
+  SELECT created_at::date AS date, COUNT(*) AS completions
+  FROM quiz_results GROUP BY 1
+) q ON q.date = d.date
+LEFT JOIN (
+  SELECT created_at::date AS date, COUNT(*) AS signups,
+    COUNT(*) FILTER (WHERE quiz_result_id IS NOT NULL) AS quiz_signups
+  FROM waitlist GROUP BY 1
+) w ON w.date = d.date
+LEFT JOIN (
+  SELECT converted_at::date AS date, COUNT(*) AS conversions
+  FROM waitlist WHERE status = 'converted' GROUP BY 1
+) c ON c.date = d.date
+ORDER BY d.date DESC;
+
+
+/*
+ * VIEW: time_to_conversion
+ * ─────────────────────────────────────────────────────────────
+ * PURPOSE: How long does it take users to move through the funnel?
+ *
+ * WHY: Understand user decision-making timeline.
+ *      - Fast conversion (< 1 hour): High-intent, quiz creates urgency
+ *      - Slow conversion (> 7 days): Need nurturing, add email sequences
+ *      Helps design follow-up timing (when to send reminder emails).
+ *
+ * COLUMNS:
+ *   - id:                     Waitlist entry ID (for debugging)
+ *   - archetype_slug:         User's quiz result
+ *   - utm_source:             Where they came from
+ *   - quiz_completed_at:      When they finished the quiz
+ *   - waitlist_joined_at:     When they signed up for waitlist
+ *   - converted_at:           When they downloaded the app
+ *   - hours_quiz_to_waitlist: Hours between quiz and signup
+ *   - hours_waitlist_to_app:  Hours between signup and app download
+ *   - hours_quiz_to_app:      Total hours from quiz to app download
+ *
+ * AGGREGATE EXAMPLE:
+ *   SELECT
+ *     ROUND(AVG(hours_quiz_to_waitlist), 1) AS avg_hours_to_signup,
+ *     ROUND(AVG(hours_quiz_to_app), 1) AS avg_hours_to_app,
+ *     ROUND(PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY hours_quiz_to_app), 1) AS median_hours
+ *   FROM time_to_conversion;
+ */
+CREATE OR REPLACE VIEW time_to_conversion AS
+SELECT
+  w.id,
+  qr.archetype_slug,
+  COALESCE(qr.utm_source, 'direct') AS utm_source,
+  qr.created_at AS quiz_completed_at,
+  w.created_at AS waitlist_joined_at,
+  w.converted_at,
+  ROUND(EXTRACT(EPOCH FROM (w.created_at - qr.created_at)) / 3600, 2) AS hours_quiz_to_waitlist,
+  ROUND(EXTRACT(EPOCH FROM (w.converted_at - w.created_at)) / 3600, 2) AS hours_waitlist_to_app,
+  ROUND(EXTRACT(EPOCH FROM (w.converted_at - qr.created_at)) / 3600, 2) AS hours_quiz_to_app
+FROM waitlist w
+JOIN quiz_results qr ON qr.id = w.quiz_result_id
+WHERE w.status = 'converted'
+ORDER BY w.converted_at DESC;
+
 
 -- ============================================================
 -- SCHEMA COMPLETE
