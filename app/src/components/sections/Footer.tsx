@@ -36,27 +36,28 @@ export function Footer() {
           <div className="space-y-4 lg:col-span-2">
             <Link
               href="/#hero"
-              className="inline-flex items-center gap-2 text-lg font-semibold tracking-tight text-foreground"
+              className="text-foreground inline-flex items-center gap-2 text-lg font-semibold tracking-tight"
             >
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-foreground text-sm font-bold uppercase tracking-[0.18em] text-background shadow-[0_10px_30px_-15px_rgba(15,23,42,0.45)]">
+              <span className="bg-foreground text-background inline-flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold tracking-[0.18em] uppercase shadow-[0_10px_30px_-15px_rgba(15,23,42,0.45)]">
                 {navigation.logoText[0] ?? "J"}
               </span>
               <span>{footerContent.brandName}</span>
             </Link>
-            <p className="max-w-sm text-sm text-muted-foreground">
+            <p className="text-muted-foreground max-w-sm text-sm">
               {footerContent.tagline}
             </p>
             <div className="flex items-center gap-4">
               {footerContent.social.map((item) => {
                 const Icon = iconMap[item.icon];
+                const iconSize = item.icon === "tiktok" ? "size-6" : "size-5";
                 return (
                   <Link
                     key={item.platform}
                     href={item.href}
                     aria-label={item.platform}
-                    className="text-muted-foreground transition-colors hover:text-primary"
+                    className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    <Icon className="size-5" aria-hidden />
+                    <Icon className={iconSize} aria-hidden />
                   </Link>
                 );
               })}
@@ -66,7 +67,7 @@ export function Footer() {
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-3 lg:grid-cols-3">
             {footerContent.columns.map((column) => (
               <div key={column.title} className="space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-foreground">
+                <p className="text-foreground text-xs font-semibold tracking-[0.25em] uppercase">
                   {column.title}
                 </p>
                 <ul className="space-y-3">
@@ -74,7 +75,7 @@ export function Footer() {
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                        className="text-muted-foreground hover:text-primary text-sm transition-colors"
                       >
                         {link.label}
                       </Link>
@@ -87,8 +88,10 @@ export function Footer() {
         </div>
 
         <div className="py-6 sm:py-8">
-          <div className="flex flex-col gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <p>© {year} {footerContent.brandName}</p>
+          <div className="text-muted-foreground flex flex-col gap-3 text-xs sm:flex-row sm:items-center sm:justify-between">
+            <p>
+              © {year} {footerContent.brandName}
+            </p>
             <p>{footerContent.contact}</p>
           </div>
         </div>
