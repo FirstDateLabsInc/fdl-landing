@@ -17,7 +17,7 @@ export function FinalCTASection() {
       className="relative isolate overflow-hidden py-20 sm:py-24 md:py-32"
     >
       <div className="absolute inset-0 -z-10">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-gradient-to-b from-secondary/15 via-secondary/5 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#f7f1ff]/25 via-[#fffaf0]/70 to-[#fffaf0]" />
       </div>
 
       <div className="mx-auto max-w-2xl px-4 text-center sm:px-6 lg:px-8">
