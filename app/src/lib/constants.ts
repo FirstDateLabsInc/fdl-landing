@@ -74,7 +74,7 @@ export type FooterColumn = {
 export type FooterContent = {
   tagline: string;
   columns: FooterColumn[];
-  social: { platform: string; href: string; icon: "linkedin" | "instagram" | "twitter" }[];
+  social: { platform: string; href: string; icon: "linkedin" | "instagram" | "twitter" | "tiktok" }[];
   contact: string;
   brandName: string;
 };
@@ -346,6 +346,7 @@ export const footerContent: FooterContent = {
     { platform: "LinkedIn", href: "https://linkedin.com", icon: "linkedin" },
     { platform: "Instagram", href: "https://instagram.com", icon: "instagram" },
     { platform: "Twitter", href: "https://twitter.com", icon: "twitter" },
+    { platform: "TikTok", href: "https://www.tiktok.com", icon: "tiktok" },
   ],
   contact: "support@firstdatelabs.com",
 };
