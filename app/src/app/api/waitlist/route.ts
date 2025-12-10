@@ -3,6 +3,7 @@ import { getSupabaseServer } from "@/lib/supabase/server";
 import { getResend, EMAIL_FROM } from "@/lib/email/resend";
 import { render } from "@react-email/render";
 import { WaitlistConfirmation } from "@/emails/WaitlistConfirmation";
+import { QuizResultsEmail } from "@/emails/QuizResultsEmail";
 import type {
   JoinWaitlistRequest,
   JoinWaitlistResponse,
@@ -22,7 +23,7 @@ export async function POST(
 ): Promise<NextResponse<JoinWaitlistResponse>> {
   try {
     const body = (await request.json()) as JoinWaitlistRequest;
-    const { email, source, utmSource, utmMedium, utmCampaign, referrer, quizResultId } = body;
+    const { email, source, utmSource, utmMedium, utmCampaign, referrer, quizResultId, archetypeName, archetypeEmoji } = body;
 
     if (!email) {
       return NextResponse.json(
@@ -76,17 +77,33 @@ export async function POST(
     if (result.is_new && result.unsubscribe_token) {
       try {
         const resend = getResend();
+
+        // Use quiz-specific email if archetype info is present
+        const isQuizSignup = quizResultId && archetypeName && archetypeEmoji;
+
+        const emailComponent = isQuizSignup
+          ? QuizResultsEmail({
+              email,
+              unsubscribeToken: result.unsubscribe_token,
+              archetypeName,
+              archetypeEmoji,
+            })
+          : WaitlistConfirmation({
+              email,
+              unsubscribeToken: result.unsubscribe_token,
+            });
+
+        const subject = isQuizSignup
+          ? `Your Dating Pattern: ${archetypeEmoji} ${archetypeName}`
+          : "Welcome to First Date Labs!";
+
         // Pre-render React Email to HTML (fixes Turbopack bundling issue)
-        const emailHtml = await render(
-          WaitlistConfirmation({
-            email,
-            unsubscribeToken: result.unsubscribe_token,
-          })
-        );
+        const emailHtml = await render(emailComponent);
+
         await resend.emails.send({
           from: EMAIL_FROM,
           to: [email],
-          subject: "Welcome to First Date Labs!",
+          subject,
           html: emailHtml,
         });
       } catch (emailError) {

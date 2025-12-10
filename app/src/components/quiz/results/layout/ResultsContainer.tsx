@@ -7,6 +7,7 @@ import { ArchetypeHero } from "../sections/ArchetypeHero";
 import { CategoryRadarChart } from "../charts/CategoryRadarChart";
 import { LoveLanguageSuggestions } from "../sections/LoveLanguageSuggestions";
 import { ShareResults } from "../sections/ShareResults";
+import { QuizWaitlistSection } from "../sections/QuizWaitlistSection";
 import { ContentSection } from "./ContentSection";
 import { TraitGrid } from "../sections/TraitGrid";
 import { DatingCycleVisual } from "../sections/DatingCycleVisual";
@@ -21,6 +22,7 @@ import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
 interface ResultsContainerProps {
   results: QuizResults;
   archetype: ArchetypeDefinition;
+  quizResultId?: string;
   className?: string;
 }
 
@@ -31,6 +33,7 @@ interface ResultsContainerProps {
 export function ResultsContainer({
   results,
   archetype,
+  quizResultId,
   className,
 }: ResultsContainerProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -281,6 +284,22 @@ export function ResultsContainer({
               <ShareResults shareUrl={shareUrl} archetype={archetype.name} />
             </div>
           </motion.div>
+
+          {/* Waitlist Signup - Only show if we have a quiz result ID */}
+          {quizResultId && (
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: 0.8 }}
+            >
+              <QuizWaitlistSection
+                quizResultId={quizResultId}
+                archetypeName={archetype.name}
+                archetypeEmoji={archetype.emoji}
+              />
+            </motion.div>
+          )}
         </div>
 
         {/* Right Column: Sticky Sidebar (desktop only) */}

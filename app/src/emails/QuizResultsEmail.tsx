@@ -1,0 +1,209 @@
+import {
+  Body,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Link,
+  Preview,
+  Section,
+  Text,
+} from "@react-email/components";
+
+interface QuizResultsEmailProps {
+  email: string;
+  unsubscribeToken: string;
+  archetypeName: string;
+  archetypeEmoji: string;
+}
+
+export function QuizResultsEmail({
+  email,
+  unsubscribeToken,
+  archetypeName,
+  archetypeEmoji,
+}: QuizResultsEmailProps) {
+  const unsubscribeUrl = `https://firstdatelabs.com/unsubscribe?token=${unsubscribeToken}`;
+
+  return (
+    <Html>
+      <Head />
+      <Preview>Your Dating Pattern: {archetypeEmoji} {archetypeName}</Preview>
+      <Body style={main}>
+        <Container style={container}>
+          <Section style={logoSection}>
+            <Text style={logoText}>First Date Labs</Text>
+          </Section>
+
+          <Heading style={heading}>
+            Your Dating Pattern: {archetypeEmoji} {archetypeName}
+          </Heading>
+
+          <Text style={paragraph}>Hi {email}!</Text>
+
+          <Text style={paragraph}>
+            Thanks for taking the quiz! Your results have been saved, and
+            you&apos;re now on our early access list.
+          </Text>
+
+          <Section style={resultCard}>
+            <Text style={resultEmoji}>{archetypeEmoji}</Text>
+            <Text style={resultTitle}>{archetypeName}</Text>
+            <Text style={resultDescription}>
+              We&apos;re building personalized coaching insights based on your
+              dating pattern. You&apos;ll be among the first to access in-depth
+              analysis when we launch.
+            </Text>
+          </Section>
+
+          <Text style={paragraph}>
+            Your detailed report will include:
+          </Text>
+
+          <Section style={bulletList}>
+            <Text style={bulletItem}>Personalized coaching recommendations</Text>
+            <Text style={bulletItem}>Red flags to watch for in relationships</Text>
+            <Text style={bulletItem}>Communication strategies that work for you</Text>
+            <Text style={bulletItem}>Attachment style insights</Text>
+          </Section>
+
+          <Section style={ctaSection}>
+            <Text style={ctaText}>
+              We&apos;ll notify you as soon as the full analysis is ready.
+              Questions? Just reply to this email.
+            </Text>
+          </Section>
+
+          <Section style={footer}>
+            <Text style={footerText}>
+              You&apos;re receiving this email because you saved your quiz
+              results on First Date Labs.
+            </Text>
+            <Link href={unsubscribeUrl} style={unsubscribeLink}>
+              Unsubscribe
+            </Link>
+          </Section>
+        </Container>
+      </Body>
+    </Html>
+  );
+}
+
+// Inline styles for email compatibility
+const main: React.CSSProperties = {
+  backgroundColor: "#fffdf6",
+  fontFamily:
+    "Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+};
+
+const container: React.CSSProperties = {
+  margin: "0 auto",
+  padding: "40px 20px",
+  maxWidth: "560px",
+};
+
+const logoSection: React.CSSProperties = {
+  textAlign: "center" as const,
+  marginBottom: "32px",
+};
+
+const logoText: React.CSSProperties = {
+  fontSize: "24px",
+  fontWeight: "700",
+  color: "#1a1a1a",
+  margin: "0",
+};
+
+const heading: React.CSSProperties = {
+  color: "#1a1a1a",
+  fontSize: "24px",
+  fontWeight: "600",
+  textAlign: "center" as const,
+  margin: "0 0 24px",
+};
+
+const paragraph: React.CSSProperties = {
+  color: "#4a4a4a",
+  fontSize: "16px",
+  lineHeight: "1.6",
+  margin: "0 0 16px",
+};
+
+const resultCard: React.CSSProperties = {
+  backgroundColor: "#fff",
+  borderRadius: "16px",
+  padding: "24px",
+  marginTop: "24px",
+  marginBottom: "24px",
+  textAlign: "center" as const,
+  border: "1px solid #eee",
+};
+
+const resultEmoji: React.CSSProperties = {
+  fontSize: "48px",
+  margin: "0 0 12px",
+};
+
+const resultTitle: React.CSSProperties = {
+  fontSize: "20px",
+  fontWeight: "600",
+  color: "#1a1a1a",
+  margin: "0 0 12px",
+};
+
+const resultDescription: React.CSSProperties = {
+  fontSize: "14px",
+  color: "#666",
+  lineHeight: "1.5",
+  margin: "0",
+};
+
+const bulletList: React.CSSProperties = {
+  paddingLeft: "20px",
+  marginBottom: "24px",
+};
+
+const bulletItem: React.CSSProperties = {
+  fontSize: "14px",
+  color: "#4a4a4a",
+  lineHeight: "1.8",
+  margin: "0",
+  paddingLeft: "8px",
+};
+
+const ctaSection: React.CSSProperties = {
+  backgroundColor: "#f9d544",
+  borderRadius: "12px",
+  padding: "20px",
+  marginTop: "32px",
+  marginBottom: "32px",
+};
+
+const ctaText: React.CSSProperties = {
+  color: "#1a1a1a",
+  fontSize: "14px",
+  fontWeight: "500",
+  textAlign: "center" as const,
+  margin: "0",
+};
+
+const footer: React.CSSProperties = {
+  borderTop: "1px solid #eee",
+  paddingTop: "24px",
+  textAlign: "center" as const,
+};
+
+const footerText: React.CSSProperties = {
+  color: "#999",
+  fontSize: "12px",
+  lineHeight: "1.5",
+  margin: "0 0 8px",
+};
+
+const unsubscribeLink: React.CSSProperties = {
+  color: "#999",
+  fontSize: "12px",
+  textDecoration: "underline",
+};
+
+export default QuizResultsEmail;

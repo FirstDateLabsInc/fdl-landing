@@ -21,12 +21,16 @@ type WaitlistFormData = z.infer<typeof waitlistSchema>;
 
 interface WaitlistFormProps {
   quizResultId?: string;
+  archetypeName?: string;
+  archetypeEmoji?: string;
   className?: string;
   variant?: "default" | "inline";
 }
 
 export function WaitlistForm({
   quizResultId,
+  archetypeName,
+  archetypeEmoji,
   className,
   variant = "default",
 }: WaitlistFormProps) {
@@ -55,12 +59,14 @@ export function WaitlistForm({
 
     const payload: JoinWaitlistRequest = {
       email: data.email,
-      source: "web",
+      source: quizResultId ? "quiz" : "web",
       utmSource: params.get("utm_source") || undefined,
       utmMedium: params.get("utm_medium") || undefined,
       utmCampaign: params.get("utm_campaign") || undefined,
       referrer: document.referrer || undefined,
       quizResultId,
+      archetypeName,
+      archetypeEmoji,
     };
 
     try {

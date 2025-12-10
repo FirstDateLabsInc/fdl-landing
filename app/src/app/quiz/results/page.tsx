@@ -17,6 +17,7 @@ const RESULTS_STORAGE_KEY = "juliet-quiz-results";
 interface StoredResults {
   version: number;
   computedAt: number;
+  resultId?: string;
   results: QuizResults;
   archetype: {
     id: string;
@@ -30,6 +31,7 @@ interface StoredResults {
 interface ParsedData {
   results: QuizResults;
   archetype: ArchetypeDefinition;
+  resultId?: string;
 }
 
 // Module-level cache for useSyncExternalStore stability
@@ -50,7 +52,7 @@ function parseStoredResults(stored: string): ParsedData | null {
       return null;
     }
 
-    return { results: parsed.results, archetype };
+    return { results: parsed.results, archetype, resultId: parsed.resultId };
   } catch (e) {
     console.error('[Quiz Results] Parse error:', e);
     return null;
@@ -135,7 +137,7 @@ export default function QuizResultsPage() {
   return (
     <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <div ref={shareRef}>
-          <ResultsContainer results={data.results} archetype={data.archetype} />
+          <ResultsContainer results={data.results} archetype={data.archetype} quizResultId={data.resultId} />
         </div>
 
         {/* Footer CTAs */}

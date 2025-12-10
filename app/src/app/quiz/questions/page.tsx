@@ -24,11 +24,12 @@ function QuizQuestionsContent() {
   }, [searchParams, router]);
 
   const handleComplete = useCallback(
-    (results: QuizResults, archetype: ArchetypeDefinition) => {
+    (results: QuizResults, archetype: ArchetypeDefinition, resultId: string) => {
       // Save results to localStorage
       const stored = {
         version: 1 as const,
         computedAt: Date.now(),
+        resultId,
         results,
         archetype: {
           id: archetype.id,

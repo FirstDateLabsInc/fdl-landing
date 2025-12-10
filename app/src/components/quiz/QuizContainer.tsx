@@ -20,7 +20,7 @@ import type {
 import { cn } from "@/lib/utils";
 
 interface QuizContainerProps {
-  onComplete: (results: QuizResults, archetype: ArchetypeDefinition) => void;
+  onComplete: (results: QuizResults, archetype: ArchetypeDefinition, resultId: string) => void;
 }
 
 export function QuizContainer({ onComplete }: QuizContainerProps) {
@@ -146,11 +146,11 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
 
       const serverData = (await res.json()) as SubmitQuizResponse;
 
-      if (serverData?.scores && serverData.archetypeSlug) {
+      if (serverData?.scores && serverData.archetypeSlug && serverData.resultId) {
         const archetype = getArchetypeById(serverData.archetypeSlug);
         if (archetype) {
           clearProgress();
-          onComplete(serverData.scores as unknown as QuizResults, archetype);
+          onComplete(serverData.scores as unknown as QuizResults, archetype, serverData.resultId);
           return;
         }
       }

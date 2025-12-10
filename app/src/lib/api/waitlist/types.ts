@@ -30,6 +30,10 @@ export interface JoinWaitlistRequest extends TrackingParams {
   email: string;
   /** Optional quiz result ID for attribution */
   quizResultId?: string;
+  /** Archetype name for quiz-specific email (e.g., "The Romantic Idealist") */
+  archetypeName?: string;
+  /** Archetype emoji for quiz-specific email */
+  archetypeEmoji?: string;
 }
 
 /** Response from waitlist signup */
