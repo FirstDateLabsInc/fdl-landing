@@ -162,7 +162,8 @@ export function WaitlistForm({
             className={cn(
               "h-10 flex-1 rounded-full bg-transparent px-5 text-base",
               "text-foreground placeholder:text-muted-foreground",
-              "w-full focus:outline-none sm:w-auto"
+              "w-full focus:outline-none sm:w-auto",
+              "[&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:shadow-[inset_0_0_0px_1000px_white]"
             )}
             {...register("email")}
             aria-invalid={!!errors.email}
