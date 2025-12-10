@@ -324,13 +324,13 @@ export const footerContent: FooterContent = {
         { label: "How it Works", href: "#how-it-works" },
         { label: "Benefits", href: "#benefits" },
         { label: "FAQ", href: "#faq" },
+        { label: "Quiz", href: "/quiz" },
       ],
     },
     {
       title: "Company",
       links: [
-        { label: "About", href: "/about" },
-        { label: "Press", href: "#press" },
+        { label: "Press", href: "/press" },
         { label: "Contact", href: "mailto:support@firstdatelabs.com" },
       ],
     },
