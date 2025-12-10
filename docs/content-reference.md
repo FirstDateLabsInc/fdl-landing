@@ -48,14 +48,7 @@ This document provides the content for the Juliet landing page. Developers can u
 *   **Step 3**: `Upcoming Date Prep that mimics the real person and situation you’re about to meet.`
 *   **Step 4**: `Smart debrief with personalized actionable feedback, progress tracking, and weekly challenges.`
 
-## 6. Pricing
-
-*   **Plan A: Weekly**: `$12.99 , unlimited practice + Upcoming Date Prep + coaching debriefs`
-*   **Plan B: Monthly**: `unlimited practice + Upcoming Date Prep + coaching debriefs (anchor at ~$29.99/mo).`
-*   **Plan C: Annual**: `best value (e.g., $69.99/yr)`
-*   **Note**: `Present prices as examples aligned to the business context; do not guarantee. Add a brief privacy/reminder line.`
-
-## 7. FAQ
+## 6. FAQ
 
 *   **Q: Will this feel awkward?**
     *   A: `Juliet’s warm coaching style and the fun, low-pressure nature of weekly challenges make practice feel natural and engaging.`
@@ -68,12 +61,12 @@ This document provides the content for the Juliet landing page. Developers can u
 *   **Q: What if I don’t have an upcoming date?**
     *   A: `We got you! Practice daily with various dating scenarios, run Weekly Challenges, and build skills now. When a date arrives, you’ll be ready.`
 
-## 8. Final CTA
+## 7. Final CTA
 
 *   **Waitlist Email Input Box**: Placeholder for email input.
 *   **Primary CTA**: `Get your pre-date plan`
 
-## 9. Footer
+## 8. Footer
 
 *   **Contact**: `support@firstdatelabs.com`
 *   **Social Links**: `LinkedIn`, `Instagram`, `TikTok` (icons)

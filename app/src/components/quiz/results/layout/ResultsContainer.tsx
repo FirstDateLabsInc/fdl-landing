@@ -61,14 +61,19 @@ export function ResultsContainer({
     return () => observer.disconnect();
   }, []);
 
-  // Generate share URL
+  // Generate share URL - use public result page if we have a resultId
   const shareUrl = useMemo(() => {
     if (typeof window !== "undefined") {
+      if (quizResultId) {
+        // Public shareable URL using saved result ID
+        return `${window.location.origin}/quiz/results/${quizResultId}`;
+      }
+      // Fallback for local-only results (legacy)
       const hash = btoa(archetype.id).replace(/=/g, "");
       return `${window.location.origin}/quiz/results?id=${hash}`;
     }
     return "";
-  }, [archetype.id]);
+  }, [archetype.id, quizResultId]);
 
   // Prepare attachment dimensions for radar chart
   const attachmentDimensions = useMemo(() => {

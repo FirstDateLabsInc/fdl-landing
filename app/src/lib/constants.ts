@@ -49,15 +49,6 @@ export type HowItWorksStep = {
   description: string;
 };
 
-export type PricingTier = {
-  name: string;
-  price: string;
-  cadence: string;
-  description: string;
-  features: string[];
-  highlighted?: boolean;
-};
-
 export type FaqItem = {
   question: string;
   answer: string;
@@ -266,7 +257,5 @@ export const navigation: Navigation = {
   ],
   cta: { label: "Get Early Access", href: "/#waitlist" },
 };
-
-export const pricingTiers: PricingTier[] = [];
 
 export const faqs: FaqItem[] = [];

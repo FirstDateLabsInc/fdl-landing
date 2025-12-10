@@ -109,7 +109,7 @@ export interface GetResultResponse {
   /** Error message if retrieval failed */
   error?: string;
   /** Structured error code */
-  errorCode?: "NOT_FOUND" | "ACCESS_DENIED";
+  errorCode?: "NOT_FOUND";
 }
 
 // ============================================================================
