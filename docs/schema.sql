@@ -695,6 +695,19 @@ GRANT EXECUTE ON FUNCTION waitlist_unsubscribe TO anon, authenticated;
 REVOKE EXECUTE ON FUNCTION waitlist_mark_converted FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION waitlist_mark_converted TO service_role;
 
+-- ============================================================
+-- 18. WAITLIST ANALYTICS VIEW
+-- ============================================================
+CREATE OR REPLACE VIEW waitlist_stats AS
+SELECT
+  COUNT(*) AS total_signups,
+  COUNT(*) FILTER (WHERE status = 'active') AS active,
+  COUNT(*) FILTER (WHERE status = 'converted') AS converted,
+  COUNT(*) FILTER (WHERE status = 'unsubscribed') AS unsubscribed,
+  ROUND(100.0 * COUNT(*) FILTER (WHERE status = 'converted') / NULLIF(COUNT(*), 0), 2) AS conversion_rate_pct,
+  COUNT(*) FILTER (WHERE created_at >= now() - interval '7 days') AS signups_7d,
+  COUNT(*) FILTER (WHERE created_at >= now() - interval '30 days') AS signups_30d
+FROM waitlist;
 
 -- ============================================================
 -- SCHEMA COMPLETE
