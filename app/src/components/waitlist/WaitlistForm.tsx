@@ -141,7 +141,7 @@ export function WaitlistForm({
         {/* Responsive container: stacks on mobile, inline on desktop */}
         <div
           className={cn(
-            "flex items-center rounded-full bg-white shadow-soft",
+            "flex items-center rounded-3xl bg-white shadow-soft sm:rounded-full",
             "flex-col gap-3 p-3",
             "sm:flex-row sm:gap-2 sm:p-1.5"
           )}
