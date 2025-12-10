@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Clock, Lock, Sparkles, Heart, Brain, MessageCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { ArchetypesGrid } from "@/components/archetypes/ArchetypesGrid";
+import { archetypes } from "@/lib/quiz/archetypes";
 
 const QUIZ_BENEFITS = [
   {
@@ -28,7 +30,7 @@ const QUIZ_BENEFITS = [
 
 export default function QuizPage() {
   return (
-    <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+    <main className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
         {/* Hero */}
         <div className="text-center">
           {/* Hopeful sparkle icon */}
@@ -122,6 +124,25 @@ export default function QuizPage() {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Archetypes section */}
+        <div className="mt-20 sm:mt-24 lg:mt-28">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-secondary-dark">
+              Meet the archetypes
+            </p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+              Dating Personalities 101
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
+              Decode the 16 archetypes and unlock their secrets.
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <ArchetypesGrid archetypes={archetypes} />
           </div>
         </div>
       </main>

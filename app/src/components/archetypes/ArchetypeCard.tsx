@@ -10,24 +10,7 @@ interface ArchetypeCardProps {
   className?: string;
 }
 
-const VARIANTS = {
-  secure: {
-    text: "text-green-700",
-  },
-  anxious: {
-    text: "text-amber-700",
-  },
-  avoidant: {
-    text: "text-blue-700",
-  },
-  disorganized: {
-    text: "text-purple-700",
-  },
-};
-
 export function ArchetypeCard({ archetype, variant, className }: ArchetypeCardProps) {
-  const styles = VARIANTS[variant];
-
   // Logic to simulate encoded ID for URL
   const hash = typeof window !== 'undefined' ? btoa(archetype.id).replace(/=/g, "") : "";
   const href = `/quiz/results?id=${hash}`; 
@@ -51,14 +34,14 @@ export function ArchetypeCard({ archetype, variant, className }: ArchetypeCardPr
           />
         </div>
         
-        <h3 className={cn("text-2xl font-black text-slate-900 group-hover:text-primary transition-colors", styles.text)}>
+        <h3 className="text-2xl font-black text-foreground transition-colors group-hover:text-primary">
           {archetype.name}
         </h3>
       </div>
 
       {/* Body: Summary */}
       <div className="mb-6 max-w-xs">
-        <p className="line-clamp-4 text-xs leading-relaxed text-slate-500 font-medium">
+        <p className="line-clamp-4 text-xs leading-relaxed font-medium text-muted-foreground">
           {archetype.summary}
         </p>
       </div>
