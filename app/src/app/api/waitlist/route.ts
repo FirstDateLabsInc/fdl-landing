@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServer } from "@/lib/supabase/server";
 import { getResend, EMAIL_FROM } from "@/lib/email/resend";
+import { render } from "@react-email/render";
 import { WaitlistConfirmation } from "@/emails/WaitlistConfirmation";
 import type {
   JoinWaitlistRequest,
@@ -75,14 +76,18 @@ export async function POST(
     if (result.is_new && result.unsubscribe_token) {
       try {
         const resend = getResend();
+        // Pre-render React Email to HTML (fixes Turbopack bundling issue)
+        const emailHtml = await render(
+          WaitlistConfirmation({
+            email,
+            unsubscribeToken: result.unsubscribe_token,
+          })
+        );
         await resend.emails.send({
           from: EMAIL_FROM,
           to: [email],
           subject: "Welcome to First Date Labs!",
-          react: WaitlistConfirmation({
-            email,
-            unsubscribeToken: result.unsubscribe_token,
-          }),
+          html: emailHtml,
         });
       } catch (emailError) {
         // Log but don't fail the request - email is non-critical
