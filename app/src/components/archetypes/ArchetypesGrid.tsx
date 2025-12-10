@@ -48,14 +48,14 @@ export function ArchetypesGrid({ archetypes }: ArchetypesGridProps) {
           <section
             key={group.id}
             id={group.id}
-            className="py-12 sm:py-16"
+            className="py-10 sm:py-14"
           >
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-              <div className="mb-8 flex flex-col items-center text-center sm:mb-10">
-                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-foreground sm:mb-3 sm:text-[1.8rem]">
+              <div className="mb-6 flex flex-col items-center text-center sm:mb-8">
+                <h2 className="mb-2 text-[1.5rem] font-semibold tracking-tight text-foreground sm:mb-2 sm:text-[1.65rem]">
                   {group.title}
                 </h2>
-                <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+                <p className="max-w-2xl text-[0.95rem] text-muted-foreground sm:text-base leading-relaxed">
                   {group.description}
                 </p>
               </div>

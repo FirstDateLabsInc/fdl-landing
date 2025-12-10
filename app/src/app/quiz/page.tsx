@@ -130,10 +130,10 @@ export default function QuizPage() {
         {/* Archetypes section */}
         <div className="mt-20 sm:mt-24 lg:mt-28">
           <div className="text-center">
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-2 text-[1.9rem] font-semibold tracking-tight text-foreground sm:text-[2.25rem]">
               Dating Personalities 101
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
+            <p className="mx-auto mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
               Decode the 16 archetypes and unlock their secrets.
             </p>
           </div>
