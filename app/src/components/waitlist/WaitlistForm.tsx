@@ -96,20 +96,16 @@ export function WaitlistForm({
     return (
       <div
         className={cn(
-          isInline
-            ? "flex h-14 items-center rounded-full bg-primary/10 px-5 text-left sm:h-[60px]"
-            : "text-center",
+          "relative flex flex-col gap-2 rounded-2xl bg-card/85 p-4 shadow-soft sm:rounded-3xl sm:p-5 md:p-6",
           className
         )}
       >
-        <div>
-          <p className="text-base font-medium text-foreground">
-            You&apos;re on the list!
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Check your inbox for confirmation.
-          </p>
-        </div>
+        <p className="text-lg font-semibold text-foreground sm:text-xl">
+          You&apos;re on the list!
+        </p>
+        <p className="text-sm text-muted-foreground sm:text-base">
+          Check your inbox for confirmation.
+        </p>
       </div>
     );
   }
@@ -119,20 +115,16 @@ export function WaitlistForm({
     return (
       <div
         className={cn(
-          isInline
-            ? "flex h-14 items-center rounded-full bg-secondary/30 px-5 text-left sm:h-[60px]"
-            : "text-center",
+          "relative flex flex-col gap-2 rounded-2xl bg-card/85 p-4 shadow-soft sm:rounded-3xl sm:p-5 md:p-6",
           className
         )}
       >
-        <div>
-          <p className="text-base font-medium text-foreground">
-            You&apos;re already on the list!
-          </p>
-          <p className="text-sm text-muted-foreground">
-            We&apos;ll notify you when we launch.
-          </p>
-        </div>
+        <p className="text-lg font-semibold text-foreground sm:text-xl">
+          You&apos;re already on the list.
+        </p>
+        <p className="text-sm text-muted-foreground sm:text-base">
+          We&apos;ll notify you when we launch.
+        </p>
       </div>
     );
   }
