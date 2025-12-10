@@ -29,7 +29,7 @@ export function HeroSection() {
             className="flex flex-col items-start gap-6 text-left"
           >
             <div className="space-y-4">
-              <p className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
+              <p className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-secondary-dark">
                 {heroContent.eyebrow}
               </p>
               <h1
