@@ -61,19 +61,13 @@ export function ResultsContainer({
     return () => observer.disconnect();
   }, []);
 
-  // Generate share URL - use public result page if we have a resultId
-  const shareUrl = useMemo(() => {
-    if (typeof window !== "undefined") {
-      if (quizResultId) {
-        // Public shareable URL using saved result ID
-        return `${window.location.origin}/quiz/results/${quizResultId}`;
-      }
-      // Fallback for local-only results (legacy)
-      const hash = btoa(archetype.id).replace(/=/g, "");
-      return `${window.location.origin}/quiz/results?id=${hash}`;
+  // Generate share URL - null when unavailable (no broken fallback URLs)
+  const shareUrl = useMemo((): string | null => {
+    if (typeof window === "undefined" || !quizResultId) {
+      return null;
     }
-    return "";
-  }, [archetype.id, quizResultId]);
+    return `${window.location.origin}/quiz/results/${quizResultId}`;
+  }, [quizResultId]);
 
   // Prepare attachment dimensions for radar chart
   const attachmentDimensions = useMemo(() => {

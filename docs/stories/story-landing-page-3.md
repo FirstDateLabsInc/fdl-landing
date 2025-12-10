@@ -13,19 +13,20 @@ so that **I can make an informed decision and convert into a user**.
 1. **AC1:** FAQSection.tsx implements accordion component from Shadcn UI with 4 Q&A pairs
 2. **AC2:** FAQ accordion expands/collapses smoothly with animations
 3. **AC3:** FAQ addresses top objections: technical/integration, security/privacy, support/onboarding, general questions
-4. **AC4:** FinalCTASection.tsx displays action-focused CTA similar to Hero but more urgent/prominent
+4. **AC4:** FinalCTASection.tsx displays action-focused CTA with email waitlist input (reuse WaitlistForm component from Hero)
 5. **AC5:** Final CTA includes social proof indicator (e.g., "Join 10,000+ users")
-6. **AC6:** Footer.tsx implements multi-column layout with Logo, Quick Links, Company, Legal, Social
-7. **AC7:** Footer includes copyright notice with current year
-8. **AC8:** Footer responsive: stacked on mobile, multi-column on desktop
-9. **AC9:** All CTA buttons functional and linked properly
-10. **AC10:** Smooth scroll behavior works for all internal links
-11. **AC11:** All animations polished using Framer Motion and Tailwind transitions
-12. **AC12:** Lighthouse performance score ≥ 90 on all metrics (Performance, Accessibility, Best Practices, SEO)
-13. **AC13:** Successfully deployed to Cloudflare Workers via `npm run deploy`
-14. **AC14:** Custom domain configured and working with HTTPS
-15. **AC15:** No console errors or warnings in production build
-16. **AC16:** All 8 sections complete and polished
+6. **AC6:** Final CTA email input uses same WaitlistForm component with `variant="inline"` as Hero section
+7. **AC7:** Footer.tsx implements multi-column layout with Logo, Quick Links, Company, Legal, Social
+8. **AC8:** Footer includes copyright notice with current year
+9. **AC9:** Footer responsive: stacked on mobile, multi-column on desktop
+10. **AC10:** All CTA buttons functional and linked properly
+11. **AC11:** Smooth scroll behavior works for all internal links
+12. **AC12:** All animations polished using Framer Motion and Tailwind transitions
+13. **AC13:** Lighthouse performance score ≥ 90 on all metrics (Performance, Accessibility, Best Practices, SEO)
+14. **AC14:** Successfully deployed to Cloudflare Workers via `npm run deploy`
+15. **AC15:** Custom domain configured and working with HTTPS
+16. **AC16:** No console errors or warnings in production build
+17. **AC17:** All 8 sections complete and polished
 
 ## Tasks / Subtasks
 
@@ -58,17 +59,18 @@ so that **I can make an informed decision and convert into a user**.
 - [ ] Test expand/collapse animations
 - [ ] Add FAQ data to lib/constants.ts (4 Q&A pairs)
 
-### Final CTA Section (AC: #4, #5)
+### Final CTA Section (AC: #4, #5, #6)
 - [ ] Create components/sections/FinalCTASection.tsx
 - [ ] Implement layout similar to Hero but more action-focused
 - [ ] Add reinforced value proposition headline
-- [ ] Add prominent CTA button (larger, more colorful than earlier CTAs)
+- [ ] Add WaitlistForm component with `variant="inline"` (reuse from Hero section)
+- [ ] Style email input container with proper spacing and responsive layout
 - [ ] Add social proof indicator (e.g., "Join 10,000+ users" with count)
 - [ ] Add gradient background similar to Hero
 - [ ] Make responsive and centered
 - [ ] Add content to lib/constants.ts (final CTA headline, subtext, social proof count)
 
-### Footer (AC: #6, #7, #8)
+### Footer (AC: #7, #8, #9)
 - [ ] Create components/sections/Footer.tsx
 - [ ] Implement multi-column layout (5 columns):
   - Column 1: Logo + tagline
@@ -82,7 +84,7 @@ so that **I can make an informed decision and convert into a user**.
 - [ ] Add footer data to lib/constants.ts (links arrays, social links)
 - [ ] Use Lucide React icons for social media icons
 
-### Content Finalization (AC: #9, #10)
+### Content Finalization (AC: #10, #11)
 - [ ] Update lib/constants.ts with:
   - FAQ: 4 Q&A objects
   - Final CTA: headline, subtext, social proof
@@ -91,7 +93,7 @@ so that **I can make an informed decision and convert into a user**.
 - [ ] Verify all content is production-ready
 - [ ] Ensure all links are valid (or use # for placeholders)
 
-### Page Integration (AC: #9, #10, #16)
+### Page Integration (AC: #10, #11, #17)
 - [ ] Import FAQ, FinalCTA, Footer sections into app/page.tsx
 - [ ] Verify all 8 sections render in correct order:
   1. Hero
@@ -106,14 +108,14 @@ so that **I can make an informed decision and convert into a user**.
 - [ ] Verify all internal navigation links work
 - [ ] Test all CTA buttons (even if they link to #)
 
-### Animations & Polish (AC: #11)
+### Animations & Polish (AC: #12)
 - [ ] Add subtle animations to FAQ accordion
 - [ ] Add Final CTA entrance animation (fade + scale)
 - [ ] Polish all hover states and transitions
 - [ ] Test animations on slower devices
 - [ ] Ensure smooth 60fps animations throughout
 
-### Performance Optimization (AC: #12)
+### Performance Optimization (AC: #13)
 - [ ] Run Lighthouse audit in incognito mode
 - [ ] Optimize images (use Next.js Image component everywhere)
 - [ ] Ensure fonts loaded with next/font (no FOUT/FOIT)
@@ -123,7 +125,7 @@ so that **I can make an informed decision and convert into a user**.
 - [ ] Fix any performance warnings
 - [ ] Achieve ≥ 90 score on all 4 Lighthouse metrics
 
-### Accessibility & Quality Checks (AC: #12, #15)
+### Accessibility & Quality Checks (AC: #13, #16)
 - [ ] Test keyboard navigation through all interactive elements
 - [ ] Verify all images have alt text
 - [ ] Check color contrast ratios (WCAG AA minimum)
@@ -133,7 +135,7 @@ so that **I can make an informed decision and convert into a user**.
 - [ ] Check for console warnings in production build
 - [ ] Verify no React hydration errors
 
-### Deployment to Cloudflare Workers (AC: #13, #14, #15)
+### Deployment to Cloudflare Workers (AC: #14, #15, #16)
 - [ ] Login to Cloudflare: `npx wrangler login`
 - [ ] Verify wrangler configuration: `npx wrangler whoami`
 - [ ] Run local preview: `npm run preview`
@@ -147,7 +149,7 @@ so that **I can make an informed decision and convert into a user**.
 - [ ] Verify HTTPS working correctly
 - [ ] Test page load speed on production
 
-### Final Verification (AC: #12, #13, #14, #15, #16)
+### Final Verification (AC: #13, #14, #15, #16, #17)
 - [ ] Run final Lighthouse audit on production URL
 - [ ] Test all 8 sections on production
 - [ ] Test responsive behavior on production (mobile, tablet, desktop)
@@ -160,7 +162,7 @@ so that **I can make an informed decision and convert into a user**.
 
 ### Technical Summary
 
-Complete the landing page by implementing the final conversion-focused sections: FAQ (Shadcn accordion addressing objections), Final CTA (urgent call-to-action with social proof), and Footer (multi-column navigation). Integrate Shadcn UI for the FAQ accordion component. Polish all animations and transitions using Framer Motion. Apply the **premium minimalist, borderless aesthetic** consistently across all sections. Optimize performance to achieve Lighthouse score ≥ 90 on all metrics. Deploy to Cloudflare Workers using the @opennextjs/cloudflare adapter and configure custom domain with automatic DNS + TLS.
+Complete the landing page by implementing the final conversion-focused sections: FAQ (Shadcn accordion addressing objections), Final CTA (urgent call-to-action with email waitlist input reusing WaitlistForm component from Hero with `variant="inline"`), and Footer (multi-column navigation). Integrate Shadcn UI for the FAQ accordion component. Polish all animations and transitions using Framer Motion. Apply the **premium minimalist, borderless aesthetic** consistently across all sections. Optimize performance to achieve Lighthouse score ≥ 90 on all metrics. Deploy to Cloudflare Workers using the @opennextjs/cloudflare adapter and configure custom domain with automatic DNS + TLS.
 
 **Design System Application:**
 - **CTA Buttons:** bg-primary (#f9d544) with hover:bg-accent (#ffe362) transitions

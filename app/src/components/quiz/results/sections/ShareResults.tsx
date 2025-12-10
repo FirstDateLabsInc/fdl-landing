@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Link2, Check, Twitter } from "lucide-react";
+import Link from "next/link";
+import { Link2, Check, Twitter, Share2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface ShareResultsProps {
-  shareUrl: string;
+  shareUrl: string | null;
   archetype: string;
   className?: string;
 }
@@ -47,7 +48,11 @@ export function ShareResults({
 }: ShareResultsProps) {
   const [copied, setCopied] = useState(false);
 
+  const shareText = `I just discovered I'm "${archetype}" on the Juliet Dating Personality Quiz! 💝 Take the quiz to find your type:`;
+
+  // Copy link to clipboard
   const handleCopyLink = useCallback(async () => {
+    if (!shareUrl) return;
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
@@ -57,29 +62,73 @@ export function ShareResults({
     }
   }, [shareUrl]);
 
-  const shareText = `I just discovered I'm "${archetype}" on the Juliet Dating Personality Quiz! 💝 Take the quiz to find your type:`;
+  // Native share (Web Share API) - best UX on mobile
+  const handleNativeShare = useCallback(async () => {
+    if (!shareUrl) return;
 
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
-  
-  // TikTok doesn't have a direct share URL, so we open TikTok with the link copied
-  // Instagram also doesn't have a direct web share API, so we provide copy functionality
+    const shareData = {
+      title: `I'm "${archetype}" on Juliet!`,
+      text: shareText,
+      url: shareUrl,
+    };
+
+    if (navigator.share && navigator.canShare?.(shareData)) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (err) {
+        // User cancelled - not an error
+        if (err instanceof Error && err.name === "AbortError") return;
+      }
+    }
+    // Fallback to copy
+    handleCopyLink();
+  }, [shareUrl, archetype, shareText, handleCopyLink]);
+
   const handleTikTokShare = useCallback(() => {
-    // Copy the share text to clipboard for TikTok
+    if (!shareUrl) return;
     const tiktokText = `${shareText} ${shareUrl}`;
     navigator.clipboard.writeText(tiktokText).then(() => {
-      // Open TikTok (mobile) or show message
-      window.open('https://www.tiktok.com/upload', '_blank');
+      window.open("https://www.tiktok.com/upload", "_blank");
     });
   }, [shareText, shareUrl]);
 
   const handleInstagramShare = useCallback(() => {
-    // Copy the share text to clipboard for Instagram
+    if (!shareUrl) return;
     const instagramText = `${shareText}\n\n${shareUrl}`;
     navigator.clipboard.writeText(instagramText).then(() => {
-      // Open Instagram (mobile) or show message
-      window.open('https://www.instagram.com/', '_blank');
+      window.open("https://www.instagram.com/", "_blank");
     });
   }, [shareText, shareUrl]);
+
+  // Early return: no shareable link available
+  if (!shareUrl) {
+    return (
+      <div className={cn("space-y-4", className)}>
+        <h3 className="text-center text-sm font-semibold uppercase tracking-[0.35em] text-slate-500">
+          Share Your Results
+        </h3>
+        <p className="text-center text-sm text-slate-500">
+          Want to share your results?{" "}
+          <Link
+            href="/quiz/questions"
+            className="text-[#f9d544] underline hover:no-underline"
+          >
+            Retake the quiz
+          </Link>{" "}
+          to get a shareable link!
+        </p>
+      </div>
+    );
+  }
+
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+
+  // Check if Web Share API is available (for showing native share button)
+  const supportsNativeShare =
+    typeof navigator !== "undefined" &&
+    navigator.share &&
+    navigator.canShare?.({ url: shareUrl, text: shareText });
 
   return (
     <div className={cn("space-y-4", className)}>
@@ -88,6 +137,18 @@ export function ShareResults({
       </h3>
 
       <div className="flex flex-wrap justify-center gap-3">
+        {/* Native Share button (mobile) - shown first when available */}
+        {supportsNativeShare && (
+          <Button
+            variant="outline"
+            onClick={handleNativeShare}
+            className="bg-[#f9d544]/10 hover:bg-[#f9d544]/20"
+          >
+            <Share2 className="mr-2 h-4 w-4" />
+            Share
+          </Button>
+        )}
+
         <Button
           variant="outline"
           onClick={handleCopyLink}
@@ -121,8 +182,8 @@ export function ShareResults({
           </a>
         </Button>
 
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={handleTikTokShare}
           className="hover:border-[#ff0050]/50 hover:text-[#ff0050]"
         >
@@ -130,8 +191,8 @@ export function ShareResults({
           TikTok
         </Button>
 
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={handleInstagramShare}
           className="hover:border-[#E4405F]/50 hover:text-[#E4405F]"
         >

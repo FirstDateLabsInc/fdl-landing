@@ -23,16 +23,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .single();
 
   if (!data) {
-    return { title: "Result Not Found | Juliet" };
+    return { title: "Result Not Found | First Date Labs" };
   }
 
   const archetype = getArchetypeById(data.archetype_slug);
   if (!archetype) {
-    return { title: "Result Not Found | Juliet" };
+    return { title: "Result Not Found | First Date Labs" };
   }
 
   return {
-    title: `${archetype.name} | Dating Personality Quiz | Juliet`,
+    title: `${archetype.name} | Dating Personality Quiz | First Date Labs`,
     description: archetype.summary,
     openGraph: {
       title: `I'm ${archetype.name} ${archetype.emoji}`,
@@ -97,7 +97,7 @@ export default async function SavedResultPage({ params }: Props) {
         >
           <Link href="/#waitlist">
             <Sparkles className="h-4 w-4" />
-            Start with Juliet
+            Start with First Date Labs
           </Link>
         </Button>
       </div>

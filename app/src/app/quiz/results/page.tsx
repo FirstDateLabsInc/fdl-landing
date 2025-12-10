@@ -1,14 +1,15 @@
 "use client";
 
-import { useRef, useSyncExternalStore, useEffect } from "react";
+import { useRef, useSyncExternalStore, useEffect, useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { RotateCcw, Share2, Sparkles } from "lucide-react";
+import { RotateCcw, Share2, Sparkles, Check } from "lucide-react";
 
 import { ResultsContainer } from "@/components/quiz/results";
 import { Button } from "@/components/ui/button";
 import { clearQuizProgress } from "@/hooks/use-quiz";
 import { getArchetypeById } from "@/lib/quiz/archetypes";
+import { cn } from "@/lib/utils";
 import type { QuizResults } from "@/lib/quiz/types";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
 
@@ -93,6 +94,7 @@ function getResultsServerSnapshot(): ParsedData | null {
 export default function QuizResultsPage() {
   const router = useRouter();
   const shareRef = useRef<HTMLDivElement>(null);
+  const [copied, setCopied] = useState(false);
 
   const data = useSyncExternalStore(
     subscribeToResults,
@@ -100,7 +102,13 @@ export default function QuizResultsPage() {
     getResultsServerSnapshot
   );
 
-  const handleRetake = () => {
+  // Generate share URL from resultId
+  const shareUrl = useMemo(() => {
+    if (typeof window === "undefined" || !data?.resultId) return null;
+    return `${window.location.origin}/quiz/results/${data.resultId}`;
+  }, [data?.resultId]);
+
+  const handleRetake = useCallback(() => {
     // Clear both quiz progress and results
     clearQuizProgress();
     try {
@@ -109,12 +117,41 @@ export default function QuizResultsPage() {
       console.error("Failed to clear results:", err);
     }
     router.push("/quiz/questions");
-  };
+  }, [router]);
 
-  const handleShare = () => {
-    // Scroll to share section
-    shareRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const handleShare = useCallback(async () => {
+    if (!shareUrl || !data) {
+      // No shareable link - scroll to share section to show message
+      shareRef.current?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
+    const shareData = {
+      title: `I'm ${data.archetype.name}!`,
+      text: `I just discovered I'm "${data.archetype.name}" on the Juliet Dating Personality Quiz! 💝`,
+      url: shareUrl,
+    };
+
+    // Try native share first (mobile)
+    if (navigator.share && navigator.canShare?.(shareData)) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (err) {
+        if (err instanceof Error && err.name === "AbortError") return;
+      }
+    }
+
+    // Fallback: copy to clipboard
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Final fallback: scroll to share section
+      shareRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [shareUrl, data]);
 
   // Redirect if no results found
   useEffect(() => {
@@ -147,9 +184,22 @@ export default function QuizResultsPage() {
             Retake Quiz
           </Button>
 
-          <Button variant="secondary" onClick={handleShare} className="gap-2">
-            <Share2 className="h-4 w-4" />
-            Share Results
+          <Button
+            variant="secondary"
+            onClick={handleShare}
+            className={cn("gap-2", copied && "border-green-500 text-green-600")}
+          >
+            {copied ? (
+              <>
+                <Check className="h-4 w-4" />
+                Link Copied!
+              </>
+            ) : (
+              <>
+                <Share2 className="h-4 w-4" />
+                Share Results
+              </>
+            )}
           </Button>
 
           <Button
