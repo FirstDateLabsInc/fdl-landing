@@ -33,7 +33,7 @@ export function WaitlistForm({
   const isInline = variant === "inline";
   const idPrefix = isInline ? "hero-email" : "email";
   const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
+    "idle" | "loading" | "success" | "already-subscribed" | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -73,7 +73,7 @@ export function WaitlistForm({
       const result: JoinWaitlistResponse = await res.json();
 
       if (result.success) {
-        setStatus("success");
+        setStatus(result.isNew ? "success" : "already-subscribed");
         reset();
       } else {
         setStatus("error");
@@ -85,38 +85,120 @@ export function WaitlistForm({
     }
   };
 
+  // Success state - new signup
   if (status === "success") {
     return (
       <div
         className={cn(
           isInline
-            ? "rounded-xl bg-primary/10 px-4 py-3 text-left"
+            ? "flex h-14 items-center rounded-full bg-primary/10 px-5 text-left sm:h-[60px]"
             : "text-center",
           className
         )}
       >
-        <p className="text-lg font-medium text-foreground">
-          You&apos;re on the list!
-        </p>
-        <p className={cn("text-muted-foreground", isInline ? "mt-1" : "mt-2")}>
-          Check your inbox for confirmation.
-        </p>
+        <div>
+          <p className="text-base font-medium text-foreground">
+            You&apos;re on the list!
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Check your inbox for confirmation.
+          </p>
+        </div>
       </div>
     );
   }
 
+  // Already subscribed state - returning user
+  if (status === "already-subscribed") {
+    return (
+      <div
+        className={cn(
+          isInline
+            ? "flex h-14 items-center rounded-full bg-secondary/30 px-5 text-left sm:h-[60px]"
+            : "text-center",
+          className
+        )}
+      >
+        <div>
+          <p className="text-base font-medium text-foreground">
+            You&apos;re already on the list!
+          </p>
+          <p className="text-sm text-muted-foreground">
+            We&apos;ll notify you when we launch.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Inline variant: single input, responsive container
+  if (isInline) {
+    return (
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className={cn("space-y-2", className)}
+      >
+        {/* Responsive container: stacks on mobile, inline on desktop */}
+        <div
+          className={cn(
+            "flex items-center rounded-full bg-muted shadow-soft",
+            "flex-col gap-3 p-3",
+            "sm:flex-row sm:gap-2 sm:p-1.5"
+          )}
+        >
+          <Label htmlFor={idPrefix} className="sr-only">
+            Email address
+          </Label>
+          <input
+            id={idPrefix}
+            type="email"
+            placeholder="Enter your email..."
+            className={cn(
+              "h-12 flex-1 rounded-full bg-transparent px-5 text-base",
+              "text-foreground placeholder:text-muted-foreground",
+              "w-full focus:outline-none sm:w-auto"
+            )}
+            {...register("email")}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? `${idPrefix}-error` : undefined}
+          />
+          <Button
+            type="submit"
+            variant="primary"
+            className={cn(
+              "h-12 shrink-0 rounded-full px-6 text-base font-medium",
+              "w-full sm:w-auto"
+            )}
+            disabled={status === "loading"}
+          >
+            {status === "loading" ? "Joining..." : "Get Notified"}
+            <span className="ml-2" aria-hidden="true">
+              →
+            </span>
+          </Button>
+        </div>
+
+        {/* Error messages */}
+        {errors.email && (
+          <p id={`${idPrefix}-error`} className="px-4 text-sm text-red-500">
+            {errors.email.message}
+          </p>
+        )}
+        {status === "error" && (
+          <p className="px-4 text-sm text-red-500">{errorMessage}</p>
+        )}
+      </form>
+    );
+  }
+
+  // Default variant: standard stacked layout
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={cn(isInline ? "space-y-3" : "space-y-4", className)}
+      className={cn("space-y-4", className)}
     >
-      <div
-        className={cn(
-          isInline && "flex flex-col gap-3 sm:flex-row",
-          !isInline && "space-y-4"
-        )}
-      >
-        <div className={cn(isInline && "flex-1")}>
+      <div className="space-y-4">
+        <div>
           <Label htmlFor={idPrefix} className="sr-only">
             Email address
           </Label>
@@ -140,7 +222,7 @@ export function WaitlistForm({
           type="submit"
           variant="primary"
           size="lg"
-          className={cn(isInline ? "shrink-0 sm:min-w-[160px]" : "w-full")}
+          className="w-full"
           disabled={status === "loading"}
         >
           {status === "loading" ? "Joining..." : "Get Early Access"}
@@ -148,14 +230,7 @@ export function WaitlistForm({
       </div>
 
       {status === "error" && (
-        <p
-          className={cn(
-            "text-sm text-red-500",
-            isInline ? "text-left" : "text-center"
-          )}
-        >
-          {errorMessage}
-        </p>
+        <p className="text-center text-sm text-red-500">{errorMessage}</p>
       )}
     </form>
   );
