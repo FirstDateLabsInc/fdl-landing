@@ -166,7 +166,7 @@ export function WaitlistForm({
             type="submit"
             variant="primary"
             className={cn(
-              "h-10 shrink-0 rounded-full px-6 text-base font-medium",
+              "h-10 shrink-0 rounded-full px-4 text-base font-medium",
               "w-full sm:w-auto"
             )}
             disabled={status === "loading"}
