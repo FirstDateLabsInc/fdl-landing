@@ -154,7 +154,7 @@ export function WaitlistForm({
             type="email"
             placeholder="Enter your email..."
             className={cn(
-              "h-12 flex-1 rounded-full bg-transparent px-5 text-base",
+              "h-10 flex-1 rounded-full bg-transparent px-5 text-base",
               "text-foreground placeholder:text-muted-foreground",
               "w-full focus:outline-none sm:w-auto"
             )}
@@ -166,15 +166,12 @@ export function WaitlistForm({
             type="submit"
             variant="primary"
             className={cn(
-              "h-12 shrink-0 rounded-full px-6 text-base font-medium",
+              "h-10 shrink-0 rounded-full px-6 text-base font-medium",
               "w-full sm:w-auto"
             )}
             disabled={status === "loading"}
           >
-            {status === "loading" ? "Joining..." : "Get Notified"}
-            <span className="ml-2" aria-hidden="true">
-              →
-            </span>
+            {status === "loading" ? "Joining..." : "Get Early Access"}
           </Button>
         </div>
 
