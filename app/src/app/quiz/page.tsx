@@ -30,7 +30,7 @@ const QUIZ_BENEFITS = [
 
 export default function QuizPage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+    <main className="mx-auto max-w-6xl px-4 pt-10 pb-14 sm:px-6 md:pt-12 md:pb-16 lg:px-8">
         {/* Hero */}
         <div className="text-center">
           {/* Hopeful sparkle icon */}

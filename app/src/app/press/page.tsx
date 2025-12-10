@@ -19,7 +19,7 @@ const CONTACT_CATEGORIES = [
 export default function PressPage() {
   return (
     <div className="bg-[#fffdf6]">
-      <section className="mx-auto min-h-[calc(100vh-4.5rem)] max-w-3xl px-4 py-24 sm:px-6 lg:px-8">
+      <section className="mx-auto min-h-[calc(100vh-4.5rem)] max-w-3xl px-4 pt-10 pb-14 sm:px-6 md:pt-12 md:pb-16 lg:px-8">
         {/* Header */}
         <header className="mb-10 text-center">
           <h1 className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
