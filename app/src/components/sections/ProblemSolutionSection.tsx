@@ -16,7 +16,7 @@ export function ProblemSolutionSection() {
     >
       <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
         <div className="space-y-6">
-          <p className="text-sm font-semibold uppercase tracking-[0.35em] text-slate-500">
+          <p className="text-sm font-semibold uppercase tracking-[0.35em] text-secondary-dark">
             The old way
           </p>
           <motion.div
@@ -41,7 +41,7 @@ export function ProblemSolutionSection() {
         </div>
 
         <div className="space-y-6">
-          <p className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.35em] text-slate-900">
+          <p className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.35em] text-secondary-dark">
             The new way
             <Sparkles className="size-4 text-[#f9d544]" aria-hidden />
           </p>

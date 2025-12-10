@@ -27,7 +27,7 @@ export function FAQSection() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="text-center"
         >
-          <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted-foreground">
+          <p className="text-sm font-semibold uppercase tracking-[0.35em] text-secondary-dark">
             FAQ
           </p>
           <h2
