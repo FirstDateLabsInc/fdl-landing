@@ -130,9 +130,6 @@ export default function QuizPage() {
         {/* Archetypes section */}
         <div className="mt-20 sm:mt-24 lg:mt-28">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-secondary-dark">
-              Meet the archetypes
-            </p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
               Dating Personalities 101
             </h2>

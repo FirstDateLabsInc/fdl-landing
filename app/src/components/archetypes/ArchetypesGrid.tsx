@@ -52,7 +52,7 @@ export function ArchetypesGrid({ archetypes }: ArchetypesGridProps) {
           >
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
               <div className="mb-8 flex flex-col items-center text-center sm:mb-10">
-                <h2 className="mb-2 text-3xl font-semibold tracking-tight text-foreground sm:mb-3 sm:text-4xl">
+                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-foreground sm:mb-3 sm:text-[1.8rem]">
                   {group.title}
                 </h2>
                 <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">

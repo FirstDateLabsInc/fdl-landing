@@ -79,11 +79,14 @@ export function ContactForm() {
           },
           body: JSON.stringify({
             access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY,
-            subject: `[${categoryLabel}] Contact from ${formData.name}`,
-            from_name: formData.name,
-            email: formData.email,
-            category: categoryLabel,
-            message: formData.message,
+            subject: `Your ${categoryLabel} inquiry - First Date Labs`,
+            from_name: "Yiyao from First Date Labs",
+            replyto: formData.email,
+            // Form fields (displayed in email body)
+            From: formData.name,
+            Email: formData.email,
+            "Inquiry Type": categoryLabel,
+            Message: formData.message,
           }),
         });
 
@@ -183,8 +186,8 @@ export function ContactForm() {
           onChange={handleChange}
           disabled={status === "loading"}
           className={cn(
-            "h-12 w-full rounded-xl border border-border bg-white px-4 py-3 text-foreground transition-all duration-200",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            "border-border text-foreground h-12 w-full rounded-xl border bg-white px-4 py-3 transition-all duration-200",
+            "focus-visible:ring-primary focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
             "disabled:cursor-not-allowed disabled:opacity-50"
           )}
         >
@@ -228,7 +231,7 @@ export function ContactForm() {
       <Button
         type="submit"
         disabled={status === "loading"}
-        className="w-full gap-2 bg-primary text-primary-foreground hover:bg-accent"
+        className="bg-primary text-primary-foreground hover:bg-accent w-full gap-2"
       >
         {status === "loading" ? (
           <>
