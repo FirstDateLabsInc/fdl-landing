@@ -5,7 +5,6 @@ import { BenefitsSection } from "@/components/sections/BenefitsSection";
 import { HowAppWorksSection } from "@/components/sections/HowAppWorksSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { FinalCTASection } from "@/components/sections/FinalCTASection";
-import { Footer } from "@/components/sections/Footer";
 
 export default function HomePage() {
   return (
@@ -18,7 +17,6 @@ export default function HomePage() {
       <HowAppWorksSection />
       <FAQSection />
       <FinalCTASection />
-      <Footer />
       <div id="login" aria-hidden className="sr-only" />
     </div>
   );
