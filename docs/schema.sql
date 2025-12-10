@@ -1068,7 +1068,7 @@ SELECT cron.schedule(
 
 
 -- ============================================================
--- 11. INITIAL DATA / MIGRATIONS
+-- INITIAL DATA / MIGRATIONS
 -- ============================================================
 -- Add any seed data or migration helpers here
 

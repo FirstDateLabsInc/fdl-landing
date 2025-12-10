@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServer } from "@/lib/supabase/server";
+import { getResend, EMAIL_FROM } from "@/lib/email/resend";
+import { WaitlistConfirmation } from "@/emails/WaitlistConfirmation";
 import type {
   JoinWaitlistRequest,
   JoinWaitlistResponse,
@@ -67,6 +69,25 @@ export async function POST(
         },
         { status: 400 }
       );
+    }
+
+    // Send confirmation email for new signups
+    if (result.is_new && result.unsubscribe_token) {
+      try {
+        const resend = getResend();
+        await resend.emails.send({
+          from: EMAIL_FROM,
+          to: [email],
+          subject: "Welcome to First Date Labs!",
+          react: WaitlistConfirmation({
+            email,
+            unsubscribeToken: result.unsubscribe_token,
+          }),
+        });
+      } catch (emailError) {
+        // Log but don't fail the request - email is non-critical
+        console.error("Failed to send confirmation email:", emailError);
+      }
     }
 
     return NextResponse.json({

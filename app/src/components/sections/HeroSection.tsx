@@ -1,25 +1,14 @@
 "use client";
 
-import { useCallback } from "react";
-import type { MouseEvent as ReactMouseEvent } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 
-import { Button } from "@/components/ui/button";
-import { smoothScrollToHash } from "@/lib/utils";
+import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 import { heroContent } from "@/lib/constants";
 import cloudflareLoader from "@/lib/cloudflare-image-loader";
 
 export function HeroSection() {
   const prefersReducedMotion = useReducedMotion();
-
-  const handleCtaClick = useCallback(
-    (event: ReactMouseEvent<HTMLAnchorElement>) => {
-      smoothScrollToHash(event);
-    },
-    []
-  );
 
   return (
     <section
@@ -58,27 +47,8 @@ export function HeroSection() {
               </p>
             </div>
 
-            <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-5">
-              <Button asChild className="min-w-[180px]">
-                <Link
-                  href={heroContent.primaryCta.href}
-                  onClick={handleCtaClick}
-                >
-                  {heroContent.primaryCta.label}
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="ghost"
-                className="min-w-[180px] border border-border/60 bg-card/70 text-foreground backdrop-blur transition hover:bg-card"
-              >
-                <Link
-                  href={heroContent.secondaryCta.href}
-                  onClick={handleCtaClick}
-                >
-                  {heroContent.secondaryCta.label}
-                </Link>
-              </Button>
+            <div className="mt-8 w-full max-w-md">
+              <WaitlistForm variant="inline" />
             </div>
           </motion.div>
 

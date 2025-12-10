@@ -13,7 +13,6 @@ export default function HomePage() {
       <ProblemSolutionSection />
       <BenefitsSection />
       <HowAppWorksSection />
-      <div id="waitlist" aria-hidden className="sr-only" />
       <div id="login" aria-hidden className="sr-only" />
     </div>
   );
