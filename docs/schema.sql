@@ -154,6 +154,10 @@ CREATE INDEX idx_results_archetype ON quiz_results(archetype_slug);
 
 CREATE INDEX idx_results_created_at ON quiz_results(created_at DESC);
 
+-- Composite for archetype analytics with time filtering
+CREATE INDEX idx_results_archetype_created
+    ON quiz_results(archetype_slug, created_at DESC);
+
 CREATE INDEX idx_results_utm ON quiz_results(utm_source, utm_campaign, created_at DESC)
     WHERE utm_source IS NOT NULL;
 
@@ -1041,27 +1045,26 @@ ORDER BY w.converted_at DESC;
 -- ============================================================
 
 
--- OPTIONAL: Archive old raw answers after 1 year to save space
+-- Archive old raw answers after 1 year to save storage (35-55% reduction)
 -- Scores and attribution are preserved, only raw answers cleared
-/*
 CREATE OR REPLACE FUNCTION public.archive_old_answers()
 RETURNS void
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    UPDATE quiz_results 
-    SET answers = '{}'::jsonb 
+    UPDATE quiz_results
+    SET answers = '{}'::jsonb
     WHERE created_at < NOW() - INTERVAL '1 year'
       AND answers != '{}'::jsonb;
 END;
 $$;
 
-SELECT extensions.cron.schedule(
+-- Run monthly at 4 AM on the 1st
+SELECT cron.schedule(
     'archive-old-answers',
     '0 4 1 * *',
     'SELECT public.archive_old_answers();'
 );
-*/
 
 
 -- ============================================================
