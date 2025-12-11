@@ -25,14 +25,14 @@ export const archetypes: ArchetypeDefinition[] = [
     summary:
       'You genuinely enjoy dating and people can feel it. You say what you want, handle disagreement calmly, and make partners feel safe. This is rare.',
 
-    patternDescription: `You're that person who lights up when you meet someone interesting. You're genuinely enthusiastic about dating, comfortable saying "I like you," and you actually enjoy the work of relationships. Your friends probably say things like "You just know how to make people feel safe." And they're right. You weren't sent mixed signals about love growing up, so you don't have to decode relationships or protect yourself defensively.`,
+    patternDescription: `You're the kind of person who lights up when you meet someone interesting. You're comfortable saying "I like you," and you actually enjoy building a relationship, not just the chase. Your friends might say, "You just make people feel at ease," and they're not wrong. You didn't grow up with a lot of mixed signals about love, so you don't feel like you have to decode everything or constantly protect yourself.`,
 
     datingCycle: [
-      "You meet someone → genuine interest (not performing, just authentic)",
-      "You share openly → you don't play games or hold back",
-      'They feel safe → because you ARE safe, consistently',
-      'Things develop naturally → conflict happens but you handle it calmly',
-      'The relationship either works or ends cleanly → either way, you bounce back',
+      "You meet someone ➜ you feel real curiosity and interest (not performing, just being yourself)",
+      "You share openly ➜ you don't play games or hold back to seem \"cool\"",
+      "They feel secure ➜ because you show up in a steady, trustworthy way",
+      "Things develop naturally ➜ conflict still happens, but you handle it with honesty and calm",
+      "The relationship either grows or ends cleanly ➜ either way, you process it and move on",
     ],
 
     rootCause: `You have secure attachment at your core. You weren't sent mixed signals about love growing up, so you don't have to decode relationships or protect yourself defensively. This is genuinely rare and valuable. It means you date from a place of "this is nice" rather than "please don't leave me" or "I need to control this."`,
@@ -82,17 +82,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🕊️',
     image: '/archetypes/gentle-peacekeeper-dove.png',
     summary:
-      'You\'re easy to be around but sometimes you disappear. You say "yes" when you mean "no" and then resent people for decisions you agreed to.',
+      "You're easy to be around, but sometimes you end up in the background. You say \"yes\" when you mean \"no,\" and later feel upset about choices you technically agreed to.",
 
-    patternDescription: `You're the person who says "whatever you want is fine" when honestly you have a preference. You hate conflict so much that you'll agree to things you don't actually want, then resent your partner later. On dates, if the other person suggests something, your instinct is to go along with it even if you wanted something different. You tell yourself you're being flexible. You're actually being invisible.`,
+    patternDescription: `You're the person who says, "Whatever you want is fine," even when you quietly care about how things go. You really don't like conflict, so you go along with plans you don't fully want and then feel frustrated afterward. On dates, when the other person suggests something, your first instinct is to agree—even if you had something else in mind. You tell yourself you're being flexible. Over time, what you want just gets pushed to the side.`,
 
     datingCycle: [
-      'Date suggests a plan or idea → you immediately think "I should go with it"',
-      'You suppress your preference → you say "sounds good!" or stay quiet',
-      "You do the thing you didn't want → you feel resentful",
-      "They notice you're quiet/distant but don't know why → confusion",
-      'You respond "nothing\'s wrong, I\'m fine" → they feel rejected for no reason',
-      "They pull away slightly → you blame yourself for not being enthusiastic enough",
+      "Date suggests a plan or idea ➜ you immediately think \"I should go with it\"",
+      "You suppress your preference ➜ you say \"sounds good!\" or stay quiet",
+      "You go along with something you didn't really want ➜ frustration starts to build",
+      "They notice you're quieter or more distant ➜ they feel confused about what changed",
+      "You respond \"nothing's wrong, I'm fine\" ➜ they feel rejected for no reason",
+      "They pull away slightly ➜ you blame yourself for not being enthusiastic enough",
     ],
 
     rootCause: `You have secure attachment (good base) but you communicate passively (learned pattern). This usually comes from childhood messaging like "be easy to be around" or "don't cause problems" or "your needs are less important than keeping the peace." You learned that speaking up = conflict, and conflict = danger/rejection.`,
@@ -142,17 +142,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🦍',
     image: '/archetypes/direct-director-gorilla.png',
     summary:
-      'You take charge in dating but sometimes your intensity overwhelms. You move fast and expect partners to match your pace.',
+      "You take the lead in dating, but sometimes your pace can feel like a lot for other people. You move quickly and naturally expect partners to keep up.",
 
-    patternDescription: `You know what you want and you're not afraid to say it. On dates, you take charge—you plan the dinner, decide where to go, lead the conversation. Your friends probably call you "strong" or "confident." And you are. But sometimes people seem intimidated or overwhelmed by how much you dominate the dating dynamic. You're not trying to be aggressive; you just naturally take the lead and others naturally follow. Or run.`,
+    patternDescription: `You know what you want and you're not shy about saying it. On dates, you're the one who takes charge — you suggest the restaurant, map out the plan, and guide the conversation. Your friends probably describe you as "strong" or "confident." And you are. But sometimes people seem intimidated or overwhelmed by how much you dominate the dating dynamic. You're not trying to be pushy; taking the lead just feels natural to you. Some people relax into that, and others quietly back away.`,
 
     datingCycle: [
-      "You like someone → you make a plan, you're decisive",
-      'You set the tone → they feel the weight of your certainty',
-      'You want to move things forward → you push the timeline',
-      'They feel pressured or dominated → they pull back',
-      'You interpret pullback as lack of interest → you escalate or withdraw',
-      'Connection ends because the dynamic was unbalanced',
+      "You like someone ➜ you make a plan, you're decisive",
+      "You set the tone ➜ they feel the weight of your certainty",
+      "You try to move things forward ➜ the relationship speeds up",
+      "They feel pressured or dominated ➜ they pull back",
+      "You read their pullback as low interest ➜ you escalate or withdraw",
+      "Connection ends because the dynamic was unbalanced",
     ],
 
     rootCause: `You have secure attachment (solid foundation) + aggressive communication style (learned that directness = respect, that hesitation = weakness). This often comes from family messaging like "be decisive," "winners don't ask permission," "hesitation is for losers." You learned that taking charge = respect. You're right in business. In dating, you're wrong.`,
@@ -203,17 +203,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🦊',
     image: '/archetypes/playful-tease-fox.png',
     summary:
-      "You use humor and teasing to navigate dating. It's charming at first, but partners sometimes feel mocked or can't tell when you're serious.",
+      "You tend to use a light, relaxed tone in dating. It makes interactions feel easy at first, but sometimes partners aren't sure how seriously to take what you say.",
 
-    patternDescription: `You have a sharp sense of humor and you use it in dating. You tease partners gently. You make jokes about relationship dynamics. You're fundamentally secure, so you're not trying to hurt anyone. But sometimes your teasing lands wrong. Partners aren't sure if you're joking or serious. They start to wonder if you actually care or if everything is a punchline to you.`,
+    patternDescription: `You have an engaging way of relating to people, and you often bring a lighter tone into conversations. You use gentle teasing to create closeness. You're generally secure and your intention is to make the interaction feel comfortable, not critical. But you express something that genuinely matters to you in this lighter style instead of saying it more directly. Partners don't always catch that. Over time, they may feel a bit unsure about how seriously to take your feelings.`,
 
     datingCycle: [
-      'You like someone → you make jokes and tease them gently',
-      'They laugh → it feels fun and playful',
-      "You tease about something that actually bothered you → they don't realize you were serious",
-      'Later, they realize you were upset → they feel tricked',
-      'You say "I was just joking" → they feel dismissed',
-      'They pull back → you lose the lightness you were trying to create',
+      "You like someone ➜ you use a light, teasing tone to build connection",
+      "They respond and engage ➜ the interaction feels smooth and relaxed",
+      "You tease about something that actually bothered you ➜ they don't realize you were serious",
+      "Later, they realize you were upset ➜ the issue remains unclear",
+      "You downplay it (\"It's not a big deal\") ➜ they feel it's hard to read what you really feel",
+      "They pull back ➜ you lose the lightness you were trying to create",
     ],
 
     rootCause: `You have secure attachment (solid foundation) but you communicate indirectly through humor (learned pattern). This often comes from family where humor was the main language—serious conversations didn't happen, problems got laughed off, emotions were deflected with jokes. You're not trying to be hurtful; you're using the language you were taught.`,
@@ -263,17 +263,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🐕‍🦺',
     image: '/archetypes/open-book-puppy.png',
     summary:
-      'You jump in fast emotionally. You share deeply. You move at speed 9 while dates are at speed 3. They feel overwhelmed.',
+      "You open up quickly in dating. You share a lot early on and tend to get emotionally involved faster. They struggle to keep up and feel overwhelmed.",
 
-    patternDescription: `Like an eager puppy, you wear your heart on your sleeve with enthusiasm and expressiveness. You're not afraid to share your feelings, though your desire for reassurance can sometimes feel overwhelming to partners. You express love quickly. You share vulnerable things early. You want to move the relationship forward fast.`,
+    patternDescription: `You're expressive and open-hearted, and you show your feelings clearly. You're not afraid to say what someone means to you, and you're willing to be emotionally honest early on. You share personal and vulnerable things sooner, and you often want the relationship to move forward at a quicker pace. Your wish for closeness and reassurance can sometimes feel intense for partners who are still getting to know you.`,
 
     datingCycle: [
-      'You meet someone interesting → you feel excited and invested',
-      'You share deeply and vulnerably → you say "I like you" quickly',
-      'They feel the intensity of your investment → they get overwhelmed',
-      'You want reassurance they like you too → you ask (multiple times)',
-      'They give reassurance but seem distant → you interpret as rejection',
-      'You escalate intensity trying to prove your value → they back away',
+      "You meet someone interesting ➜ you feel excited and invested",
+      "You share deeply and vulnerably ➜ you say \"I like you\" quickly",
+      "They feel the intensity of your investment ➜ they get overwhelmed",
+      "You want reassurance they like you too ➜ you ask (multiple times)",
+      "They give reassurance but seem distant ➜ you interpret as rejection",
+      "You escalate intensity trying to prove your value ➜ they back away",
     ],
 
     rootCause: `You have anxious attachment. You learned early that love was inconsistent. You developed a strategy: if you invest MORE, love more, share more vulnerably, surely THEN they won't leave. Your assertiveness (you say what you want directly) actually makes your anxiety worse because you push harder when anxious, which pushes partners away.`,
@@ -323,17 +323,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🐨',
     image: '/archetypes/selfless-giver-koala.png',
     summary:
-      "You do everything for partners hoping it will make them love you more. You sacrifice yourself and wonder why they don't appreciate it.",
+      "You put a lot of care and effort into your relationships. You naturally focus on your partner's needs. But you end up feeling unseen or unappreciated for how much you give.",
 
-    patternDescription: `You cling to relationships with deep attachment and put others' needs first. Your generous nature is a gift, but you may sacrifice too much of yourself hoping it will secure love. You remember every detail about them. You go the extra mile. You try so hard that it can feel suffocating to partners.`,
+    patternDescription: `You form strong attachments and tend to show love through doing things for the other person. Your willingness to give and support is a real strength, but at times you set your own needs aside for too long. You notice the small details. You remember what they like. When this isn't matched or clearly acknowledged, it can quietly become painful for you, and the relationship can start to feel uneven.`,
 
     datingCycle: [
-      'You like someone → you start doing things for them',
-      "You go out of your way for them → you hope they'll appreciate it",
-      "They appreciate it but don't reciprocate equally → you don't say anything",
-      "You keep doing more → you hope this will make them love you more",
-      "You build resentment that they don't notice your effort → you get cold",
-      'They feel controlled by your giving → they pull away',
+      "You like someone ➜ you naturally start doing caring things for them",
+      "You put in extra effort ➜ you hope they'll feel supported and valued",
+      "They appreciate it but don't always respond in the same way ➜ you don't speak up about how you feel",
+      "You keep giving more ➜ you hope the connection will deepen",
+      "Over time you feel tired and unnoticed ➜ frustration starts to build",
+      "You become more distant or less warm ➜ they may experience this shift as tension and step back",
     ],
 
     rootCause: `You have anxious attachment with a "giver" strategy. You learned that love = work and effort. You think if you just do enough, love enough, care enough, they'll stay. But love isn't a transaction. Your hypervigilance to their needs comes from fear they'll leave if you stop being useful.`,
@@ -383,17 +383,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🐆',
     image: '/archetypes/fiery-pursuer-cheetah.png',
     summary:
-      'You pursue love with intensity and passion. When anxious, you push harder. This pushes partners away.',
+      "You bring a lot of energy and passion into dating. When you really care about someone, you lean in. When you feel anxious, you move even closer, which can feel intense for the other person.",
 
-    patternDescription: `You pursue love with intensity and passion. When anxiety meets aggression, you may push too hard for connection, sometimes creating the very distance you fear. You come on strong. You want intensity and passion. You escalate when anxious.`,
+    patternDescription: `You don't hide your interest. When you like someone, you're engaged, responsive, and willing to invest. You value emotional intensity and clear signs of connection. When you sense distance or mixed signals, it's hard for you to sit back and wait — reaching out more feels like the way to keep the connection alive. What feels like care and effort on your side can feel like pressure on theirs, and that gap can create the distance you're trying to avoid.`,
 
     datingCycle: [
-      'You like someone → you pursue them actively',
-      'They seem distant or unsure → you escalate to convince them',
-      "You text more, call more, try harder → your anxiety is driving you forward",
-      'They feel pressured → they pull away',
-      'You interpret withdrawal as rejection → you escalate more',
-      "They leave → you confirm your fear that love isn't possible",
+      "You like someone ➜ you pursue them actively",
+      "They seem distant or unsure ➜ you escalate to convince them",
+      "You text more, call more, try harder ➜ your anxiety is driving you forward",
+      "They feel pressured ➜ they pull away",
+      "Their distance feels like rejection ➜ your anxiety rises and you escalate more",
+      "The connection becomes strained or ends ➜ it reinforces your worry that it's hard to find stable closeness",
     ],
 
     rootCause: `You have anxious attachment with an aggressive communication style. You learned that pursuing = caring, that intensity = love. When anxious (which is often), you don't slow down—you speed up. You don't pull back—you push forward. But this combination is exhausting for partners.`,
@@ -443,17 +443,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🦉',
     image: '/archetypes/mind-reader-owl.png',
     summary:
-      'You notice everything and test partners indirectly. You expect them to read your mind and prove their love through unspoken hints.',
+      "You're highly observant in relationships. You pick up on details and subtle shifts, and hope partners will understand your needs or feelings without talking to them directly.",
 
-    patternDescription: `You observe everything your date does. You analyze it. You decide what it means. You get upset about things they don't know bothered you. You drop hints hoping they'll figure it out. When they don't, you feel rejected. You go quiet or make sarcastic comments. They feel attacked but don't know why.`,
+    patternDescription: `You notice a lot—tone changes, delayed replies, small actions. You think about what these signs might mean and often draw your own conclusions. When something bothers you, you do not bring it up right away. Instead, you hint at it or change your tone, hoping the other person will understand it. When they don't respond the way you were hoping, you feel disappointing. From their side, things can suddenly feel tense, but they're not sure what happened.`,
 
     datingCycle: [
-      "Something bothers you → you don't say anything",
-      "You drop hints hoping they'll figure it out → they don't notice",
-      "You interpret their not noticing as proof they don't care → you get hurt",
-      'You go quiet or make sarcastic comments → they feel attacked',
-      'They ask what\'s wrong, you say "nothing" → they feel rejected',
-      "They pull back because they can't win → you confirm they don't care",
+      "Something bothers you ➜ you don't say anything",
+      "You drop hints hoping they'll figure it out ➜ they don't fully pick up on it",
+      "They don't fully pick up on it ➜ you feel unseen",
+      "You become quieter or use more sarcastic comments ➜ they sense tension but don't know the reason",
+      "They ask what's going on, and you say \"It's fine\" or \"Nothing\" ➜ they feel confused",
+      "They step back to avoid making things worse ➜ you confirm they don't care",
     ],
 
     rootCause: `You have anxious attachment with passive-aggressive communication. You learned that expressing needs = conflict = abandonment. So you hide your needs, test partners with hints, and feel rejected when they don't pass the test. But you never gave them the actual test.`,
@@ -503,17 +503,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🦅',
     image: '/archetypes/solo-voyager-eagle.png',
     summary:
-      'You value your independence above all. Relationships feel like a threat to your autonomy. You push partners away when they get close.',
+      "You care deeply about having your own space and direction in life. When relationships start to feel like they might limit that, you create distance or pull back.",
 
-    patternDescription: `You value your freedom and independence above all. You're confident in who you are and clear about your boundaries. Intimacy often feels like a threat to your autonomy. When things get close, you get uncomfortable. You need space and you take it.`,
+    patternDescription: `You're comfortable on your own and confident in who you are. You know your limits and you protect them. As emotional closeness grows, it can start to feel like pressure or expectation. When that happens, you step back—taking more space, keeping things lighter or focusing on your own world again—so you can feel grounded and independent.`,
 
     datingCycle: [
-      "You like someone → you keep them at arm's length",
-      'They try to get closer → you feel uncomfortable',
-      'You need space → you pull away or get distant',
-      'They feel rejected → they pull back',
-      "You feel relief at the distance → you're comfortable again",
-      "They move on → you're relieved and sad at the same time",
+      "You like someone ➜ you enjoy the connection but keep some distance",
+      "They try to get closer ➜ you start to feel pressured or crowded",
+      "You want more space ➜ you become less available or more reserved",
+      "They notice the distance ➜ they step back to protect themselves",
+      "With more space again ➜ you feel more at ease, though a bit conflicted",
+      "They move on ➜ you feel both relief and a sense of loss",
     ],
 
     rootCause: `You have avoidant attachment with assertive communication (you say you want space clearly). You learned that relationships = loss of self. Intimacy = vulnerability = danger. Your independence is a protective strategy, not a character trait.`,
@@ -563,16 +563,16 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🐢',
     image: '/archetypes/quiet-ghost-turtle.png',
     summary:
-      'When relationships get intense, you disappear. You avoid conflict and connection alike. Partners feel confused and abandoned.',
+      "When relationships start to feel intense or demanding, you pull back. Instead of staying engaged, you create distance, and partners can be left feeling confused or shut out.",
 
-    patternDescription: `You retreat into your shell when relationships feel too close or demanding. You avoid conflict and connection alike, often disappearing when things get emotionally intense. You're not doing it on purpose. Your nervous system gets triggered and your instinct is to escape.`,
+    patternDescription: `When things become more emotionally real, your system can feel overloaded. Stepping back feels safer than staying in the moment. You go quiet, reply more slowly, or disappear for a while. For you, it's a way to calm down and get space. For the other person, it can look like you suddenly lost interest or stopped caring.`,
 
     datingCycle: [
-      'Things get emotionally real → you feel overwhelmed',
-      'You need to escape → you go quiet',
-      "You take longer to respond → you're busy or just not engaging",
-      "Your date wonders what happened → they don't understand",
-      'You either re-engage after time OR you ghost → they feel abandoned',
+      "Things get emotionally real ➜ you feel overwhelmed",
+      "You need to escape ➜ you go quiet",
+      "You take longer to respond ➜ you're busy or just not engaging",
+      "The other person notices the distance ➜ they feel unsure about what's happening",
+      "You either re-engage after time OR you ghost ➜ they feel left behind",
       "Connection dies because they can't reach you",
     ],
 
