@@ -1,5 +1,16 @@
+"use client";
+
 import Link from "next/link";
-import { Clock, Lock, Sparkles, Heart, Brain, MessageCircle } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
+import {
+  Clock,
+  Lock,
+  Sparkles,
+  Heart,
+  Brain,
+  MessageCircle,
+  ArrowRight,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ArchetypesGrid } from "@/components/archetypes/ArchetypesGrid";
@@ -29,119 +40,171 @@ const QUIZ_BENEFITS = [
 ];
 
 export default function QuizPage() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <main className="mx-auto max-w-6xl px-4 pt-10 pb-14 sm:px-6 md:pt-12 md:pb-16 lg:px-8">
-        {/* Hero */}
-        <div className="text-center">
-          {/* Hopeful sparkle icon */}
-          <div className="relative inline-flex items-center justify-center h-16 w-16">
-            {/* Main sparkle - gradient gold */}
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z"
-                fill="url(#sparkleGradient)"
-              />
-              <defs>
-                <linearGradient id="sparkleGradient" x1="4" y1="2" x2="20" y2="18">
-                  <stop offset="0%" stopColor="#ffe362" />
-                  <stop offset="100%" stopColor="#f9d544" />
-                </linearGradient>
-              </defs>
-            </svg>
-            {/* Secondary smaller sparkles for brilliance */}
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="absolute -top-1 -right-1 opacity-70">
-              <path
-                d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z"
-                fill="#ffb347"
-              />
-            </svg>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="absolute -bottom-1 -left-2 opacity-50">
-              <path
-                d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z"
-                fill="#cab5d4"
-              />
-            </svg>
-          </div>
-          <h1 className="mt-4 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-            Discover Your
-            <br />
-            <span className="text-[#cab5d4]">Free Dating Personality</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-600">
-            Our science-backed quiz reveals your attachment style, communication
-            patterns, and love languages—everything you need to understand yourself
-            better in relationships.
-          </p>
-
-          {/* Stats row */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500">
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4" />
-              <span>~8 minutes</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4" />
-              <span>48 questions</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Lock className="h-4 w-4" />
-              <span>100% private</span>
-            </div>
-          </div>
-
-          {/* CTA button */}
-          <div className="mt-10 flex justify-center">
-            <Button
-              asChild
-              size="lg"
-              className="bg-[#f9d544] px-8 text-slate-900 hover:bg-[#ffe362]"
-            >
-              <Link href="/quiz/questions?new=true">Start Quiz</Link>
-            </Button>
-          </div>
-        </div>
-
-        {/* Benefits section */}
-        <div className="mt-20">
-          <h2 className="text-center text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">
-            What You&apos;ll Learn
-          </h2>
-
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            {QUIZ_BENEFITS.map((benefit) => (
-              <div
-                key={benefit.title}
-                className="rounded-2xl bg-white p-6 shadow-soft transition-shadow hover:shadow-hover"
+      {/* Hero */}
+      <div className="text-center">
+        {/* Hopeful sparkle icon */}
+        <motion.div
+          initial={
+            prefersReducedMotion ? undefined : { opacity: 0, scale: 0.8 }
+          }
+          animate={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="relative inline-flex h-16 w-16 items-center justify-center"
+        >
+          {/* Main sparkle - gradient gold */}
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z"
+              fill="url(#sparkleGradient)"
+            />
+            <defs>
+              <linearGradient
+                id="sparkleGradient"
+                x1="4"
+                y1="2"
+                x2="20"
+                y2="18"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f9d544]/20">
-                  <benefit.icon className="h-5 w-5 text-slate-900" />
-                </div>
-                <h3 className="mt-4 font-semibold text-slate-900">
-                  {benefit.title}
-                </h3>
-                <p className="mt-2 text-sm text-slate-600">
-                  {benefit.description}
-                </p>
+                <stop offset="0%" stopColor="#ffe362" />
+                <stop offset="100%" stopColor="#f9d544" />
+              </linearGradient>
+            </defs>
+          </svg>
+          {/* Secondary smaller sparkles for brilliance */}
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="absolute -top-1 -right-1 opacity-70"
+          >
+            <path
+              d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z"
+              fill="#ffb347"
+            />
+          </svg>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="absolute -bottom-1 -left-2 opacity-50"
+          >
+            <path
+              d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z"
+              fill="#cab5d4"
+            />
+          </svg>
+        </motion.div>
+        <motion.h1
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+          className="mt-4 text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl sm:leading-tight"
+        >
+          Discover Your
+          <br />
+          <span className="from-secondary to-primary bg-gradient-to-r bg-clip-text text-transparent">
+            Dating Personality
+          </span>
+        </motion.h1>
+        <motion.p
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+          className="mx-auto mt-6 max-w-2xl text-lg text-slate-600"
+        >
+          Our science-backed quiz reveals your attachment style, communication
+          patterns, and love languages—everything you need to understand
+          yourself better in relationships.
+        </motion.p>
+
+        {/* Stats row */}
+        <motion.div
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+          className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500"
+        >
+          <div className="flex items-center gap-2">
+            <Clock className="h-4 w-4" />
+            <span>~8 minutes</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4" />
+            <span>48 questions</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Lock className="h-4 w-4" />
+            <span>100% private</span>
+          </div>
+        </motion.div>
+
+        {/* CTA button */}
+        <motion.div
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+          className="mt-10 flex justify-center"
+        >
+          <Button
+            asChild
+            size="lg"
+            className="bg-primary shadow-soft hover:bg-accent hover:shadow-hover px-8 text-slate-900 transition-all hover:-translate-y-0.5"
+          >
+            <Link href="/quiz/questions?new=true">
+              Start Free Quiz
+              <ArrowRight className="ml-2 size-4" aria-hidden />
+            </Link>
+          </Button>
+        </motion.div>
+      </div>
+
+      {/* Benefits section */}
+      <div className="mt-20">
+        <h2 className="text-center text-xs font-semibold tracking-[0.35em] text-slate-500 uppercase">
+          What You&apos;ll Learn
+        </h2>
+
+        <div className="mt-8 grid gap-6 sm:grid-cols-2">
+          {QUIZ_BENEFITS.map((benefit) => (
+            <div
+              key={benefit.title}
+              className="shadow-soft hover:shadow-hover rounded-2xl bg-white p-6 transition-shadow"
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f9d544]/20">
+                <benefit.icon className="h-5 w-5 text-slate-900" />
               </div>
-            ))}
-          </div>
+              <h3 className="mt-4 font-semibold text-slate-900">
+                {benefit.title}
+              </h3>
+              <p className="mt-2 text-sm text-slate-600">
+                {benefit.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Archetypes section */}
+      <div className="mt-20 sm:mt-24 lg:mt-28">
+        <div className="text-center">
+          <h2 className="text-foreground mt-2 text-[1.9rem] font-semibold tracking-tight sm:text-[2.25rem]">
+            Dating Personalities 101
+          </h2>
+          <p className="text-muted-foreground mx-auto mt-3 max-w-2xl text-base sm:text-lg">
+            Decode the 16 archetypes and unlock their secrets.
+          </p>
         </div>
 
-        {/* Archetypes section */}
-        <div className="mt-20 sm:mt-24 lg:mt-28">
-          <div className="text-center">
-            <h2 className="mt-2 text-[1.9rem] font-semibold tracking-tight text-foreground sm:text-[2.25rem]">
-              Dating Personalities 101
-            </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
-              Decode the 16 archetypes and unlock their secrets.
-            </p>
-          </div>
-
-          <div className="mt-8">
-            <ArchetypesGrid archetypes={archetypes} />
-          </div>
+        <div className="mt-8">
+          <ArchetypesGrid archetypes={archetypes} />
         </div>
-      </main>
+      </div>
+    </main>
   );
 }
