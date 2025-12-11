@@ -1,12 +1,18 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Send, CheckCircle, AlertCircle, Loader2, ChevronDown } from "lucide-react";
+import { Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 type ContactCategory = "media" | "investor" | "collaboration";
 type FormStatus = "idle" | "loading" | "success" | "error";
@@ -16,12 +22,13 @@ interface FormData {
   email: string;
   category: ContactCategory;
   message: string;
+  honeypot: string;
 }
 
 const CATEGORY_OPTIONS: { value: ContactCategory; label: string }[] = [
-  { value: "media", label: "Media & Press" },
-  { value: "investor", label: "Investor Relations" },
-  { value: "collaboration", label: "Collaboration & Partnerships" },
+  { value: "media", label: "Press" },
+  { value: "investor", label: "Investors" },
+  { value: "collaboration", label: "Partnerships" },
 ];
 
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
@@ -34,6 +41,7 @@ export function ContactForm() {
     email: "",
     category: "media",
     message: "",
+    honeypot: "",
   });
 
   const handleChange = useCallback(
@@ -53,6 +61,12 @@ export function ContactForm() {
       e.preventDefault();
       setStatus("loading");
       setErrorMessage("");
+
+      // Honeypot spam check - bots fill this hidden field
+      if (formData.honeypot) {
+        setStatus("success"); // Fake success to not alert the bot
+        return;
+      }
 
       // Client-side validation
       if (formData.name.length < 2) {
@@ -94,7 +108,7 @@ export function ContactForm() {
 
         if (result.success) {
           setStatus("success");
-          setFormData({ name: "", email: "", category: "media", message: "" });
+          setFormData({ name: "", email: "", category: "media", message: "", honeypot: "" });
         } else {
           setStatus("error");
           setErrorMessage(result.message || "Failed to send message");
@@ -131,6 +145,18 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Honeypot field - hidden from humans, bots will fill it */}
+      <input
+        type="text"
+        name="honeypot"
+        value={formData.honeypot}
+        onChange={handleChange}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute -left-[9999px] h-0 w-0 opacity-0"
+      />
+
       {/* Name */}
       <div>
         <label
@@ -179,27 +205,27 @@ export function ContactForm() {
         >
           Inquiry Type
         </label>
-        <div className="relative">
-          <select
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            disabled={status === "loading"}
-            className={cn(
-              "appearance-none border-slate-200 text-foreground h-12 w-full rounded-xl border bg-white px-4 py-3 pr-10 transition-all duration-200",
-              "focus-visible:ring-primary focus-visible:border-primary focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-              "disabled:cursor-not-allowed disabled:opacity-50"
-            )}
-          >
+        <Select
+          value={formData.category}
+          onValueChange={(value) =>
+            setFormData((prev) => ({
+              ...prev,
+              category: value as ContactCategory,
+            }))
+          }
+          disabled={status === "loading"}
+        >
+          <SelectTrigger id="category">
+            <SelectValue placeholder="Select inquiry type" />
+          </SelectTrigger>
+          <SelectContent>
             {CATEGORY_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
+              <SelectItem key={option.value} value={option.value}>
                 {option.label}
-              </option>
+              </SelectItem>
             ))}
-          </select>
-          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
-        </div>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Message */}

@@ -4,15 +4,15 @@ import { ContactForm } from "@/components/contact/ContactForm";
 const CONTACT_CATEGORIES = [
   {
     icon: Newspaper,
-    title: "Media & Press",
+    title: "Press",
   },
   {
     icon: TrendingUp,
-    title: "Investor Relations",
+    title: "Investors",
   },
   {
     icon: Handshake,
-    title: "Collaborations",
+    title: "Partnerships",
   },
 ];
 
