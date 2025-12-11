@@ -39,7 +39,13 @@ export async function POST(
     const parsed = SubmitQuizSchema.safeParse(rawBody);
 
     if (!parsed.success) {
-      console.error("Validation error:", parsed.error.flatten());
+      console.error("Validation error:", JSON.stringify(parsed.error.flatten(), null, 2));
+      console.error("Raw body sample:", JSON.stringify({
+        sessionId: rawBody.sessionId,
+        fingerprintHash: rawBody.fingerprintHash?.slice(0, 10) + "...",
+        answerCount: rawBody.answers ? Object.keys(rawBody.answers).length : 0,
+        sampleAnswers: rawBody.answers ? Object.entries(rawBody.answers).slice(0, 3) : [],
+      }, null, 2));
       return NextResponse.json(
         {
           success: false,

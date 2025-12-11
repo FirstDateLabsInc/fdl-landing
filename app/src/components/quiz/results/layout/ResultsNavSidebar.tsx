@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import cloudflareLoader from "@/lib/cloudflare-image-loader";
 import { cn } from "@/lib/utils";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
 
@@ -57,6 +58,7 @@ export function ResultsNavSidebar({
       <div className="mb-4 text-center">
         <div className="mx-auto mb-2 h-16 w-16 overflow-hidden rounded-full bg-primary/10">
           <Image
+            loader={cloudflareLoader}
             src={archetype.image}
             alt={archetype.name}
             width={64}

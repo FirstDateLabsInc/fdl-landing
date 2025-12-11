@@ -1,6 +1,9 @@
+"use client";
+
 import type React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import cloudflareLoader from "@/lib/cloudflare-image-loader";
 import { Instagram, Linkedin, Twitter } from "lucide-react";
 
 import { TikTokIcon } from "@/components/icons/TikTokIcon";
@@ -26,6 +29,7 @@ export function Footer() {
               className="text-foreground inline-flex items-center gap-2 text-lg font-semibold tracking-tight"
             >
               <Image
+                loader={cloudflareLoader}
                 src="/logos/icon.png"
                 alt="First Date Labs logo"
                 width={28}

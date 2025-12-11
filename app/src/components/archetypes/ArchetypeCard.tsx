@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import cloudflareLoader from "@/lib/cloudflare-image-loader";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
@@ -27,6 +30,7 @@ export function ArchetypeCard({ archetype, variant, className }: ArchetypeCardPr
       <div className="mb-4 flex flex-col items-center">
         <div className="relative mb-6 h-72 w-72 transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
            <Image
+            loader={cloudflareLoader}
             src={archetype.image}
             alt={archetype.name}
             fill

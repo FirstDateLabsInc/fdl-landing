@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import cloudflareLoader from "@/lib/cloudflare-image-loader";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 
@@ -112,6 +113,7 @@ export function Navbar() {
             onClick={closeMenu}
           >
             <Image
+              loader={cloudflareLoader}
               src="/logos/icon.png"
               alt="First Date Labs logo"
               width={28}

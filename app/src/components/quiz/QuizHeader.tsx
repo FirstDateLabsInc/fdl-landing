@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import cloudflareLoader from "@/lib/cloudflare-image-loader";
 import { X } from "lucide-react";
 import { useState } from "react";
 
@@ -45,6 +46,7 @@ export function QuizHeader({
             className="flex items-center gap-2 text-lg font-semibold tracking-tight text-slate-900 transition-colors hover:text-slate-700"
           >
             <Image
+              loader={cloudflareLoader}
               src="/logos/icon.png"
               alt="First Date Labs logo"
               width={28}
