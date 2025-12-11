@@ -4,7 +4,7 @@ import { ContactForm } from "@/components/contact/ContactForm";
 const CONTACT_CATEGORIES = [
   {
     icon: Newspaper,
-    title: "Press & Media",
+    title: "Press",
   },
   {
     icon: TrendingUp,
@@ -34,7 +34,7 @@ export default function ContactPage() {
               key={category.title}
               className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2"
             >
-              <category.icon className="h-4 w-4 text-primary" />
+              <category.icon className="text-primary h-4 w-4" />
               <span className="text-sm font-medium text-slate-700">
                 {category.title}
               </span>
