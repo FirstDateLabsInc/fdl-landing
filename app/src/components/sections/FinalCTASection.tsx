@@ -28,21 +28,17 @@ export function FinalCTASection() {
           transition={{ duration: 0.55, ease: "easeOut" }}
           className="space-y-6 sm:space-y-7"
         >
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.25em] text-secondary-dark">
-            Early access
-          </div>
-
-          <div className="space-y-4 sm:space-y-5">
+          <div className="space-y-3 sm:space-y-4">
             <h2
               id="final-cta-heading"
-              className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl md:text-4xl"
+              className="text-3xl font-semibold tracking-tight text-foreground sm:text-[2.25rem]"
             >
               {finalCtaContent.headline}
             </h2>
-            <p className="mx-auto max-w-xl text-base text-muted-foreground sm:text-lg">
+            <p className="mx-auto max-w-xl text-base text-muted-foreground sm:text-lg leading-relaxed">
               {finalCtaContent.subheadline}
             </p>
-            <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-xs font-medium text-secondary-dark sm:text-sm">
+            <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2 text-xs font-medium text-muted-foreground sm:text-sm">
               <Users className="size-4" aria-hidden />
               {finalCtaContent.socialProof}
             </div>
@@ -52,13 +48,13 @@ export function FinalCTASection() {
             <WaitlistForm variant="inline" />
           </div>
 
-          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground sm:text-base">
-            <span>Want a preview of what we do?</span>
+          <div className="mt-5 flex items-center justify-center gap-2 text-sm text-muted-foreground sm:mt-6 sm:text-base">
+            <span>Keep attracting the wrong people?</span>
             <Link
               href={finalCtaContent.quizCta.href}
               className="font-semibold text-foreground underline-offset-4 transition-colors hover:text-primary"
             >
-              {finalCtaContent.quizCta.label}
+              Discover your Dating Personality →
             </Link>
           </div>
         </motion.div>

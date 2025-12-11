@@ -8,7 +8,7 @@ const inputVariants = cva(
   {
     variants: {
       variant: {
-        default: "border-border focus-visible:ring-primary",
+        default: "border-slate-200 focus-visible:ring-primary focus-visible:border-primary",
         error: "border-red-500 focus-visible:ring-red-500",
       },
       inputSize: {
