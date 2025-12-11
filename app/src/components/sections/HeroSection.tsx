@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Sparkles } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
@@ -49,6 +50,10 @@ export function HeroSection() {
 
             <div className="mt-8 w-full max-w-md">
               <WaitlistForm variant="inline" />
+              <p className="text-secondary-dark mt-3 flex items-center gap-1.5 text-xs">
+                <Sparkles className="h-3.5 w-3.5 shrink-0" />
+                Nail every first date. Join now to claim your early-bird offer.
+              </p>
             </div>
           </motion.div>
 
