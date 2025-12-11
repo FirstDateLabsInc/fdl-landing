@@ -27,12 +27,9 @@ export function FAQSection() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="text-center"
         >
-          <p className="text-sm font-semibold uppercase tracking-[0.35em] text-secondary-dark">
-            FAQ
-          </p>
           <h2
             id="faq-heading"
-            className="mt-3 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl md:text-4xl"
+            className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl md:text-4xl"
           >
             Common questions
           </h2>

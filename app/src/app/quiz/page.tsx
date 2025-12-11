@@ -126,8 +126,11 @@ export default function QuizPage() {
             16 dating personalities
           </Link>
           , plus your attachment style, communication patterns, and love
-          languages—everything you need to understand yourself better in
-          relationships.
+          languages.
+          <br />
+          <span className="mt-1 block">
+            Everything you need to understand yourself better in dating.
+          </span>
         </motion.p>
 
         {/* Stats row */}
