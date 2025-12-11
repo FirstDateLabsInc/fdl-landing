@@ -307,9 +307,9 @@ export const faqs: FaqItem[] = [
 ];
 
 export const finalCtaContent: FinalCtaContent = {
-  headline: "Ready to ace your next first date?",
+  headline: "Ready to ace your next date?",
   subheadline:
-    "Join thousands practicing with Juliet. Get early access and start building real dating confidence today.",
+    "Stop guessing and start connecting. Get exclusive access and build the confidence to handle any date with ease.",
   socialProof: "Join 2,500+ singles already on the waitlist",
   quizCta: { label: "Take the free quiz", href: "/quiz" },
 };
