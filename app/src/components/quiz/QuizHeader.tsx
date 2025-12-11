@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { useState } from "react";
@@ -43,9 +44,13 @@ export function QuizHeader({
             href="/"
             className="flex items-center gap-2 text-lg font-semibold tracking-tight text-slate-900 transition-colors hover:text-slate-700"
           >
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-sm font-bold tracking-[0.18em] text-white uppercase">
-              {navigation.logoText[0] ?? "F"}
-            </span>
+            <Image
+              src="/logos/icon.png"
+              alt="First Date Labs logo"
+              width={28}
+              height={28}
+              className="h-7 w-7"
+            />
             <span className="leading-tight">{navigation.logoText}</span>
           </Link>
 

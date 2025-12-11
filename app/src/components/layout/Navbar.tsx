@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
@@ -110,9 +111,14 @@ export function Navbar() {
             className="flex items-center gap-2 text-lg font-semibold tracking-tight text-slate-900 transition-colors hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:outline-none"
             onClick={closeMenu}
           >
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-sm font-bold tracking-[0.18em] text-white uppercase shadow-[0_10px_30px_-15px_rgba(15,23,42,0.65)]">
-              {navigation.logoText[0] ?? "J"}
-            </span>
+            <Image
+              src="/logos/icon.png"
+              alt="First Date Labs logo"
+              width={28}
+              height={28}
+              className="h-7 w-7"
+              priority
+            />
             <span className="leading-tight">{navigation.logoText}</span>
           </Link>
 

@@ -1,0 +1,19 @@
+{
+  "name": "First Date Labs - Juliet AI Dating Coach",
+  "short_name": "First Date Labs",
+  "icons": [
+    {
+      "src": "/logos/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    },
+    {
+      "src": "/logos/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#fffdf6",
+  "background_color": "#fffdf6",
+  "display": "standalone"
+}

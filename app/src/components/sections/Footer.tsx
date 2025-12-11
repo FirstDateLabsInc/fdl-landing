@@ -1,4 +1,5 @@
 import type React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Instagram, Linkedin, Twitter } from "lucide-react";
 
@@ -24,9 +25,13 @@ export function Footer() {
               href="/#hero"
               className="text-foreground inline-flex items-center gap-2 text-lg font-semibold tracking-tight"
             >
-              <span className="bg-foreground text-background inline-flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold tracking-[0.18em] uppercase shadow-[0_10px_30px_-15px_rgba(15,23,42,0.45)]">
-                {navigation.logoText[0] ?? "J"}
-              </span>
+              <Image
+                src="/logos/icon.png"
+                alt="First Date Labs logo"
+                width={28}
+                height={28}
+                className="h-7 w-7"
+              />
               <span>{footerContent.brandName}</span>
             </Link>
             <p className="text-muted-foreground max-w-sm text-sm">
