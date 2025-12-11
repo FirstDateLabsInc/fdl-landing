@@ -63,7 +63,7 @@ export function ResultsNavSidebar({
             alt={archetype.name}
             width={64}
             height={64}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-top"
           />
         </div>
         <p className="text-xs text-muted-foreground">Your type is</p>

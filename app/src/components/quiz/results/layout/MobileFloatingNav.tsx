@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { X, ChevronUp } from "lucide-react";
+import Image from "next/image";
+import { ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import cloudflareLoader from "@/lib/cloudflare-image-loader";
 import { SECTIONS } from "./ResultsNavSidebar";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
 
@@ -101,8 +103,15 @@ export function MobileFloatingNav({ activeSection, archetype, className }: Mobil
           onClick={() => setIsOpen(!isOpen)}
           className="flex w-auto items-center gap-3 rounded-full bg-white p-2 pr-4 shadow-[0_8px_30px_rgb(0,0,0,0.12)] ring-1 ring-black/5 active:scale-[0.98] transition-all duration-150 mx-auto"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100/50 text-2xl">
-            {archetype.emoji}
+          <div className="h-10 w-10 overflow-hidden rounded-full bg-gray-100/50">
+            <Image
+              loader={cloudflareLoader}
+              src={archetype.image}
+              alt={archetype.name}
+              width={40}
+              height={40}
+              className="h-full w-full object-cover object-top"
+            />
           </div>
           
           <div className={cn(
