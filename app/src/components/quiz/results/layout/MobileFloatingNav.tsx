@@ -39,12 +39,12 @@ export function MobileFloatingNav({ activeSection, archetype, className }: Mobil
   }, [isOpen]);
 
   return (
-    <div ref={ref} className={cn("fixed bottom-6 w-full px-4 z-50 lg:hidden flex justify-center", className)}>
-      <div className="relative w-full max-w-sm">
+    <div ref={ref} className={cn("fixed bottom-6 inset-x-0 px-4 z-50 lg:hidden flex justify-center", className)}>
+      <div className="relative w-full">
         {/* Local Popup - always in DOM, CSS controls visibility */}
         <nav
           className={cn(
-            "absolute bottom-20 left-0 right-0 w-full origin-bottom rounded-2xl bg-white p-2 shadow-xl ring-1 ring-black/5 transition-all duration-200 ease-out-back",
+            "absolute bottom-20 left-0 right-0 overflow-hidden origin-bottom rounded-2xl bg-white p-2 shadow-xl ring-1 ring-black/5 transition-all duration-200 ease-out-back",
             isOpen ? "scale-100 opacity-100 translate-y-0" : "pointer-events-none scale-95 opacity-0 translate-y-4"
           )}
         >
@@ -84,7 +84,7 @@ export function MobileFloatingNav({ activeSection, archetype, className }: Mobil
               }}
               className="w-full rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground"
             >
-              Get the App
+              Get Full Report
             </button>
             <button
               onClick={() => {
