@@ -348,5 +348,5 @@ export const footerContent: FooterContent = {
     { platform: "Twitter", href: "https://twitter.com", icon: "twitter" },
     { platform: "TikTok", href: "https://www.tiktok.com", icon: "tiktok" },
   ],
-  contact: "support@firstdatelabs.com",
+  contact: "",
 };
