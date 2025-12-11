@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <div>
       <HeroSection />
-      <div id="press" aria-hidden className="sr-only" />
+      <div id="contact" aria-hidden className="sr-only" />
       <SocialProofSection />
       <ProblemSolutionSection />
       <BenefitsSection />

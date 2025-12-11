@@ -276,7 +276,7 @@ export const navigation: Navigation = {
   logoText: "First Date Labs",
   links: [
     { label: "Home", href: "/" },
-    { label: "Press", href: "/press" },
+    { label: "Contact", href: "/contact" },
     { label: "Login", href: "/login" },
     { label: "Quiz", href: "/quiz" },
   ],
@@ -330,7 +330,7 @@ export const footerContent: FooterContent = {
     {
       title: "Company",
       links: [
-        { label: "Press", href: "/press" },
+        { label: "Contact", href: "/contact" },
         { label: "Contact", href: "mailto:support@firstdatelabs.com" },
       ],
     },
