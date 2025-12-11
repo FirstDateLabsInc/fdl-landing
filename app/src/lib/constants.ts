@@ -277,7 +277,7 @@ export const navigation: Navigation = {
   links: [
     { label: "Home", href: "/" },
     { label: "Contact", href: "/contact" },
-    { label: "Login", href: "/login" },
+    // { label: "Login", href: "/login" },
     { label: "Quiz", href: "/quiz" },
   ],
   cta: { label: "Get Early Access", href: "/#waitlist" },
