@@ -34,11 +34,16 @@ export function ResultsNavSidebar({
   activeSection,
   className,
 }: ResultsNavSidebarProps) {
-  const handleClick = (id: string) => {
+  const scrollToId = (id: string) => {
     const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+    if (!element) return;
+    const offset = 120; // account for sticky navbar
+    const top = element.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+  const handleClick = (id: string) => {
+    scrollToId(id);
   };
 
   return (
@@ -91,10 +96,16 @@ export function ResultsNavSidebar({
 
       {/* Action Buttons */}
       <div className="space-y-1.5">
-        <button className="w-full rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground">
+        <button
+          onClick={() => handleClick("full-picture")}
+          className="w-full rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
+        >
           Get the App
         </button>
-        <button className="w-full rounded-lg border border-muted px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted">
+        <button
+          onClick={() => handleClick("share-results")}
+          className="w-full rounded-lg border border-muted px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted"
+        >
           Share Results
         </button>
       </div>

@@ -296,7 +296,7 @@ export function ResultsContainer({
             animate="visible"
             transition={{ delay: 0.7 }}
           >
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
+            <div id="share-results" className="rounded-2xl bg-white p-6 shadow-sm">
               <ShareResults shareUrl={shareUrl} archetype={archetype.name} />
             </div>
           </motion.div>
@@ -309,11 +309,13 @@ export function ResultsContainer({
               animate="visible"
               transition={{ delay: 0.8 }}
             >
-              <QuizWaitlistSection
-                quizResultId={quizResultId}
-                archetypeName={archetype.name}
-                archetypeEmoji={archetype.emoji}
-              />
+              <div id="full-picture">
+                <QuizWaitlistSection
+                  quizResultId={quizResultId}
+                  archetypeName={archetype.name}
+                  archetypeEmoji={archetype.emoji}
+                />
+              </div>
             </motion.div>
           )}
         </div>

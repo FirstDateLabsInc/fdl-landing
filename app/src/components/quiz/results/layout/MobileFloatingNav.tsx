@@ -16,6 +16,14 @@ export function MobileFloatingNav({ activeSection, archetype, className }: Mobil
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
+  const scrollToId = (id: string) => {
+    const element = document.getElementById(id);
+    if (!element) return;
+    const offset = 120; // account for sticky navbar
+    const top = element.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
   // Click outside to close - clean pattern
   useEffect(() => {
     if (!isOpen) return;
@@ -45,7 +53,7 @@ export function MobileFloatingNav({ activeSection, archetype, className }: Mobil
               <button
                 key={s.id}
                 onClick={() => {
-                  document.getElementById(s.id)?.scrollIntoView({ behavior: "smooth" });
+                  scrollToId(s.id);
                   setIsOpen(false);
                 }}
                 className={cn(
@@ -64,6 +72,27 @@ export function MobileFloatingNav({ activeSection, archetype, className }: Mobil
                 )}
               </button>
             ))}
+          </div>
+
+          <div className="mt-3 space-y-2 px-1">
+            <button
+              onClick={() => {
+                scrollToId("full-picture");
+                setIsOpen(false);
+              }}
+              className="w-full rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground"
+            >
+              Get the App
+            </button>
+            <button
+              onClick={() => {
+                scrollToId("share-results");
+                setIsOpen(false);
+              }}
+              className="w-full rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted"
+            >
+              Share Results
+            </button>
           </div>
         </nav>
 
