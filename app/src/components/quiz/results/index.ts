@@ -17,6 +17,8 @@ export { RedFlagsList } from "./sections/RedFlagsList";
 export { CoachingFocusList } from "./sections/CoachingFocusList";
 export { TraitGrid } from "./sections/TraitGrid";
 export { LoveLanguageSuggestions } from "./sections/LoveLanguageSuggestions";
+export { ScoreInsightCard } from "./sections/ScoreInsightCard";
+export { ScoreInsightsSection } from "./sections/ScoreInsightsSection";
 export { ResultCard } from "./sections/ResultCard";
 export { ShareResults } from "./sections/ShareResults";
 

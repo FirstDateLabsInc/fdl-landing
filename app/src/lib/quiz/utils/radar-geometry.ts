@@ -58,7 +58,7 @@ export function createRadarHelpers(config: RadarConfig): RadarHelpers {
 }
 
 // Pre-configured helpers for chart sizes used in the app
-export const OVERALL_RADAR_CONFIG = { size: 380, radius: 90, levels: 5 } as const;
+export const OVERALL_RADAR_CONFIG = { size: 500, radius: 120, levels: 5 } as const;
 export const CATEGORY_RADAR_CONFIG = { size: 500, radius: 70, levels: 5 } as const;
 
 export const OVERALL_RADAR = createRadarHelpers(OVERALL_RADAR_CONFIG);

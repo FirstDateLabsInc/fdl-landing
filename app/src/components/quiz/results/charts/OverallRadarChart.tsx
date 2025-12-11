@@ -5,7 +5,11 @@ import { motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import { OVERALL_RADAR, OVERALL_RADAR_CONFIG } from "@/lib/quiz/radar-geometry";
-import { getDisplayLabel, getScoreDetail, formatCommunicationStyle } from "@/lib/quiz/labels";
+import {
+  getDisplayLabel,
+  getScoreDetail,
+  formatCommunicationStyle,
+} from "@/lib/quiz/labels";
 import { GradientProgressBar } from "./GradientProgressBar";
 import type { QuizResults } from "@/lib/quiz/types";
 
@@ -16,7 +20,13 @@ interface OverallRadarChartProps {
 }
 
 const { size: SIZE, radius: RADIUS } = OVERALL_RADAR_CONFIG;
-const { center: CENTER, levels: LEVELS, polarToCartesian, getPolygonPoints, getGridPoints } = OVERALL_RADAR;
+const {
+  center: CENTER,
+  levels: LEVELS,
+  polarToCartesian,
+  getPolygonPoints,
+  getGridPoints,
+} = OVERALL_RADAR;
 
 // ============================================================================
 // COMPONENT
@@ -41,7 +51,11 @@ export function OverallRadarChart({
       } else if (Array.isArray(primary)) {
         const score = scores[primary[0]];
         const labels = primary.map((p) => getDisplayLabel(p));
-        return { value: score, detail: labels.join("/"), fullLabel: labels.join("/") };
+        return {
+          value: score,
+          detail: labels.join("/"),
+          fullLabel: labels.join("/"),
+        };
       } else {
         return {
           value: scores[primary],
@@ -60,7 +74,11 @@ export function OverallRadarChart({
       } else if (Array.isArray(primary)) {
         const score = scores[primary[0]];
         const labels = primary.map(formatCommunicationStyle);
-        return { value: score, detail: labels.join("/"), fullLabel: labels.join("/") };
+        return {
+          value: score,
+          detail: labels.join("/"),
+          fullLabel: labels.join("/"),
+        };
       } else {
         return {
           value: scores[primary],
@@ -148,7 +166,7 @@ export function OverallRadarChart({
     () =>
       dimensions.map((dim, i) => {
         const angle = i * angleStep;
-        const { x, y } = polarToCartesian(angle, RADIUS + 50);
+        const { x, y } = polarToCartesian(angle, RADIUS + 65);
         return { ...dim, x, y };
       }),
     [dimensions, angleStep]
@@ -170,10 +188,7 @@ export function OverallRadarChart({
   return (
     <div className={cn("space-y-6", className)}>
       {/* Header */}
-      <div className="space-y-1">
-        <h3 className="text-lg font-semibold text-slate-900">Overall Profile</h3>
-        <p className="text-sm text-slate-500">Your personality overview</p>
-      </div>
+      <p className="text-sm text-slate-500">Your personality overview</p>
 
       {/* Chart */}
       <div className="flex items-center justify-center">
@@ -185,11 +200,27 @@ export function OverallRadarChart({
         >
           {/* Gradient definitions using CSS vars */}
           <defs>
-            <linearGradient id="fillGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient
+              id="fillGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
               <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.35" />
-              <stop offset="100%" stopColor="var(--secondary)" stopOpacity="0.35" />
+              <stop
+                offset="100%"
+                stopColor="var(--secondary)"
+                stopOpacity="0.35"
+              />
             </linearGradient>
-            <linearGradient id="strokeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient
+              id="strokeGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
               <stop offset="0%" stopColor="var(--primary)" />
               <stop offset="100%" stopColor="var(--secondary)" />
             </linearGradient>
@@ -265,21 +296,26 @@ export function OverallRadarChart({
             );
           })}
 
-          {/* Labels - Full descriptive labels */}
+          {/* Labels - Split into two lines for readability */}
           {labelPositions.map(({ fullLabel, category, value, x, y }) => (
             <g key={category}>
               <text
                 x={x}
-                y={y - 10}
+                y={y - 22}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className="fill-slate-800 text-[15px] font-semibold"
+                className="fill-slate-800 text-[17px]"
               >
-                {fullLabel} {category}
+                <tspan x={x} dy="0">
+                  {fullLabel}
+                </tspan>
+                <tspan x={x} dy="1.2em">
+                  {category}
+                </tspan>
               </text>
               <text
                 x={x}
-                y={y + 10}
+                y={y + 34}
                 textAnchor="middle"
                 dominantBaseline="middle"
                 className="fill-secondary text-[18px] font-bold"

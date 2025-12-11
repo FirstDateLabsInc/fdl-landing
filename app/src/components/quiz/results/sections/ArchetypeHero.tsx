@@ -83,13 +83,13 @@ export function ArchetypeHero({ archetype, results, className }: ArchetypeHeroPr
           className="order-1 flex items-center justify-center md:order-none"
           variants={imageVariants}
         >
-          <div className="relative w-full max-w-xs sm:max-w-sm lg:max-w-md">
+          <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg">
             <div className="aspect-3/4 relative">
               <Image
                 src={archetype.image}
                 alt={archetype.name}
                 fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 448px"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 512px"
                 className="object-contain"
                 loader={cloudflareLoader}
                 priority

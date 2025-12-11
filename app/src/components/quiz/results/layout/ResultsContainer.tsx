@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { ArchetypeHero } from "../sections/ArchetypeHero";
 import { CategoryRadarChart } from "../charts/CategoryRadarChart";
 import { LoveLanguageSuggestions } from "../sections/LoveLanguageSuggestions";
+import { ScoreInsightsSection } from "../sections/ScoreInsightsSection";
 import { ShareResults } from "../sections/ShareResults";
 import { QuizWaitlistSection } from "../sections/QuizWaitlistSection";
 import { ContentSection } from "./ContentSection";
@@ -256,7 +257,23 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 7: Love Languages */}
+          {/* Section 7: Score Insights */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.55 }}
+          >
+            <ContentSection
+              title="Understanding Your Scores"
+              id="score-insights"
+              eyebrow="Insights"
+            >
+              <ScoreInsightsSection results={results} />
+            </ContentSection>
+          </motion.div>
+
+          {/* Section 8: Love Languages */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
