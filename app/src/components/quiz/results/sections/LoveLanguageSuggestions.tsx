@@ -276,8 +276,8 @@ export function LoveLanguageSuggestions({
   }, [strongLanguages]);
 
   return (
-    <div className={cn("rounded-3xl border border-border/70 bg-background p-8 sm:p-10 space-y-8", className)}>
-      <div className="space-y-8 divide-y divide-border">
+    <div className={cn("space-y-8", className)}>
+      <div className="space-y-6 sm:space-y-8">
         {strongLanguages.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-foreground">
@@ -305,7 +305,7 @@ export function LoveLanguageSuggestions({
         )}
 
         {!allStrong && improvementAreas.length > 0 && (
-          <div className="space-y-4 pt-6">
+          <div className="space-y-4">
             <div className="flex items-center gap-2 text-foreground">
               <Target className="h-5 w-5 text-secondary-dark" />
               <span className="text-lg font-semibold">Areas to Grow</span>
@@ -320,7 +320,7 @@ export function LoveLanguageSuggestions({
                 return (
                   <div
                     key={`${area.lang}-${area.type}`}
-                    className="rounded-2xl border border-border/80 bg-background p-4 shadow-[0_8px_24px_-18px_rgba(15,23,42,0.25)] sm:p-5"
+                    className="rounded-2xl border border-border/70 bg-white p-4 shadow-sm sm:p-5"
                   >
                     <div className="flex flex-wrap items-center gap-2 text-foreground">
                       <div className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary/10 text-secondary-dark">
@@ -345,7 +345,7 @@ export function LoveLanguageSuggestions({
         )}
 
         {allStrong && (
-          <div className="space-y-2 pt-6">
+          <div className="space-y-2">
             <div className="flex items-center gap-2 text-foreground">
               <Lightbulb className="h-4 w-4 text-secondary-dark" />
               <span className="text-sm font-semibold">You&apos;re strong across all love languages</span>
@@ -356,7 +356,7 @@ export function LoveLanguageSuggestions({
           </div>
         )}
 
-        <div className="pt-6">
+        <div className="pt-2">
           <p className="text-sm text-muted-foreground leading-relaxed">
             <span className="font-semibold text-foreground">Pro tip:</span> People often give love the way they want to receive it. Pay attention to how your partner shows affection to understand their love language too.
           </p>
