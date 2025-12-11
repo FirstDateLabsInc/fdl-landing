@@ -331,7 +331,6 @@ export const footerContent: FooterContent = {
       title: "Company",
       links: [
         { label: "Contact", href: "/contact" },
-        { label: "Contact", href: "mailto:support@firstdatelabs.com" },
       ],
     },
     {
