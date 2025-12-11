@@ -104,7 +104,7 @@ export default function QuizPage() {
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-          className="mt-4 text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl sm:leading-tight"
+          className="mt-4 text-4xl leading-tight font-bold tracking-tight text-slate-900 sm:text-5xl sm:leading-tight"
         >
           Discover Your
           <br />
@@ -118,9 +118,16 @@ export default function QuizPage() {
           transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
           className="mx-auto mt-6 max-w-2xl text-lg text-slate-600"
         >
-          Our science-backed quiz reveals your attachment style, communication
-          patterns, and love languages—everything you need to understand
-          yourself better in relationships.
+          Our science-backed quiz reveals your unique archetype among{" "}
+          <Link
+            href="#archetypes"
+            className="text-secondary decoration-secondary hover:text-secondary/80 hover:decoration-secondary/70 font-medium underline underline-offset-2 transition-colors"
+          >
+            16 dating personalities
+          </Link>
+          , plus your attachment style, communication patterns, and love
+          languages—everything you need to understand yourself better in
+          relationships.
         </motion.p>
 
         {/* Stats row */}
@@ -174,9 +181,9 @@ export default function QuizPage() {
           {QUIZ_BENEFITS.map((benefit) => (
             <div
               key={benefit.title}
-              className="rounded-xl bg-white/60 p-4 text-center shadow-soft transition-shadow hover:shadow-hover"
+              className="shadow-soft hover:shadow-hover rounded-xl bg-white/60 p-4 text-center transition-shadow"
             >
-              <div className="mx-auto flex size-9 items-center justify-center rounded-full bg-primary/15">
+              <div className="bg-primary/15 mx-auto flex size-9 items-center justify-center rounded-full">
                 <benefit.icon className="size-4 text-slate-800" aria-hidden />
               </div>
               <h3 className="mt-3 text-sm font-semibold text-slate-900">
@@ -193,7 +200,10 @@ export default function QuizPage() {
       {/* Archetypes section */}
       <div className="mt-20 sm:mt-24 lg:mt-28">
         <div className="text-center">
-          <h2 className="text-foreground mt-2 text-[1.9rem] font-semibold tracking-tight sm:text-[2.25rem]">
+          <h2
+            id="archetypes"
+            className="text-foreground mt-2 scroll-mt-24 text-[1.9rem] font-semibold tracking-tight sm:text-[2.25rem]"
+          >
             Dating Personalities 101
           </h2>
           <p className="text-muted-foreground mx-auto mt-3 max-w-2xl text-base sm:text-lg">
