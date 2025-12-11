@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { motion, useReducedMotion } from "motion/react";
-import { Heart, MessageCircle, Clock, Gift, Hand, Lightbulb, Check, ArrowRight, Target, Sparkles } from "lucide-react";
+import { Heart, MessageCircle, Clock, Gift, Hand, Lightbulb, Target } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { LoveLanguage, LoveLanguageResult } from "@/lib/quiz/types";
@@ -233,26 +232,10 @@ function getTipsForArea(area: ImprovementArea): string[] {
 // MINI PROGRESS BAR
 // ============================================================================
 
-function MiniProgressBar({ value, color }: { value: number; color: string }) {
-  return (
-    <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
-      <div
-        className="h-full rounded-full transition-all"
-        style={{ width: `${value}%`, backgroundColor: color }}
-      />
-    </div>
-  );
-}
-
-// ============================================================================
-// COMPONENT
-// ============================================================================
-
 export function LoveLanguageSuggestions({
   loveLanguages,
   className,
 }: LoveLanguageSuggestionsProps) {
-  const prefersReducedMotion = useReducedMotion();
 
   // Get strong languages (combined score >= 70%) - up to 3
   const strongLanguages = useMemo(() => {
@@ -292,180 +275,92 @@ export function LoveLanguageSuggestions({
     }
   }, [strongLanguages]);
 
-  const containerVariants = prefersReducedMotion
-    ? {}
-    : {
-        hidden: { opacity: 0 },
-        visible: {
-          opacity: 1,
-          transition: {
-            staggerChildren: 0.08,
-            delayChildren: 0.1,
-          },
-        },
-      };
-
-  const itemVariants = prefersReducedMotion
-    ? {}
-    : {
-        hidden: { opacity: 0, x: -10 },
-        visible: {
-          opacity: 1,
-          x: 0,
-          transition: { duration: 0.3, ease: "easeOut" },
-        },
-      };
-
   return (
-    <div className={cn("rounded-2xl bg-white p-6 shadow-soft", className)}>
-      {/* Header - Centered and larger */}
-      <div className="mb-6 flex flex-col items-center text-center">
-        <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#f9d544]/20 to-[#cab5d4]/20">
-          <Lightbulb className="h-6 w-6 text-[#cab5d4]" />
-        </div>
-        <h3 className="text-2xl font-bold text-slate-900">Love Language Tips</h3>
-        <p className="text-sm text-slate-500">Ways to connect based on your preferences</p>
-      </div>
-
-      {/* Personalized opening */}
-      <p className="mb-6 text-sm text-slate-600">
-        {openingParagraph}
-      </p>
-
-      {/* Strong languages section - Only show languages with 70%+ */}
-      {strongLanguages.length > 0 && (
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-emerald-500" />
-            <span className="text-lg font-semibold text-slate-800">Your Strengths</span>
-          </div>
+    <div className={cn("rounded-3xl border border-border/70 bg-background p-8 sm:p-10 space-y-8", className)}>
+      <div className="space-y-8 divide-y divide-border">
+        {strongLanguages.length > 0 && (
           <div className="space-y-4">
-            {strongLanguages.map((language) => {
-              const Icon = language.icon;
-
-              return (
-                <div key={language.key} className="rounded-xl bg-emerald-50/50 p-4">
-                  {/* Language header */}
-                  <div className="mb-2 flex items-center gap-2">
-                    <div
-                      className="flex h-8 w-8 items-center justify-center rounded-full"
-                      style={{ backgroundColor: `${language.color}20` }}
-                    >
-                      <Icon
-                        className="h-4 w-4"
-                        style={{ color: language.color }}
-                      />
+            <div className="flex items-center gap-2 text-foreground">
+              <Lightbulb className="h-5 w-5 text-secondary-dark" />
+              <span className="text-lg font-semibold">Your Strengths</span>
+            </div>
+            <div className="space-y-3">
+              {strongLanguages.map((language) => {
+                const Icon = language.icon;
+                return (
+                  <div key={language.key} className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2 text-foreground">
+                      <Icon className="h-4 w-4 text-secondary-dark" />
+                      <span className="text-base font-semibold">{language.name}</span>
+                      <span className="text-sm text-muted-foreground">{language.combinedScore}%</span>
                     </div>
-                    <span className="font-semibold text-slate-800">
-                      {language.name}
-                    </span>
-                    <span className="ml-auto rounded-full bg-[#f9d544]/20 px-2 py-0.5 text-xs font-medium text-slate-700">
-                      Primary
-                    </span>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      You naturally value this language—keep nurturing it.
+                    </p>
                   </div>
-
-                  {/* Score and encouragement */}
-                  <div className="flex items-center gap-2 pl-10">
-                    <MiniProgressBar value={language.combinedScore} color={language.color} />
-                    <span className="text-sm font-medium text-slate-700">{language.combinedScore}%</span>
-                  </div>
-                  <p className="mt-2 flex items-center gap-1.5 pl-10 text-sm text-emerald-600">
-                    <Check className="h-4 w-4 shrink-0" />
-                    Keep it up! This is one of your strongest love languages.
-                  </p>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Areas to Grow - Tips for improvement areas */}
-      {!allStrong && improvementAreas.length > 0 && (
-        <div className="mt-6 rounded-xl border border-slate-100 bg-slate-50/30 p-5">
-          <div className="mb-4 flex items-center gap-2">
-            <Target className="h-5 w-5 text-amber-500" />
-            <span className="text-lg font-semibold text-slate-800">Areas to Grow</span>
-          </div>
-          <p className="mb-4 text-sm text-slate-600">
-            Tips for your lower-scoring areas:
-          </p>
-          <motion.div
-            className="space-y-5"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {improvementAreas.map((area) => {
-              const config = LANGUAGE_CONFIG[area.lang];
-              const Icon = config.icon;
-              const tips = getTipsForArea(area);
-              const typeLabel = area.type === "give" ? "Giving" : "Receiving";
+        {!allStrong && improvementAreas.length > 0 && (
+          <div className="space-y-4 pt-6">
+            <div className="flex items-center gap-2 text-foreground">
+              <Target className="h-5 w-5 text-secondary-dark" />
+              <span className="text-lg font-semibold">Areas to Grow</span>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-1">
+              {improvementAreas.map((area) => {
+                const config = LANGUAGE_CONFIG[area.lang];
+                const Icon = config.icon;
+                const tips = getTipsForArea(area);
+                const typeLabel = area.type === "give" ? "Giving" : "Receiving";
 
-              return (
-                <motion.div
-                  key={`${area.lang}-${area.type}`}
-                  variants={itemVariants}
-                  className="rounded-lg bg-white p-4 shadow-sm"
-                >
-                  <div className="mb-3 flex items-center gap-2">
-                    <div
-                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-                      style={{ backgroundColor: `${config.color}20` }}
-                    >
-                      <Icon className="h-4 w-4" style={{ color: config.color }} />
+                return (
+                  <div
+                    key={`${area.lang}-${area.type}`}
+                    className="rounded-2xl border border-border/80 bg-background p-4 shadow-[0_8px_24px_-18px_rgba(15,23,42,0.25)] sm:p-5"
+                  >
+                    <div className="flex flex-wrap items-center gap-2 text-foreground">
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary/10 text-secondary-dark">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <span className="text-base font-semibold">{config.name}</span>
+                      <span className="text-sm text-muted-foreground">{typeLabel}: {area.score}%</span>
                     </div>
-                    <div>
-                      <span className="text-base font-semibold text-slate-800">
-                        {config.name}
-                      </span>
-                      <span className="ml-2 text-sm text-slate-500">
-                        ({typeLabel}: {area.score}%)
-                      </span>
-                    </div>
+                    <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground sm:text-base">
+                      {tips.map((tip, tipIndex) => (
+                        <li key={tipIndex} className="flex gap-2">
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary" />
+                          <span>{tip}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="space-y-2 pl-9">
-                    {tips.map((tip, tipIndex) => (
-                      <li
-                        key={tipIndex}
-                        className="flex items-start gap-2 text-sm text-slate-600"
-                      >
-                        <span
-                          className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
-                          style={{ backgroundColor: config.color }}
-                        />
-                        <span>{tip}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-        </div>
-      )}
-
-      {/* All strong - Congratulations message */}
-      {allStrong && (
-        <div className="mt-6 rounded-xl border border-emerald-100 bg-emerald-50/30 p-4">
-          <div className="mb-2 flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-emerald-500" />
-            <span className="text-sm font-semibold text-emerald-700">Amazing!</span>
+                );
+              })}
+            </div>
           </div>
-          <p className="text-sm text-slate-600">
-            You&apos;re doing great across all love languages! Keep nurturing these connections
-            and stay curious about how your partner&apos;s love languages might differ from yours.
+        )}
+
+        {allStrong && (
+          <div className="space-y-2 pt-6">
+            <div className="flex items-center gap-2 text-foreground">
+              <Lightbulb className="h-4 w-4 text-secondary-dark" />
+              <span className="text-sm font-semibold">You&apos;re strong across all love languages</span>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Keep nurturing these connections and stay curious about how your partner&apos;s love languages might differ from yours.
+            </p>
+          </div>
+        )}
+
+        <div className="pt-6">
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            <span className="font-semibold text-foreground">Pro tip:</span> People often give love the way they want to receive it. Pay attention to how your partner shows affection to understand their love language too.
           </p>
         </div>
-      )}
-
-      {/* Pro tip */}
-      <div className="mt-6 rounded-xl bg-gradient-to-r from-[#fffdf6] to-[#f9d544]/10 p-4">
-        <p className="text-xs text-slate-600">
-          <span className="font-semibold text-slate-700">Pro tip:</span> People often give love
-          the way they want to receive it. Pay attention to how your partner shows affection
-          to understand their love language too!
-        </p>
       </div>
     </div>
   );
