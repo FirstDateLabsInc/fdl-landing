@@ -45,6 +45,8 @@ export function Footer() {
                   <Link
                     key={item.platform}
                     href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={item.platform}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >

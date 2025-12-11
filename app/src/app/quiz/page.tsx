@@ -170,19 +170,19 @@ export default function QuizPage() {
           What You&apos;ll Learn
         </h2>
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {QUIZ_BENEFITS.map((benefit) => (
             <div
               key={benefit.title}
-              className="shadow-soft hover:shadow-hover rounded-2xl bg-white p-6 transition-shadow"
+              className="rounded-xl bg-white/60 p-4 text-center shadow-soft transition-shadow hover:shadow-hover"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f9d544]/20">
-                <benefit.icon className="h-5 w-5 text-slate-900" />
+              <div className="mx-auto flex size-9 items-center justify-center rounded-full bg-primary/15">
+                <benefit.icon className="size-4 text-slate-800" aria-hidden />
               </div>
-              <h3 className="mt-4 font-semibold text-slate-900">
+              <h3 className="mt-3 text-sm font-semibold text-slate-900">
                 {benefit.title}
               </h3>
-              <p className="mt-2 text-sm text-slate-600">
+              <p className="mt-1 text-xs leading-relaxed text-slate-500">
                 {benefit.description}
               </p>
             </div>
