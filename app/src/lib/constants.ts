@@ -342,10 +342,10 @@ export const footerContent: FooterContent = {
     },
   ],
   social: [
-    { platform: "LinkedIn", href: "https://linkedin.com", icon: "linkedin" },
-    { platform: "Instagram", href: "https://instagram.com", icon: "instagram" },
-    { platform: "Twitter", href: "https://twitter.com", icon: "twitter" },
-    { platform: "TikTok", href: "https://www.tiktok.com", icon: "tiktok" },
+    { platform: "LinkedIn", href: "https://www.linkedin.com/company/first-date-labs/", icon: "linkedin" },
+    { platform: "Instagram", href: "https://www.instagram.com/firstdatelabs?igsh=eDgzZ3BleDh1NnU4&utm_source=qr", icon: "instagram" },
+    { platform: "Twitter", href: "https://x.com/firstdatelabs", icon: "twitter" },
+    { platform: "TikTok", href: "https://www.tiktok.com/@firstdatelabs?_r=1&_t=ZT-928jHCWaI2g", icon: "tiktok" },
   ],
   contact: "",
 };
