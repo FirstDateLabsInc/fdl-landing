@@ -160,72 +160,12 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 3: Dating Meaning (Strengths + Challenges) */}
+          {/* Section 3: Dating Profile (Radar Charts) */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
             transition={{ delay: 0.2 }}
-          >
-            <ContentSection
-              title="What This Means for Dating"
-              id="dating-meaning"
-              eyebrow="Analysis"
-            >
-              <div className="space-y-10">
-                <div className="space-y-4">
-                  <h3 className="text-sm font-medium text-slate-500">Strengths</h3>
-                  <TraitGrid items={archetype.datingMeaning.strengths} type="strength" />
-                </div>
-                <div className="space-y-4">
-                  <h3 className="text-sm font-medium text-slate-500">Challenges</h3>
-                  <TraitGrid items={archetype.datingMeaning.challenges} type="challenge" />
-                </div>
-              </div>
-            </ContentSection>
-          </motion.div>
-
-          {/* Section 4: Red Flags */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.3 }}
-          >
-            <ContentSection
-              title="When This Goes Wrong"
-              id="red-flags"
-              eyebrow="Warning Signs"
-            >
-              <RedFlagsList items={archetype.redFlags} />
-            </ContentSection>
-          </motion.div>
-
-          {/* Section 5: Coaching Focus */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.4 }}
-          >
-            <ContentSection
-              title="Your Coaching Focus"
-              id="coaching"
-              eyebrow="Growth Plan"
-            >
-              <CoachingFocusList
-                items={archetype.coachingFocus}
-                ctaText={archetype.callToActionCopy}
-              />
-            </ContentSection>
-          </motion.div>
-
-          {/* Section 6: Dating Profile (Radar Charts) */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.5 }}
           >
             <ContentSection
               title="Your Dating Profile"
@@ -257,12 +197,12 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 7: Score Insights */}
+          {/* Section 4: Score Insights */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.55 }}
+            transition={{ delay: 0.3 }}
           >
             <ContentSection
               title="Understanding Your Scores"
@@ -273,12 +213,72 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
+          {/* Section 5: Dating Meaning (Strengths + Challenges) */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.35 }}
+          >
+            <ContentSection
+              title="What This Means for Dating"
+              id="dating-meaning"
+              eyebrow="Analysis"
+            >
+              <div className="space-y-10">
+                <div className="space-y-4">
+                  <h3 className="text-sm font-medium text-slate-500">Strengths</h3>
+                  <TraitGrid items={archetype.datingMeaning.strengths} type="strength" />
+                </div>
+                <div className="space-y-4">
+                  <h3 className="text-sm font-medium text-slate-500">Challenges</h3>
+                  <TraitGrid items={archetype.datingMeaning.challenges} type="challenge" />
+                </div>
+              </div>
+            </ContentSection>
+          </motion.div>
+
+          {/* Section 6: Red Flags */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.4 }}
+          >
+            <ContentSection
+              title="When This Goes Wrong"
+              id="red-flags"
+              eyebrow="Warning Signs"
+            >
+              <RedFlagsList items={archetype.redFlags} />
+            </ContentSection>
+          </motion.div>
+
+          {/* Section 7: Coaching Focus */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.45 }}
+          >
+            <ContentSection
+              title="Your Coaching Focus"
+              id="coaching"
+              eyebrow="Growth Plan"
+            >
+              <CoachingFocusList
+                items={archetype.coachingFocus}
+                ctaText={archetype.callToActionCopy}
+              />
+            </ContentSection>
+          </motion.div>
+
           {/* Section 8: Love Languages */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.5 }}
           >
             <ContentSection
               title="Your Love Languages"

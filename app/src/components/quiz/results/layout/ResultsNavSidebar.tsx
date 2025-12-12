@@ -21,11 +21,11 @@ interface ResultsNavSidebarProps {
 const SECTIONS: Section[] = [
   { id: "pattern", number: 1, title: "The Pattern" },
   { id: "root-cause", number: 2, title: "Root Cause" },
-  { id: "dating-meaning", number: 3, title: "What It Means" },
-  { id: "red-flags", number: 4, title: "Red Flags" },
-  { id: "coaching", number: 5, title: "Coaching Focus" },
-  { id: "profile", number: 6, title: "Dating Profile" },
-  { id: "score-insights", number: 7, title: "Score Insights" },
+  { id: "profile", number: 3, title: "Dating Profile" },
+  { id: "score-insights", number: 4, title: "Score Insights" },
+  { id: "dating-meaning", number: 5, title: "What It Means" },
+  { id: "red-flags", number: 6, title: "Red Flags" },
+  { id: "coaching", number: 7, title: "Coaching Focus" },
   { id: "love-languages", number: 8, title: "Love Languages" },
 ];
 
