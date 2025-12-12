@@ -150,6 +150,9 @@ export function ResultsContainer({
 
               {/* Part 3: The Cycle - evidence after context */}
               <div className="mt-10">
+                <h3 className="text-lg font-semibold text-slate-900 mb-3">
+                  How This Plays Out
+                </h3>
                 <DatingCycleVisual steps={archetype.datingCycle} />
               </div>
             </ContentSection>
