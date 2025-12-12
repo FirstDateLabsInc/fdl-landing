@@ -172,11 +172,16 @@ export default function QuizResultsPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-        <div ref={shareRef}>
-          <ResultsContainer results={data.results} archetype={data.archetype} quizResultId={data.resultId} />
-        </div>
+    <main className="min-h-[calc(100vh-4.5rem)]">
+      <div ref={shareRef}>
+        <ResultsContainer
+          results={data.results}
+          archetype={data.archetype}
+          quizResultId={data.resultId}
+        />
+      </div>
 
+      <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">
         {/* Footer CTAs */}
         <div className="mt-12 flex flex-col items-center gap-4 border-t border-slate-200 pt-8 sm:flex-row sm:justify-center">
           <Button variant="secondary" onClick={handleRetake} className="gap-2">
@@ -202,10 +207,7 @@ export default function QuizResultsPage() {
             )}
           </Button>
 
-          <Button
-            asChild
-            className="gap-2 bg-[#f9d544] text-slate-900 hover:bg-[#ffe362]"
-          >
+          <Button asChild variant="primary" className="gap-2">
             <Link href="/#waitlist">
               <Sparkles className="h-4 w-4" />
               Start with Juliet
@@ -215,10 +217,11 @@ export default function QuizResultsPage() {
 
         {/* Trust footer */}
         <p className="mt-8 text-center text-sm text-slate-500">
-          Your results are stored locally on your device.
+          Your results are saved so you can revisit and share them.
           <br className="hidden sm:block" />
-          We don&apos;t collect or share your quiz data.
+          We don&apos;t sell or share your quiz data.
         </p>
-      </main>
+      </div>
+    </main>
   );
 }

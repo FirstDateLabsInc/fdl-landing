@@ -12,10 +12,10 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const testEmail = searchParams.get("email") || "delivered@resend.dev";
 
-  const results: Record<string, unknown> = {
+  const results = {
     timestamp: new Date().toISOString(),
     testEmail,
-    steps: [],
+    steps: [] as Array<Record<string, unknown>>,
   };
 
   // Step 1: Check environment variable

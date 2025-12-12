@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useMemo, useState, useCallback } from "react";
 import Link from "next/link";
 import { Link2, Check, Twitter, Share2 } from "lucide-react";
 
@@ -48,6 +48,14 @@ export function ShareResults({
 }: ShareResultsProps) {
   const [copied, setCopied] = useState(false);
 
+  const webShare = useMemo(() => {
+    // TypeScript's DOM lib can model share() as always present; at runtime it's not.
+    return navigator as Navigator & {
+      share?: (data: ShareData) => Promise<void>;
+      canShare?: (data?: ShareData) => boolean;
+    };
+  }, []);
+
   const shareText = `I just discovered I'm "${archetype}" on the Juliet Dating Personality Quiz! 💝 Take the quiz to find your type:`;
 
   // Copy link to clipboard
@@ -72,9 +80,12 @@ export function ShareResults({
       url: shareUrl,
     };
 
-    if (navigator.share && navigator.canShare?.(shareData)) {
+    if (
+      typeof webShare.share === "function" &&
+      (typeof webShare.canShare !== "function" || webShare.canShare(shareData))
+    ) {
       try {
-        await navigator.share(shareData);
+        await webShare.share(shareData);
         return;
       } catch (err) {
         // User cancelled - not an error
@@ -83,7 +94,7 @@ export function ShareResults({
     }
     // Fallback to copy
     handleCopyLink();
-  }, [shareUrl, archetype, shareText, handleCopyLink]);
+  }, [shareUrl, archetype, shareText, handleCopyLink, webShare]);
 
   const handleTikTokShare = useCallback(() => {
     if (!shareUrl) return;
@@ -112,7 +123,7 @@ export function ShareResults({
           Want to share your results?{" "}
           <Link
             href="/quiz/questions"
-            className="text-[#f9d544] underline hover:no-underline"
+            className="text-primary underline hover:no-underline"
           >
             Retake the quiz
           </Link>{" "}
@@ -126,9 +137,9 @@ export function ShareResults({
 
   // Check if Web Share API is available (for showing native share button)
   const supportsNativeShare =
-    typeof navigator !== "undefined" &&
-    navigator.share &&
-    navigator.canShare?.({ url: shareUrl, text: shareText });
+    typeof webShare.share === "function" &&
+    (typeof webShare.canShare !== "function" ||
+      webShare.canShare({ url: shareUrl, text: shareText }));
 
   return (
     <div className={cn("space-y-4", className)}>
@@ -140,9 +151,9 @@ export function ShareResults({
         {/* Native Share button (mobile) - shown first when available */}
         {supportsNativeShare && (
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={handleNativeShare}
-            className="bg-[#f9d544]/10 hover:bg-[#f9d544]/20"
+            className="bg-primary/10 hover:bg-primary/20"
           >
             <Share2 className="mr-2 h-4 w-4" />
             Share
@@ -150,7 +161,7 @@ export function ShareResults({
         )}
 
         <Button
-          variant="outline"
+          variant="secondary"
           onClick={handleCopyLink}
           className={cn(
             "transition-colors",
@@ -170,7 +181,7 @@ export function ShareResults({
           )}
         </Button>
 
-        <Button variant="outline" asChild>
+        <Button variant="secondary" asChild>
           <a
             href={twitterUrl}
             target="_blank"
@@ -183,7 +194,7 @@ export function ShareResults({
         </Button>
 
         <Button
-          variant="outline"
+          variant="secondary"
           onClick={handleTikTokShare}
           className="hover:border-[#ff0050]/50 hover:text-[#ff0050]"
         >
@@ -192,7 +203,7 @@ export function ShareResults({
         </Button>
 
         <Button
-          variant="outline"
+          variant="secondary"
           onClick={handleInstagramShare}
           className="hover:border-[#E4405F]/50 hover:text-[#E4405F]"
         >

@@ -19,7 +19,9 @@ export type QuizErrorCode =
   | "INVALID_SESSION"
   | "SESSION_EXPIRED"
   | "FINGERPRINT_MISMATCH"
-  | "DUPLICATE_SUBMISSION";
+  | "DUPLICATE_SUBMISSION"
+  | "DATABASE_ERROR"
+  | "INTERNAL_ERROR";
 
 // ============================================================================
 // SESSION MANAGEMENT

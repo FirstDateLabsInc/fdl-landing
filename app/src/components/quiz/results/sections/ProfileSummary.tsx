@@ -15,21 +15,17 @@ interface ProfileSummaryProps {
 export function ProfileSummary({ archetype, className }: ProfileSummaryProps) {
   const prefersReducedMotion = useReducedMotion();
 
-  const motionProps = prefersReducedMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 20 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.5, ease: "easeOut" },
-      };
-
   return (
     <motion.div
       className={cn(
         "rounded-2xl bg-white p-5 shadow-soft",
         className
       )}
-      {...motionProps}
+      initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+      animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+      transition={
+        prefersReducedMotion ? undefined : { duration: 0.5, ease: "easeOut" }
+      }
     >
       {/* Archetype Header - Centered */}
       <div className="text-center">

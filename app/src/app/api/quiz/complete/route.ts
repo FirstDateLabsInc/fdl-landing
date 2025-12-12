@@ -31,20 +31,29 @@ const SubmitQuizSchema = z.object({
   utmCampaign: z.string().optional(),
 });
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
 export async function POST(
   request: NextRequest
 ): Promise<NextResponse<SubmitQuizResponse>> {
   try {
-    const rawBody = await request.json();
+    const rawBody: unknown = await request.json();
     const parsed = SubmitQuizSchema.safeParse(rawBody);
 
     if (!parsed.success) {
+      const raw = isRecord(rawBody) ? rawBody : {};
+      const answers = isRecord(raw.answers) ? raw.answers : null;
+      const fingerprintHash =
+        typeof raw.fingerprintHash === "string" ? raw.fingerprintHash : null;
+
       console.error("Validation error:", JSON.stringify(parsed.error.flatten(), null, 2));
       console.error("Raw body sample:", JSON.stringify({
-        sessionId: rawBody.sessionId,
-        fingerprintHash: rawBody.fingerprintHash?.slice(0, 10) + "...",
-        answerCount: rawBody.answers ? Object.keys(rawBody.answers).length : 0,
-        sampleAnswers: rawBody.answers ? Object.entries(rawBody.answers).slice(0, 3) : [],
+        sessionId: typeof raw.sessionId === "string" ? raw.sessionId : null,
+        fingerprintHash: fingerprintHash ? fingerprintHash.slice(0, 10) + "..." : null,
+        answerCount: answers ? Object.keys(answers).length : 0,
+        sampleAnswers: answers ? Object.entries(answers).slice(0, 3) : [],
       }, null, 2));
       return NextResponse.json(
         {

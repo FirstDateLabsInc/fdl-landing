@@ -15,6 +15,7 @@ interface QuizResultsEmailProps {
   unsubscribeToken: string;
   archetypeName: string;
   archetypeEmoji: string;
+  quizResultUrl?: string;
 }
 
 export function QuizResultsEmail({
@@ -22,6 +23,7 @@ export function QuizResultsEmail({
   unsubscribeToken,
   archetypeName,
   archetypeEmoji,
+  quizResultUrl,
 }: QuizResultsEmailProps) {
   const unsubscribeUrl = `https://firstdatelabs.com/unsubscribe?token=${unsubscribeToken}`;
 
@@ -45,6 +47,14 @@ export function QuizResultsEmail({
             Thanks for taking the quiz! Your results have been saved, and
             you&apos;re now on our early access list.
           </Text>
+
+          {quizResultUrl && (
+            <Section style={ctaButtonSection}>
+              <Link href={quizResultUrl} style={ctaButton}>
+                View Your Saved Results
+              </Link>
+            </Section>
+          )}
 
           <Section style={resultCard}>
             <Text style={resultEmoji}>{archetypeEmoji}</Text>
@@ -185,6 +195,23 @@ const ctaText: React.CSSProperties = {
   fontWeight: "500",
   textAlign: "center" as const,
   margin: "0",
+};
+
+const ctaButtonSection: React.CSSProperties = {
+  textAlign: "center" as const,
+  marginTop: "24px",
+  marginBottom: "8px",
+};
+
+const ctaButton: React.CSSProperties = {
+  display: "inline-block",
+  backgroundColor: "#f9d544",
+  color: "#1a1a1a",
+  borderRadius: "999px",
+  padding: "12px 18px",
+  fontSize: "14px",
+  fontWeight: "600",
+  textDecoration: "none",
 };
 
 const footer: React.CSSProperties = {
