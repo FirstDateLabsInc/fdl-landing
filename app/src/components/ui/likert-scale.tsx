@@ -46,7 +46,7 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
         {/* Desktop: Labels on sides */}
         <div className="hidden sm:flex sm:items-center sm:gap-3">
           {/* Left label - desktop only */}
-          <span className="text-sm text-slate-600 whitespace-nowrap">
+          <span className="text-base text-slate-600 whitespace-nowrap">
             {labels.low}
           </span>
 
@@ -66,8 +66,8 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
                   key={num}
                   value={num.toString()}
                   className={cn(
-                    "relative size-10 sm:size-12 lg:size-14 rounded-full border transition-all duration-200",
-                    "flex items-center justify-center text-xs sm:text-sm lg:text-base font-medium",
+                    "relative size-10 sm:size-13 lg:size-14 rounded-full border transition-all duration-200",
+                    "flex items-center justify-center text-xs sm:text-base lg:text-lg font-medium",
                     "outline-none focus-visible:ring-2 focus-visible:ring-[#f9d544] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffdf6]",
                     "cursor-pointer hover:scale-105",
                     // Default state (unselected)
@@ -89,7 +89,7 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
           </RadioGroupPrimitive.Root>
 
           {/* Right label - desktop only */}
-          <span className="text-sm text-slate-600 whitespace-nowrap">
+          <span className="text-base text-slate-600 whitespace-nowrap">
             {labels.high}
           </span>
         </div>
