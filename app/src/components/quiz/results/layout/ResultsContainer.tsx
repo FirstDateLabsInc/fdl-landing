@@ -126,46 +126,41 @@ export function ResultsContainer({
       <div className="flex gap-8">
         {/* Left Column: Scrollable Content */}
         <div className="min-w-0 flex-1 space-y-16">
-          {/* Section 1: Pattern Recognition */}
+          {/* Section 1: Your Story (Pattern + Origin + Cycle) */}
           <motion.div variants={sectionVariants} initial="hidden" animate="visible">
             <ContentSection
-              title="The Pattern You Recognize"
+              title="Your Dating Pattern"
               id="pattern"
-              eyebrow="The Pattern"
+              eyebrow="Your Story"
             >
-              <div className="space-y-6">
-                <p className="text-lg leading-relaxed text-slate-700">
-                  {archetype.patternDescription}
+              {/* Part 1: Overview - hooks with recognition */}
+              <p className="text-lg leading-relaxed text-slate-700">
+                {archetype.patternDescription}
+              </p>
+
+              {/* Part 2: Origin - provides the "why" */}
+              <div className="mt-10">
+                <h3 className="text-lg font-semibold text-slate-900 mb-3">
+                  Where This Comes From
+                </h3>
+                <p className="text-lg leading-relaxed text-slate-600">
+                  {archetype.rootCause}
                 </p>
+              </div>
+
+              {/* Part 3: The Cycle - evidence after context */}
+              <div className="mt-10">
                 <DatingCycleVisual steps={archetype.datingCycle} />
               </div>
             </ContentSection>
           </motion.div>
 
-          {/* Section 2: Root Cause */}
+          {/* Section 2: Dating Profile (Radar Charts) */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
             transition={{ delay: 0.1 }}
-          >
-            <ContentSection
-              title="Where This Comes From"
-              id="root-cause"
-              eyebrow="The Origin"
-            >
-              <p className="text-lg leading-relaxed text-slate-600">
-                {archetype.rootCause}
-              </p>
-            </ContentSection>
-          </motion.div>
-
-          {/* Section 3: Dating Profile (Radar Charts) */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.2 }}
           >
             <ContentSection
               title="Your Dating Profile"
@@ -197,12 +192,12 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 4: Score Insights */}
+          {/* Section 3: Score Insights */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.2 }}
           >
             <ContentSection
               title="Understanding Your Scores"
@@ -213,12 +208,12 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 5: Dating Meaning (Strengths + Challenges) */}
+          {/* Section 4: Dating Meaning (Strengths + Challenges) */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.35 }}
+            transition={{ delay: 0.25 }}
           >
             <ContentSection
               title="What This Means for Dating"
@@ -238,12 +233,12 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 6: Red Flags */}
+          {/* Section 5: Red Flags */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.3 }}
           >
             <ContentSection
               title="When This Goes Wrong"
@@ -254,12 +249,12 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 7: Coaching Focus */}
+          {/* Section 6: Coaching Focus */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.45 }}
+            transition={{ delay: 0.35 }}
           >
             <ContentSection
               title="Your Coaching Focus"
@@ -273,12 +268,12 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 8: Love Languages */}
+          {/* Section 7: Love Languages */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.4 }}
           >
             <ContentSection
               title="Your Love Languages"
