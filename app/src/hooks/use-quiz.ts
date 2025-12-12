@@ -41,7 +41,7 @@ interface UseQuizReturn {
 
 const STORAGE_KEY = "juliet-quiz-state";
 const QUESTIONS_PER_PAGE = 6;
-const TOTAL_PAGES = 8;
+const TOTAL_PAGES = Math.ceil(allQuestions.length / QUESTIONS_PER_PAGE);
 
 // ============================================================================
 // HELPERS
@@ -95,7 +95,7 @@ function loadFromStorage(): QuizState | null {
       typeof parsed.startedAt !== "number" ||
       typeof parsed.currentPage !== "number" ||
       !Array.isArray(parsed.shuffledQuestionIds) ||
-      parsed.shuffledQuestionIds.length !== 48 ||
+      parsed.shuffledQuestionIds.length !== allQuestions.length ||
       typeof parsed.responses !== "object"
     ) {
       // Clear corrupted data

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServer } from "@/lib/supabase/server";
+import { parseDbScores } from "@/lib/quiz/utils/parse-db-scores";
 import type { GetResultResponse } from "@/lib/api/quiz";
 
 export async function GET(
@@ -27,6 +28,19 @@ export async function GET(
       );
     }
 
+    const scores = parseDbScores(data.scores);
+    if (!scores) {
+      console.error("[Quiz Results] Invalid scores payload for result:", id);
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Result not found",
+          errorCode: "NOT_FOUND",
+        },
+        { status: 404 }
+      );
+    }
+
     // Public access via UUID - no ownership check needed
     // UUID provides 122 bits of entropy (unguessable)
     return NextResponse.json({
@@ -34,7 +48,7 @@ export async function GET(
       result: {
         id: data.id,
         archetypeSlug: data.archetype_slug,
-        scores: data.scores,
+        scores,
         createdAt: data.created_at,
       },
     });

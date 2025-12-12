@@ -182,8 +182,8 @@ describe('scoreAttachment', () => {
     expect(result.primary).toBe('secure');
   });
 
-  it('on tie, first dimension in array order wins (secure)', () => {
-    // All dimensions score equally → secure should win (first in array)
+  it('returns mixed when all dimensions tie', () => {
+    // All dimensions score equally → primary should be mixed
     const responses = bulkResponses({
       S1: 3, S2: 3, S3: 3,
       AX1: 3, AX2: 3, AX3: 3,
@@ -191,7 +191,7 @@ describe('scoreAttachment', () => {
       D1: 3, D2: 3, D3: 3,
     });
     const result = scoreAttachment(responses);
-    expect(result.primary).toBe('secure');
+    expect(result.primary).toBe('mixed');
   });
 });
 

@@ -13,14 +13,15 @@ import { getArchetypeById } from "@/lib/quiz/data/archetypes";
 import { generateFingerprintHash } from "@/lib/fingerprint";
 import type { QuizResults } from "@/lib/quiz/types";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
-import type {
-  SubmitQuizRequest,
-  SubmitQuizResponse,
-} from "@/lib/api/quiz";
+import type { SubmitQuizRequest, SubmitQuizResponse } from "@/lib/api/quiz";
 import { cn } from "@/lib/utils";
 
 interface QuizContainerProps {
-  onComplete: (results: QuizResults, archetype: ArchetypeDefinition, resultId: string) => void;
+  onComplete: (
+    results: QuizResults,
+    archetype: ArchetypeDefinition,
+    resultId: string
+  ) => void;
 }
 
 export function QuizContainer({ onComplete }: QuizContainerProps) {
@@ -90,7 +91,10 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
   useEffect(() => {
     if (progressRef.current && currentPage > 0) {
       // Smooth scroll to progress bar section (including % Complete text)
-      progressRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      progressRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
   }, [currentPage]);
 
@@ -146,11 +150,19 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
 
       const serverData = (await res.json()) as SubmitQuizResponse;
 
-      if (serverData?.scores && serverData.archetypeSlug && serverData.resultId) {
+      if (
+        serverData?.scores &&
+        serverData.archetypeSlug &&
+        serverData.resultId
+      ) {
         const archetype = getArchetypeById(serverData.archetypeSlug);
         if (archetype) {
           clearProgress();
-          onComplete(serverData.scores as unknown as QuizResults, archetype, serverData.resultId);
+          onComplete(
+            serverData.scores as unknown as QuizResults,
+            archetype,
+            serverData.resultId
+          );
           return;
         }
       }
@@ -193,12 +205,12 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
-            className="w-full space-y-8"
+            className="w-full space-y-16"
           >
             {/* Find the first unanswered question on this page (O(n) single pass) */}
             {(() => {
               const firstUnansweredIndex = currentPageQuestions.findIndex(
-                q => responses[q.id] === undefined || responses[q.id] === null
+                (q) => responses[q.id] === undefined || responses[q.id] === null
               );
               return currentPageQuestions.map((question, index) => (
                 <div
@@ -209,18 +221,21 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
                   className={cn(
                     "w-full transition-opacity duration-300",
                     // Dim all questions except the first unanswered (current focus)
-                    firstUnansweredIndex !== -1 && index !== firstUnansweredIndex && "opacity-40"
+                    firstUnansweredIndex !== -1 &&
+                      index !== firstUnansweredIndex &&
+                      "opacity-40"
                   )}
                 >
                   <QuizQuestion
                     question={question}
-                    value={responses[question.id]?.value ?? null}
+                    value={
+                      question.type === "scenario"
+                        ? (responses[question.id]?.selectedKey ?? null)
+                        : (responses[question.id]?.value ?? null)
+                    }
                     onValueChange={handleValueChange(question.id)}
                     disableAnimation={true}
                   />
-                  {index < currentPageQuestions.length - 1 && (
-                    <div className="my-8 border-b border-slate-200" />
-                  )}
                 </div>
               ));
             })()}

@@ -6,6 +6,7 @@ import { ResultsContainer } from "@/components/quiz/results";
 import { Button } from "@/components/ui/button";
 import { getSupabaseServer } from "@/lib/supabase/server";
 import { getArchetypeById } from "@/lib/quiz/archetypes";
+import { parseDbScores } from "@/lib/quiz/utils/parse-db-scores";
 import type { Metadata } from "next";
 
 interface Props {
@@ -68,6 +69,11 @@ export default async function SavedResultPage({ params }: Props) {
     notFound();
   }
 
+  const scores = parseDbScores(data.scores);
+  if (!scores) {
+    notFound();
+  }
+
   // Look up archetype from definitions
   const archetype = getArchetypeById(data.archetype_slug);
   if (!archetype) {
@@ -77,7 +83,7 @@ export default async function SavedResultPage({ params }: Props) {
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
       <ResultsContainer
-        results={data.scores}
+        results={scores}
         archetype={archetype}
         quizResultId={resultId}
       />

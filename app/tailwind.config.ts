@@ -4,6 +4,9 @@ const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
+      size: {
+        "13": "52px",
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
