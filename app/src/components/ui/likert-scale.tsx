@@ -66,14 +66,14 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
                   key={num}
                   value={num.toString()}
                   className={cn(
-                    "relative size-10 sm:size-12 lg:size-14 rounded-full border-2 transition-all duration-200",
+                    "relative size-10 sm:size-12 lg:size-14 rounded-full border transition-all duration-200",
                     "flex items-center justify-center text-xs sm:text-sm lg:text-base font-medium",
                     "outline-none focus-visible:ring-2 focus-visible:ring-[#f9d544] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffdf6]",
                     "cursor-pointer hover:scale-105",
                     // Default state (unselected)
                     !isSelected && "border-slate-300 text-slate-600",
                     // Selected state - clearer color
-                    isSelected && "border-[#f9d544] text-white scale-110 bg-[#f9d544]"
+                    isSelected && "border-secondary text-white scale-110 bg-secondary"
                   )}
                   aria-label={`Rating ${num} of 5`}
                   style={{
@@ -110,14 +110,14 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
                 key={num}
                 value={num.toString()}
                 className={cn(
-                  "relative size-10 rounded-full border-2 transition-all duration-200",
+                  "relative size-10 rounded-full border transition-all duration-200",
                   "flex items-center justify-center text-xs font-medium",
                   "outline-none focus-visible:ring-2 focus-visible:ring-[#f9d544] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffdf6]",
                   "cursor-pointer hover:scale-105",
                   // Default state (unselected)
                   !isSelected && "border-slate-300 text-slate-600",
                   // Selected state - clearer color
-                  isSelected && "border-[#f9d544] text-white scale-110 bg-[#f9d544]"
+                  isSelected && "border-secondary text-white scale-110 bg-secondary"
                 )}
                 aria-label={`Rating ${num} of 5`}
                 style={{

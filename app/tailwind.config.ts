@@ -9,6 +9,7 @@ const config: Config = {
         foreground: "var(--foreground)",
         primary: "var(--primary)",
         secondary: "var(--secondary)",
+        "secondary-dark": "var(--secondary-dark)",
         accent: "var(--accent)",
       },
       boxShadow: {

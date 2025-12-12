@@ -214,7 +214,7 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
                 >
                   <QuizQuestion
                     question={question}
-                    value={responses[question.id] ?? null}
+                    value={responses[question.id]?.value ?? null}
                     onValueChange={handleValueChange(question.id)}
                     disableAnimation={true}
                   />
