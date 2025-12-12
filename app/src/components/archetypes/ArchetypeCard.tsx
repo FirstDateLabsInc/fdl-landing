@@ -1,26 +1,18 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import cloudflareLoader from "@/lib/cloudflare-image-loader";
-import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
 
 interface ArchetypeCardProps {
   archetype: ArchetypeDefinition;
-  variant: "secure" | "anxious" | "avoidant" | "disorganized";
   className?: string;
 }
 
-export function ArchetypeCard({ archetype, variant, className }: ArchetypeCardProps) {
-  // Logic to simulate encoded ID for URL
-  const hash = typeof window !== 'undefined' ? btoa(archetype.id).replace(/=/g, "") : "";
-  const href = `/quiz/results?id=${hash}`; 
-
+export function ArchetypeCard({ archetype, className }: ArchetypeCardProps) {
   return (
-    <Link
-      href={href}
+    <div
       className={cn(
         "group relative flex flex-col items-center text-center transition-transform duration-300 hover:-translate-y-2",
         className
@@ -49,6 +41,6 @@ export function ArchetypeCard({ archetype, variant, className }: ArchetypeCardPr
           {archetype.summary}
         </p>
       </div>
-    </Link>
+    </div>
   );
 }

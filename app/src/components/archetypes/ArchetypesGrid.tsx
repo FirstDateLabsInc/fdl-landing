@@ -11,28 +11,24 @@ const GROUPS = [
     title: "The Secure Connectors",
     description: "Anchored in trust, these archetypes build stable, lasting bonds naturally.",
     ids: ["golden-partner", "gentle-peacekeeper", "direct-director", "playful-tease"],
-    variant: "secure" as const,
   },
   {
     id: "anxious",
     title: "The Anxious Lovers",
     description: "Driven by a need for closeness, they love deeply but fear disconnection.",
     ids: ["open-book", "selfless-giver", "fiery-pursuer", "mind-reader"],
-    variant: "anxious" as const,
   },
   {
     id: "avoidant",
     title: "The Independent Spirits",
     description: "Valuing autonomy above all, they protect their freedom from perceived threats.",
     ids: ["solo-voyager", "quiet-ghost", "iron-fortress", "cool-mystery"],
-    variant: "avoidant" as const,
   },
   {
     id: "disorganized",
     title: "The Complex Navigateurs",
     description: "Caught between desire and fear, they chart a complicated course to love.",
     ids: ["self-aware-alchemist", "chameleon", "wild-storm", "labyrinth"],
-    variant: "disorganized" as const,
   },
 ];
 
@@ -65,7 +61,6 @@ export function ArchetypesGrid({ archetypes }: ArchetypesGridProps) {
                   <ArchetypeCard
                     key={archetype.id}
                     archetype={archetype}
-                    variant={group.variant}
                   />
                 ))}
               </div>
