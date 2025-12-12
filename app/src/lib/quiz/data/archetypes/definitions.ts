@@ -623,17 +623,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🦔',
     image: '/archetypes/iron-fortress-armadillo.png',
     summary:
-      "You've built impenetrable defenses around your heart. You push others away with harsh words or cold distance. Love feels dangerous.",
+      "You're highly protective of your inner world. When people get close, you respond with distance or sharpness, and relationships can start to feel risky rather than safe.",
 
-    patternDescription: `You've built impenetrable defenses around your heart. You push others away with harsh words or cold distance, protecting yourself from the vulnerability that love requires. You're not trying to be mean; you're trying to be safe.`,
+    patternDescription: `Over time, you've learned to rely on strong defenses. Keeping some distance feels safer than letting someone in and possibly getting hurt. On the outside, you might look cold, harsh, or uninterested. Inside, you're mostly trying to stay safe, not trying to hurt anyone.`,
 
     datingCycle: [
-      'Someone tries to get close → you feel threatened',
-      "You respond harshly or coldly → you're pushing them away",
-      'They feel rejected → they back off',
-      'You feel relief and vindication → "See? People are dangerous"',
-      "They leave for good → you tell yourself you didn't want them anyway",
-      'You stay alone and call it freedom',
+      "Someone tries to get close ➜ you feel threatened",
+      "You respond harshly or coldly ➜ you're pushing them away",
+      "They feel rejected ➜ they back off",
+      "You feel a mix of relief and confirmation ➜ \"Getting close always leads to trouble.\"",
+      "They leave for good ➜ you tell yourself you didn't want them anyway",
+      "You stay alone and call it freedom",
     ],
 
     rootCause: `You have avoidant attachment with aggressive communication. You learned that vulnerability = danger. People = pain. Your harshness is a defense mechanism. You attack first so you don't get hurt.`,
@@ -683,17 +683,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🐈',
     image: '/archetypes/cool-mystery-cat.png',
     summary:
-      'You maintain emotional distance while keeping partners guessing. You express displeasure through coldness or withdrawal, not words.',
+      "You tend to stay emotionally distant in relationships. Partners often end up guessing what you're really thinking or feeling. When you're upset, you're more likely to pull back than to talk about it directly.",
 
-    patternDescription: `You maintain emotional distance while keeping partners guessing. You express displeasure through coldness or withdrawal rather than words, creating an air of mystery that can feel like rejection. You're not cold intentionally. You're just shut down emotionally.`,
+    patternDescription: `You often keep your inner world private. You express displeasure through coldness or withdrawal rather than words, creating an air of mystery that can feel like rejection. From your side, this is a way of protecting yourself and calming down. From the other person's side, it can feel like you've suddenly pulled the plug on closeness.`,
 
     datingCycle: [
-      "Something bothers you → you don't say anything",
-      'You go cold or distant → your partner feels it',
-      'They ask what\'s wrong → you say "nothing, I\'m fine"',
-      'Your coldness persists → they feel rejected',
-      "They pull away → you confirm they don't care",
-      'Connection dies slowly from lack of warmth',
+      "Something bothers you ➜ you don't say anything",
+      "You go cold or distant ➜ your partner feels it",
+      "They ask what's wrong ➜ you say \"nothing, I'm fine\"",
+      "Your coldness persists ➜ they feel rejected",
+      "They pull away ➜ you confirm they don't care",
+      "Connection dies slowly from lack of warmth",
     ],
 
     rootCause: `You have avoidant attachment with passive-aggressive communication. You learned not to speak up AND not to get close. When frustrated, you don't express it—you punish through withdrawal and coldness.`,
@@ -743,17 +743,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🐙',
     image: '/archetypes/self-aware-alchemist-octopus.png',
     summary:
-      "You're highly intelligent about your own patterns. You can articulate what's happening inside you. But you struggle to change behavior.",
+      "You understand yourself very well. You can see your own patterns and explain them clearly. But turning this insight into action remains difficult.",
 
-    patternDescription: `You're highly intelligent and self-aware despite your chaotic attachment patterns. You can articulate what's happening inside you, even when your behavior contradicts your words. You know exactly what your issues are. You can describe them brilliantly. But knowing about it and changing it are two different things.`,
+    patternDescription: `You're thoughtful and self-aware. You can describe your fears, triggers, and reactions in detail—even when your actions don't match what you say you want. You're not clueless about your issues; in fact, you might understand them better than most people. The challenge is that insight and change don't always move at the same speed. Your mind gets it, but your reactions still follow old habits.`,
 
     datingCycle: [
-      "You meet someone → you're all in emotionally",
-      'Something triggers you → you pull away drastically',
-      'They try to understand → you can explain your patterns perfectly',
-      'You re-engage → they feel hopeful',
-      'Same trigger comes up → you pull away again',
-      "They leave exhausted → you understand why but can't change it",
+      "You meet someone ➜ you get emotionally invested and open up quickly",
+      "Something triggers you ➜ you pull back hard, or create distance",
+      "They try to understand ➜ you can explain your patterns and where they come from very clearly",
+      "You re-engage and reconnect ➜ they feel hopeful that things will be different",
+      "The same kind of trigger shows up again ➜ you repeat the same distancing reaction, even though you see it happening",
+      "They eventually feel tired and worn out ➜ you understand exactly why, but changing the pattern still feels difficult",
     ],
 
     rootCause: `You have disorganized attachment with assertive communication. You can identify your patterns but haven't done the deeper work to change them. You might say "I know I sabotage relationships" but continue sabotaging them. Self-awareness without action.`,
@@ -803,17 +803,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🦎',
     image: '/archetypes/chameleon-chameleon.png',
     summary:
-      "You shift and change based on who you're with. You lose yourself in relationships. Partners don't know the real you.",
+      "You're very good at adapting to other people. In relationships, you often change to fit what the other person seems to want, and over time it can feel like you've lost touch with your own needs and identity.",
 
-    patternDescription: `You shift and change based on who you're with, losing yourself in the process. Your unpredictable attachment patterns combine with passivity to create constant shape-shifting in relationships. You're not doing this consciously. You're adapting to survive.`,
+    patternDescription: `You're sensitive to the people around you and quick to adjust. When you like someone, you naturally tune into their preferences, moods, and expectations. At first, this can make the connection feel smooth and easy. But as time goes on, the parts of you that don't really fit that version start to come out. You feel tired from keeping up the "ideal" version of yourself, and they feel confused because you suddenly don't seem like the person they first met.`,
 
     datingCycle: [
-      'You meet someone → you become who they need you to be',
-      "They fall for the version you're presenting → you feel valued",
-      "But the real you starts showing → they're confused",
-      "You try to go back to the persona → it's exhausting",
-      "You either swing to extreme or disappear → they're whiplashed",
-      'Relationship ends because they never knew the real you',
+      "You meet someone ➜ you quickly adapt and become the version you think they'll like",
+      "They respond well to this version of you ➜ you feel seen and appreciated",
+      "Over time, more of the \"real you\" shows up ➜ the differences start to feel noticeable",
+      "You try to slip back into the version they liked at first ➜ it feels draining and unnatural",
+      "You swing between over-adapting and pulling away ➜ they feel unsettled and unsure what to expect",
+      "The relationship fades or ends ➜ it can feel like they never truly got to know who you really are",
     ],
 
     rootCause: `You have disorganized attachment with passive communication. You never learned a stable sense of self. You learned to be what others need to survive. Now you automatically shape-shift to keep people close.`,
@@ -863,17 +863,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🐂',
     image: '/archetypes/wild-storm-bull.png',
     summary:
-      'Your relationships are intense and sometimes destructive. You cycle between craving closeness and pushing people away with force.',
+      "Your relationships can feel very intense—for you and for the other person. You swing between wanting a lot of closeness and then needing to push people away when it all feels too much.",
 
-    patternDescription: `Your relationships are marked by intense, sometimes destructive energy. You cycle between craving closeness and pushing away with force, creating emotional whiplash for partners. You're not trying to be destructive. Your nervous system is dysregulated.`,
+    patternDescription: `Your feelings in relationships tend to be strong. When you care about someone, you feel it deeply and get very involved. But when you're triggered, overwhelmed, or scared of getting hurt, your reactions can become big and sudden—pulling away or starting conflict. You're not trying to cause chaos; your emotions just move quickly, and it's hard to slow things down in the moment. For partners, this up-and-down pattern can feel confusing and tiring.`,
 
     datingCycle: [
-      "You meet someone → you're intensely invested",
-      'Something triggers you → you blow up or push them away hard',
-      "They try to understand → you're angry or defensive",
-      "You pull away → they feel relieved and confused",
-      "You reach back out → they're hopeful",
-      "Same cycle repeats → they can't take the whiplash",
+      "You meet someone ➜ you get emotionally involved and attached quickly",
+      "Something triggers you ➜ you react strongly, argue, or push them away",
+      "They try to understand or calm things down ➜ you may still feel angry, hurt, or defensive",
+      "You take distance or step back ➜ they feel both relieved and unsure about where you stand",
+      "After some time, you miss them and reach out again ➜ they feel hopeful the connection might stabilize",
+      "A similar trigger shows up ➜ the same pattern repeats, and over time they feel worn out by the ups and downs",
     ],
 
     rootCause: `You have disorganized attachment with aggressive communication. Your nervous system learned that relationships = danger + safety simultaneously. You swing between intense pursuit and aggressive rejection. You're not stable in the middle.`,
@@ -923,17 +923,17 @@ export const archetypes: ArchetypeDefinition[] = [
     emoji: '🐍',
     image: '/archetypes/labyrinth-snake.png',
     summary:
-      "You're complex and hard to read. You send mixed signals. Partners feel confused by your contradictory behavior.",
+      "You're layered and complex. In relationships, you can send mixed signals—sometimes warm, sometimes distant—so partners often feel unsure about where they stand with you.",
 
-    patternDescription: `You are complex and hard to read, sending mixed signals that keep partners confused. Your contradictory attachment patterns express themselves through indirect, sometimes manipulative communication. You test partners. You pull them close then push them away. No one can figure you out—including you.`,
+    patternDescription: `You feel a lot underneath the surface, and your feelings about closeness can change quickly. Part of you wants connection and intimacy; another part gets scared, guarded, or skeptical. You might test people without fully realizing it—pulling them closer to see if they care, then stepping back to see if they'll follow. You're not trying to play games; you're trying to feel safe and understood in a pattern that's hard even for you to untangle.`,
 
     datingCycle: [
-      "You like someone → you test them to see if they'll stay",
-      "You pull close then push away → they're confused",
-      "You send mixed messages → they can't trust you",
-      "You act one way then another → they don't know which is real",
-      'They try harder to understand → you withdraw or manipulate',
-      "Relationship ends because they can't reach you",
+      "You like someone ➜ you feel curious but also cautious, so you \"test\" how much they care",
+      "You move closer, then suddenly create distance ➜ they feel confused by the change",
+      "Your words and actions don't always match ➜ they're unsure what to believe",
+      "You show one side of yourself, then another ➜ they don't know which version is the stable one",
+      "They try harder to understand and get close ➜ you may pull back, shut down, or become harder to read",
+      "The relationship eventually fades or ends ➜ they feel like they could never quite reach you, and you're left with mixed feelings about why it didn't work",
     ],
 
     rootCause: `You have disorganized attachment with passive-aggressive communication. You learned that relationships were unpredictable. You test people indirectly before committing. You communicate through manipulation rather than words.`,
