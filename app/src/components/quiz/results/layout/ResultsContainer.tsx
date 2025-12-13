@@ -306,11 +306,11 @@ export function ResultsContainer({
               </div>
               <div className="space-y-10">
                 <div className="space-y-4">
-                  <h3 className="text-sm font-medium text-slate-500">Strengths</h3>
+                  <h3 className="text-base font-semibold text-slate-700">Strengths</h3>
                   <TraitGrid items={archetype.datingMeaning.strengths} type="strength" />
                 </div>
                 <div className="space-y-4">
-                  <h3 className="text-sm font-medium text-slate-500">Challenges</h3>
+                  <h3 className="text-base font-semibold text-slate-700">Growth Areas</h3>
                   <TraitGrid items={archetype.datingMeaning.challenges} type="challenge" />
                 </div>
               </div>
