@@ -46,6 +46,7 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [fingerprint, setFingerprint] = useState<string>("");
   const sessionInitRef = useRef(false);
+  const submitInFlightRef = useRef(false);
 
   // Generate fingerprint and validate session on mount (runs once)
   useEffect(() => {
@@ -125,6 +126,8 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
   );
 
   const handleSubmit = useCallback(async () => {
+    if (submitInFlightRef.current) return;
+    submitInFlightRef.current = true;
     setIsSubmitting(true);
     setSubmitError(null);
     try {
@@ -134,7 +137,6 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
         sessionId: state.sessionId,
         fingerprintHash: fingerprint,
         answers: answerMap,
-        idempotencyKey: crypto.randomUUID(),
       };
 
       const res = await fetch("/api/quiz/complete", {
@@ -180,6 +182,7 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
       );
     } finally {
       setIsSubmitting(false);
+      submitInFlightRef.current = false;
     }
   }, [responses, state.sessionId, fingerprint, clearProgress, onComplete]);
 

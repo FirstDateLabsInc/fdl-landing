@@ -334,7 +334,14 @@ BEGIN
         p_idempotency_key,
         p_duration_seconds
     )
+    ON CONFLICT (idempotency_key) DO NOTHING
     RETURNING id INTO v_result_id;
+
+    IF v_result_id IS NULL AND p_idempotency_key IS NOT NULL THEN
+        SELECT id INTO v_result_id
+        FROM quiz_results
+        WHERE idempotency_key = p_idempotency_key;
+    END IF;
     
     RETURN v_result_id;
 END;
