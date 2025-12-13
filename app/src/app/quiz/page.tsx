@@ -18,24 +18,28 @@ import { archetypes } from "@/lib/quiz/archetypes";
 
 const QUIZ_BENEFITS = [
   {
-    icon: Heart,
+    image: "/images/quiz/benefit-attachment.png",
     title: "Attachment Style",
     description: "Understand how you connect emotionally with partners",
+    position: "center 25%", // focus on face
   },
   {
-    icon: MessageCircle,
+    image: "/images/quiz/benefit-communication.png",
     title: "Communication Patterns",
     description: "Discover your natural way of expressing needs",
+    position: "center 20%", // focus on face
   },
   {
-    icon: Brain,
+    image: "/images/quiz/benefit-love.png",
     title: "Love Languages",
     description: "Learn how you prefer to give and receive love",
+    position: "center 25%", // focus on face
   },
   {
-    icon: Sparkles,
+    image: "/images/quiz/benefit-archetype.png",
     title: "Dating Archetype",
     description: "Get your unique personality profile for dating",
+    position: "center 30%", // focus on face
   },
 ];
 
@@ -109,7 +113,7 @@ export default function QuizPage() {
           Discover Your
           <br />
           <span className="from-secondary to-primary bg-gradient-to-r bg-clip-text text-transparent">
-            Dating Personality
+            Dating & Relationship Personality
           </span>
         </motion.h1>
         <motion.p
@@ -186,8 +190,14 @@ export default function QuizPage() {
               key={benefit.title}
               className="shadow-soft hover:shadow-hover rounded-xl bg-white/60 p-4 text-center transition-shadow"
             >
-              <div className="bg-primary/15 mx-auto flex size-9 items-center justify-center rounded-full">
-                <benefit.icon className="size-4 text-slate-800" aria-hidden />
+              <div className="mx-auto w-full overflow-hidden rounded-lg">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={benefit.image}
+                  alt={benefit.title}
+                  className="h-32 w-full rounded-lg object-cover"
+                  style={{ objectPosition: benefit.position }}
+                />
               </div>
               <h3 className="mt-3 text-sm font-semibold text-slate-900">
                 {benefit.title}

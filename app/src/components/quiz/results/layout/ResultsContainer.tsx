@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import Image from "next/image";
 
 import { ArchetypeHero } from "../sections/ArchetypeHero";
 import { CategoryRadarChart } from "../charts/CategoryRadarChart";
@@ -223,6 +224,16 @@ export function ResultsContainer({
               id="dating-meaning"
               eyebrow="Analysis"
             >
+              <div className="mb-8 flex justify-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/quiz/dating-meaning-illustration.png"
+                  alt="Dating personality illustration"
+                  width={500}
+                  height={300}
+                  className="rounded-xl object-cover"
+                />
+              </div>
               <div className="space-y-10">
                 <div className="space-y-4">
                   <h3 className="text-sm font-medium text-slate-500">Strengths</h3>
@@ -248,6 +259,16 @@ export function ResultsContainer({
               id="red-flags"
               eyebrow="Warning Signs"
             >
+              <div className="mb-8 flex justify-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/quiz/red-flags-illustration.png"
+                  alt="Red flags illustration"
+                  width={500}
+                  height={300}
+                  className="rounded-xl object-cover"
+                />
+              </div>
               <RedFlagsList items={archetype.redFlags} />
             </ContentSection>
           </motion.div>

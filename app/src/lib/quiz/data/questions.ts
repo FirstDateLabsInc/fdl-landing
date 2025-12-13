@@ -1,7 +1,7 @@
 /**
  * Quiz Questions Data
  *
- * All 48 questions organized by section.
+ * All 48 questions organized by section (including C6).
  * Source: docs/quiz/quiz-question.md
  */
 
@@ -15,13 +15,13 @@ const attachmentQuestions: QuizQuestion[] = [
   // Secure (S1-S3)
   {
     id: 'S1',
-    text: 'Within a few months, I introduce the person I\'m seeing to my friends or social events.',
+    text: 'After few dates, I introduce the person I\'m seeing to my friends or social events.',
     type: 'likert',
     scoring: { section: 'attachment', dimension: 'secure' },
   },
   {
     id: 'S2',
-    text: 'When they say they need support, I usually call or meet them that day.',
+    text: 'When the person I am dating with say they need support, I usually call or meet them that day.',
     type: 'likert',
     scoring: { section: 'attachment', dimension: 'secure' },
   },
@@ -35,19 +35,19 @@ const attachmentQuestions: QuizQuestion[] = [
   // Anxious (AX1-AX3)
   {
     id: 'AX1',
-    text: 'When they\'re out late and quiet online, I keep checking my phone and send repeated messages or calls.',
+    text: 'When they\'re out late and not responding, I repeatedly check my phone and send multiple messages or calls.',
     type: 'likert',
     scoring: { section: 'attachment', dimension: 'anxious' },
   },
   {
     id: 'AX2',
-    text: 'After they go out with friends I don\'t know, I ask many detailed questions about what happened.',
+    text: 'They go out with friends I don\'t know, I ask many detailed questions about what happened.',
     type: 'likert',
     scoring: { section: 'attachment', dimension: 'anxious' },
   },
   {
     id: 'AX3',
-    text: 'In a typical month, I start serious talks because their replies feel slow or less frequent.',
+    text: 'I reread our old chats or look back at our photos together to reassure myself that the person I am dating with still like me.',
     type: 'likert',
     scoring: { section: 'attachment', dimension: 'anxious' },
   },
@@ -55,7 +55,7 @@ const attachmentQuestions: QuizQuestion[] = [
   // Avoidant (AV1-AV3)
   {
     id: 'AV1',
-    text: 'If they message a lot or want to meet many days in a row, I slow my replies or suggest less time together.',
+    text: 'If they message frequently or want to meet several days in a row, I slow down my replies or suggest spending less time together.',
     type: 'likert',
     scoring: { section: 'attachment', dimension: 'avoidant' },
   },
@@ -67,7 +67,7 @@ const attachmentQuestions: QuizQuestion[] = [
   },
   {
     id: 'AV3',
-    text: 'After a very deep conversation, I usually wait longer than usual to plan the next meetup.',
+    text: 'After a deep conversation, I usually wait longer than usual to plan the next date.',
     type: 'likert',
     scoring: { section: 'attachment', dimension: 'avoidant' },
   },
@@ -75,19 +75,19 @@ const attachmentQuestions: QuizQuestion[] = [
   // Disorganized / Fearful (D1-D3)
   {
     id: 'D1',
-    text: 'Some weeks I message a lot; other weeks I suddenly go quiet or cancel plans with no clear reason.',
+    text: 'My communication frequency varies a lot—sometimes I\'m very present, other times I become quieter or cancel plans unexpectedly',
     type: 'likert',
     scoring: { section: 'attachment', dimension: 'disorganized' },
   },
   {
     id: 'D2',
-    text: 'After a date or talk where we felt very close or shared a lot, I sometimes avoid seeing them or slow my replies for the next few days, even if I liked it at the time.',
+    text: 'I sometimes agree to things that make the relationship more serious like a trip together, then later back out or avoid it because it suddenly feels like too much',
     type: 'likert',
     scoring: { section: 'attachment', dimension: 'disorganized' },
   },
   {
     id: 'D3',
-    text: 'In conflicts, I may send many messages at first, then later go distant about the same issue.',
+    text: 'In conflicts, I often react with a lot of communication or emotion at first, and then later pull back or become less engaged with the same issue.',
     type: 'likert',
     scoring: { section: 'attachment', dimension: 'disorganized' },
   },
@@ -107,7 +107,7 @@ const communicationQuestions: QuizQuestion[] = [
   },
   {
     id: 'COM_PASSIVE_2',
-    text: 'When they cancel on me last minute, I usually reply with something like \'no worries!\' and drop it, even if I\'m annoyed.',
+    text: 'When the person i am dating with cancel on me last minute, I usually reply with \'no worries!\' and drop it, even if I\'m annoyed.',
     type: 'likert',
     scoring: { section: 'communication', style: 'passive' },
   },
@@ -129,13 +129,13 @@ const communicationQuestions: QuizQuestion[] = [
   // Passive-Aggressive (COM_PAGG_1-2)
   {
     id: 'COM_PAGG_1',
-    text: 'If I feel ignored in a chat (they reply slowly or give half answers), I reply with very short messages like \'ok\' or go silent.',
+    text: 'When I upset, I tell the whole story to my friends or family, but when the person i am dating with ask if I\'m okay I just say \'it\'s nothing.',
     type: 'likert',
     scoring: { section: 'communication', style: 'passive_aggressive' },
   },
   {
     id: 'COM_PAGG_2',
-    text: 'If they forget something they said they would do for me (like helping with something), I say it\'s okay at the time, but later I say little things like \'you always forget\' instead of having a real talk about it.',
+    text: 'If the person replies to me after a long time, I send messages like \'wow, you finally replied\' or \'busy person\' instead of just saying I was upset about the slow reply.',
     type: 'likert',
     scoring: { section: 'communication', style: 'passive_aggressive' },
   },
@@ -149,7 +149,7 @@ const communicationQuestions: QuizQuestion[] = [
   },
   {
     id: 'COM_ASSERTIVE_2',
-    text: 'If they make \'jokes\' about you that actually hurt, you tell them directly and explain how you\'d like them to joke with you instead.',
+    text: 'if someone I\'m seeing makes a \'joke\' about me that hurts, I tell them directly and explain how I\'d like them to talk about me instead.',
     type: 'likert',
     scoring: { section: 'communication', style: 'assertive' },
   },
@@ -163,12 +163,12 @@ const communicationQuestions: QuizQuestion[] = [
     options: [
       {
         key: 'A',
-        text: 'Reply with something like \'no worries :)\' and don\'t mention that you\'re disappointed.',
+        text: 'Reply with \'no worries :)\' and don\'t mention that you\'re disappointed.',
         scoring: { section: 'communication', style: 'passive' },
       },
       {
         key: 'B',
-        text: 'Reply with something angry, like \'you always do this\' or \'don\'t bother asking me next time.\'',
+        text: 'Reply with angry, \'you always do this\' or \'don\'t bother asking me next time.\'',
         scoring: { section: 'communication', style: 'aggressive' },
       },
       {
@@ -186,39 +186,45 @@ const communicationQuestions: QuizQuestion[] = [
 ];
 
 // ============================================================================
-// SECTION C: DATING CONFIDENCE (5 questions)
+// SECTION C: DATING CONFIDENCE (6 questions)
 // ============================================================================
 
 const confidenceQuestions: QuizQuestion[] = [
   {
     id: 'C1',
-    text: 'When I\'m interested in someone, I often start the chat or suggest meeting.',
+    text: 'When I\'m interested in someone, I often start the chat or suggest having a date.',
     type: 'likert',
     scoring: { section: 'confidence' },
   },
   {
     id: 'C2',
-    text: 'I cancel or avoid dates because I worry I\'ll be awkward.',
+    text: 'The person I\'m seeing invites me to meet their close friends or family, I often say no because I\'m not confident I\'ll make a good impression.',
     type: 'likert',
     scoring: { section: 'confidence' },
     reverse: true,
   },
   {
     id: 'C3',
-    text: 'After a bad date, I keep meeting or messaging new people within about a week.',
+    text: 'If a date feels awkward or doesn\'t go well, I still keep using dating apps or starting new conversations afterward.',
     type: 'likert',
     scoring: { section: 'confidence' },
   },
   {
     id: 'C4',
-    text: 'After a rejection or ghosting, I stop reaching out to new people for a while.',
+    text: 'On a date, when the conversation turns to my real life (my job, income, or family), I keep it surface-level or change the topic because I\'m worried the truth won\'t seem good enough.',
     type: 'likert',
     scoring: { section: 'confidence' },
     reverse: true,
   },
   {
     id: 'C5',
-    text: 'I actively work on my dating skills (for example, reading, practicing, or using an AI coach).',
+    text: 'I actively work on my dating skills (reading, practicing, or using a dating coach).',
+    type: 'likert',
+    scoring: { section: 'confidence' },
+  },
+  {
+    id: 'C6',
+    text: 'If someone puts real effort into preparing for dates (even using AI to practice), I\'m more interested in going out with them.',
     type: 'likert',
     scoring: { section: 'confidence' },
   },
@@ -231,26 +237,26 @@ const confidenceQuestions: QuizQuestion[] = [
 const emotionalQuestions: QuizQuestion[] = [
   {
     id: 'EA1',
-    text: 'Once I\'ve gone on a few dates with someone, I start sharing more about what\'s really going on in my life (for example, work stress, family updates, or plans I care about).',
+    text: 'Once I\'ve gone on a few dates with someone, I start sharing about work stress, family updates, or plans I care about, what I\'m really going on in my life.',
     type: 'likert',
     scoring: { section: 'emotional' },
   },
   {
     id: 'EA2',
-    text: 'When I\'m under pressure, I mostly stick to light topics and hide what\'s really going on.',
+    text: 'When I\'m under pressure for work or family, I mostly stick to light topics and hide what\'s really going on.',
     type: 'likert',
     scoring: { section: 'emotional' },
     reverse: true,
   },
   {
     id: 'EA3',
-    text: 'If I\'m hurt by something they did, I eventually bring it up.',
+    text: 'If the person makes hurtful comment that upsets me, I eventually bring it up.',
     type: 'likert',
     scoring: { section: 'emotional' },
   },
   {
     id: 'EA4',
-    text: 'When they start a serious talk (labels, future, feelings), I often delay or dodge the topic.',
+    text: 'When they start a talk about future and feelings, I often delay or dodge the topic.',
     type: 'likert',
     scoring: { section: 'emotional' },
     reverse: true,
@@ -271,13 +277,13 @@ const intimacyQuestions: QuizQuestion[] = [
   // Intimacy Comfort (IC1-IC3)
   {
     id: 'IC1',
-    text: 'After a few good dates, I\'m comfortable giving a hug hello/goodbye or holding hands while we walk.',
+    text: 'I\'m comfortable giving a hug or holding hands after a few dates,',
     type: 'likert',
     scoring: { section: 'intimacy', dimension: 'comfort' },
   },
   {
     id: 'IC2',
-    text: 'I ask or talk with them about what kinds of touch they like or don\'t like (for example, kissing, cuddling, where they don\'t want to be touched).',
+    text: 'I ask or talk with the perosn about what kinds of touch(kissing and cuddling) they like or don\'t like',
     type: 'likert',
     scoring: { section: 'intimacy', dimension: 'comfort' },
   },
@@ -291,7 +297,7 @@ const intimacyQuestions: QuizQuestion[] = [
   // Boundary Assertiveness (BA1-BA3)
   {
     id: 'BA1',
-    text: 'If we are kissing or cuddling and I don\'t want to go further, I say something like \'let\'s stop here\' or \'I\'m not ready to do more.\'',
+    text: 'If we are kissing or cuddling and I don\'t want to go further, I say \'let\'s stop here\' or \'I\'m not ready to do more.',
     type: 'likert',
     scoring: { section: 'intimacy', dimension: 'boundary' },
   },
@@ -303,7 +309,7 @@ const intimacyQuestions: QuizQuestion[] = [
   },
   {
     id: 'BA3',
-    text: 'I sometimes continue physical or sexual activity mainly to avoid conflict or disappointing them.',
+    text: 'I continue physical or sexual activity mainly to avoid conflict or disappointing them.',
     type: 'likert',
     scoring: { section: 'intimacy', dimension: 'boundary' },
     reverse: true,
@@ -318,7 +324,7 @@ const loveLanguageQuestions: QuizQuestion[] = [
   // Words of Affirmation (LL1-LL2)
   {
     id: 'LL1',
-    text: 'When someone I\'m seeing has a big day (like an exam, interview, or show), I often send a message saying I\'m proud of them or that I believe in them.',
+    text: 'When someone I\'m seeing has a important day(exam, interview, or show), I often send a message saying I\'m proud of them or I believe in them.',
     type: 'likert',
     scoring: { section: 'love_language', language: 'words', direction: 'give' },
   },
@@ -338,7 +344,7 @@ const loveLanguageQuestions: QuizQuestion[] = [
   },
   {
     id: 'LL4',
-    text: 'When the person I\'m seeing is busy but still makes time to see me, even for something small like a quick dinner or walk, I feel very close to them.',
+    text: 'When the person I\'m seeing is busy but still makes time to see me or prepare me with a surprise, I feel very close to them.',
     type: 'likert',
     scoring: { section: 'love_language', language: 'time', direction: 'receive' },
   },
@@ -346,13 +352,13 @@ const loveLanguageQuestions: QuizQuestion[] = [
   // Acts of Service (LL5-LL6)
   {
     id: 'LL5',
-    text: 'If the person I\'m seeing is stressed or busy, when I\'m at their place and see something I can help with (like tidying up, washing dishes, or helping with a small task), I often just start helping.',
+    text: 'If the person I\'m seeing is stressed or busy, When I\'m at their place, I often just start helping with tidying up, washing dishes, or preparing food.',
     type: 'likert',
     scoring: { section: 'love_language', language: 'service', direction: 'give' },
   },
   {
     id: 'LL6',
-    text: 'When the person I\'m seeing takes care of something for me without me asking (like booking tickets, ordering food, or fixing something at my place), I feel especially cared for.',
+    text: 'When the person I\'m seeing takes care of like booking tickets, ordering food, or bringing sth i like, I feel especially cared for.',
     type: 'likert',
     scoring: { section: 'love_language', language: 'service', direction: 'receive' },
   },
@@ -437,7 +443,7 @@ export const quizSections: QuizSection[] = [
 export const allQuestions: QuizQuestion[] = quizSections.flatMap((s) => s.questions);
 
 /** Total number of questions */
-export const totalQuestions = allQuestions.length; // 47
+export const totalQuestions = allQuestions.length; // 48
 
 /** Get question by ID */
 export function getQuestionById(id: string): QuizQuestion | undefined {
