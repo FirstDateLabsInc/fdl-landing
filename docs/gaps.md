@@ -166,43 +166,67 @@ Severity legend:
 
 ## P1 — High-impact functional / data quality gaps
 
-### P1.1 — Idempotency is wired end-to-end but ineffective (client always generates a new key)
+### P1.1 — (Resolved) Server-owned deterministic idempotency (no client-generated keys)
 
 **Where**
-- `docs/schema.sql` (unique `idempotency_key`)
-- `app/src/app/api/quiz/complete/route.ts` (accepts `idempotencyKey`)
-- `app/src/components/quiz/QuizContainer.tsx` (always sends a new `crypto.randomUUID()`)
+- `app/src/lib/api/quiz/idempotency.ts` (canonicalizes answers + SHA-256 hash)
+- `app/src/app/api/quiz/complete/route.ts` (computes server idempotency key; handles replays)
+- `app/src/components/quiz/QuizContainer.tsx` (no longer sends an idempotency key; prevents double-submit)
+- `docs/schema.sql` (RPC uses `ON CONFLICT (idempotency_key) DO NOTHING`)
 
 **Exact implementation**
 
-`docs/schema.sql`:
-```sql
-114  idempotency_key TEXT UNIQUE,
+`app/src/lib/api/quiz/idempotency.ts`:
+```ts
+27  const canonicalAnswers = Object.entries(answers)
+28    .map(([questionId, entry]) => [questionId, { v: entry.v, k: entry.k }])
+32    .sort(([a], [b]) => a.localeCompare(b));
 ```
 
 `app/src/app/api/quiz/complete/route.ts`:
 ```ts
-26  idempotencyKey: z.string().optional(),
+80  const serverIdempotencyKey = await computeQuizIdempotencyKey({
+81    sessionId,
+82    fingerprintHash,
+83    answers,
+84  });
 ...
-86  p_idempotency_key: idempotencyKey || null,
+101  p_idempotency_key: serverIdempotencyKey,
 ```
 
+`app/src/app/api/quiz/complete/route.ts` (replay handling):
+```ts
+109  if (error.code === "23505") {
+110    const { data: existing } = await supabase
+111      .from("quiz_results")
+112      .select("id")
+113      .eq("idempotency_key", serverIdempotencyKey)
+114      .single();
+```
 `app/src/components/quiz/QuizContainer.tsx`:
 ```ts
-133  const payload: SubmitQuizRequest = {
-134    sessionId: state.sessionId,
-135    fingerprintHash: fingerprint,
-136    answers: answerMap,
-137    idempotencyKey: crypto.randomUUID(),
-138  };
+128  if (submitInFlightRef.current) return;
+...
+136  const payload: SubmitQuizRequest = {
+137    sessionId: state.sessionId,
+138    fingerprintHash: fingerprint,
+139    answers: answerMap,
+140  };
 ```
 
-**Why this is a gap**
-- If a user double-clicks submit, retries after a network error, or re-submits the same answers, the “idempotency” key won’t deduplicate anything because it’s always fresh.
-- This can inflate `quiz_results` and break funnel analytics.
+`docs/schema.sql`:
+```sql
+337  ON CONFLICT (idempotency_key) DO NOTHING
+338  RETURNING id INTO v_result_id;
+```
 
-**Fix options**
-- Generate a stable idempotency key per completion attempt and persist it in localStorage/session state until success, OR derive it deterministically from `(sessionId + answers hash)`.
+**Why this was a gap**
+- Double-submits and retries produced multiple `quiz_results` rows because the client always generated a fresh idempotency key.
+
+**Result (after fix)**
+- The server computes a deterministic key from `(sessionId + fingerprintHash + canonical answers without timestamps)`.
+- Duplicate submissions now return the existing `resultId` instead of creating new rows.
+
 
 ---
 
@@ -234,20 +258,19 @@ Severity legend:
 30  utmMedium: z.string().optional(),
 31  utmCampaign: z.string().optional(),
 ...
-85  p_duration_seconds: durationSeconds || null,
-87  p_utm_source: utmSource || null,
-88  p_utm_medium: utmMedium || null,
-89  p_utm_campaign: utmCampaign || null,
+99  p_duration_seconds: durationSeconds || null,
+101  p_utm_source: utmSource || null,
+102  p_utm_medium: utmMedium || null,
+103  p_utm_campaign: utmCampaign || null,
 ```
 
 `app/src/components/quiz/QuizContainer.tsx`:
 ```ts
-133  const payload: SubmitQuizRequest = {
-134    sessionId: state.sessionId,
-135    fingerprintHash: fingerprint,
-136    answers: answerMap,
-137    idempotencyKey: crypto.randomUUID(),
-138  };
+136  const payload: SubmitQuizRequest = {
+137    sessionId: state.sessionId,
+138    fingerprintHash: fingerprint,
+139    answers: answerMap,
+140  };
 ```
 
 `app/src/components/waitlist/WaitlistForm.tsx`:
@@ -350,22 +373,6 @@ Severity legend:
 
 ---
 
-### P2.2 — “Coaching focus” CTA button is not wired to anything
-
-**Where**
-- `app/src/components/quiz/results/sections/CoachingFocusList.tsx`
-
-**Exact implementation**
-```ts
-29  <button className="w-full rounded-lg bg-slate-900 px-6 py-3.5 text-base font-medium text-white transition-colors hover:bg-slate-800">
-30    {ctaText}
-31  </button>
-```
-
-**Why this is a gap**
-- The results page implies an action (get coaching / full report), but the button is a dead-end (no click handler, no link, no scroll).
-
----
 
 ### P2.3 — “Get Full Report” nav button can become a no-op (waitlist section is conditional)
 
