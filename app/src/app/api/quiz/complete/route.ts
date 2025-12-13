@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseServer } from "@/lib/supabase/server";
 import { scoreQuizFromAnswers } from "@/lib/quiz/server/score-quiz";
+import { computeQuizIdempotencyKey } from "@/lib/api/quiz/idempotency";
 import type { SubmitQuizResponse } from "@/lib/api/quiz";
 
 // Zod schema for request validation
@@ -23,7 +24,6 @@ const SubmitQuizSchema = z.object({
   fingerprintHash: z.string().min(1),
   answers: z.record(z.string(), DBAnswerEntrySchema),
   email: z.string().email().optional(),
-  idempotencyKey: z.string().optional(),
   durationSeconds: z.number().positive().optional(),
   // UTM tracking fields
   utmSource: z.string().optional(),
@@ -31,20 +31,29 @@ const SubmitQuizSchema = z.object({
   utmCampaign: z.string().optional(),
 });
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
 export async function POST(
   request: NextRequest
 ): Promise<NextResponse<SubmitQuizResponse>> {
   try {
-    const rawBody = await request.json();
+    const rawBody: unknown = await request.json();
     const parsed = SubmitQuizSchema.safeParse(rawBody);
 
     if (!parsed.success) {
+      const raw = isRecord(rawBody) ? rawBody : {};
+      const answers = isRecord(raw.answers) ? raw.answers : null;
+      const fingerprintHash =
+        typeof raw.fingerprintHash === "string" ? raw.fingerprintHash : null;
+
       console.error("Validation error:", JSON.stringify(parsed.error.flatten(), null, 2));
       console.error("Raw body sample:", JSON.stringify({
-        sessionId: rawBody.sessionId,
-        fingerprintHash: rawBody.fingerprintHash?.slice(0, 10) + "...",
-        answerCount: rawBody.answers ? Object.keys(rawBody.answers).length : 0,
-        sampleAnswers: rawBody.answers ? Object.entries(rawBody.answers).slice(0, 3) : [],
+        sessionId: typeof raw.sessionId === "string" ? raw.sessionId : null,
+        fingerprintHash: fingerprintHash ? fingerprintHash.slice(0, 10) + "..." : null,
+        answerCount: answers ? Object.keys(answers).length : 0,
+        sampleAnswers: answers ? Object.entries(answers).slice(0, 3) : [],
       }, null, 2));
       return NextResponse.json(
         {
@@ -62,11 +71,16 @@ export async function POST(
       answers,
       email,
       durationSeconds,
-      idempotencyKey,
       utmSource,
       utmMedium,
       utmCampaign,
     } = parsed.data;
+
+    const serverIdempotencyKey = await computeQuizIdempotencyKey({
+      sessionId,
+      fingerprintHash,
+      answers,
+    });
 
     // 1. Score quiz server-side
     const { results, archetypeSlug, confidence, isBalanced } =
@@ -83,21 +97,41 @@ export async function POST(
       p_fingerprint_hash: fingerprintHash || null,
       p_email: email || null,
       p_duration_seconds: durationSeconds || null,
-      p_idempotency_key: idempotencyKey || null,
+      p_idempotency_key: serverIdempotencyKey,
       p_utm_source: utmSource || null,
       p_utm_medium: utmMedium || null,
       p_utm_campaign: utmCampaign || null,
     });
 
     if (error) {
+      // Treat idempotency collisions as a replay: fetch and return the existing row id.
+      if (error.code === "23505") {
+        const { data: existing } = await supabase
+          .from("quiz_results")
+          .select("id")
+          .eq("idempotency_key", serverIdempotencyKey)
+          .single();
+
+        if (existing?.id) {
+          return NextResponse.json({
+            success: true,
+            resultId: existing.id,
+            archetypeSlug,
+            scores: results,
+            confidence,
+            isBalanced,
+          });
+        }
+      }
+
       console.error("Supabase error:", error);
       // Map Postgres error codes to API error codes
       const errorCode =
         error.code === "P0001"
           ? "INVALID_SESSION"
-          : error.code === "P0002"
-            ? "FINGERPRINT_MISMATCH"
-            : "DATABASE_ERROR";
+        : error.code === "P0002"
+          ? "FINGERPRINT_MISMATCH"
+          : "DATABASE_ERROR";
       return NextResponse.json(
         {
           success: false,

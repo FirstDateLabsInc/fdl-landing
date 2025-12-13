@@ -25,6 +25,11 @@ interface FormData {
   honeypot: string;
 }
 
+interface Web3FormsResponse {
+  success: boolean;
+  message?: string;
+}
+
 const CATEGORY_OPTIONS: { value: ContactCategory; label: string }[] = [
   { value: "media", label: "Press" },
   { value: "investor", label: "Investors" },
@@ -104,7 +109,7 @@ export function ContactForm() {
           }),
         });
 
-        const result = await response.json();
+        const result = (await response.json()) as Web3FormsResponse;
 
         if (result.success) {
           setStatus("success");

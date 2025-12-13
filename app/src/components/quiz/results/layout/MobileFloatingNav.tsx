@@ -18,12 +18,13 @@ export function MobileFloatingNav({ activeSection, archetype, className }: Mobil
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const scrollToId = (id: string) => {
+  const scrollToId = (id: string): boolean => {
     const element = document.getElementById(id);
-    if (!element) return;
+    if (!element) return false;
     const offset = 120; // account for sticky navbar
     const top = element.getBoundingClientRect().top + window.scrollY - offset;
     window.scrollTo({ top, behavior: "smooth" });
+    return true;
   };
 
   // Click outside to close - clean pattern
@@ -79,7 +80,9 @@ export function MobileFloatingNav({ activeSection, archetype, className }: Mobil
           <div className="mt-3 space-y-2 px-1">
             <button
               onClick={() => {
-                scrollToId("full-picture");
+                if (!scrollToId("full-picture")) {
+                  window.location.assign("/#waitlist");
+                }
                 setIsOpen(false);
               }}
               className="w-full rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground"

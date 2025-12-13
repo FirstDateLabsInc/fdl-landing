@@ -81,42 +81,41 @@ export default async function SavedResultPage({ params }: Props) {
   }
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+    <main className="min-h-[calc(100vh-4.5rem)]">
       <ResultsContainer
         results={scores}
         archetype={archetype}
         quizResultId={resultId}
       />
 
-      {/* Footer CTAs */}
-      <div className="mt-12 flex flex-col items-center gap-4 border-t border-slate-200 pt-8 sm:flex-row sm:justify-center">
-        <Button variant="secondary" asChild className="gap-2">
-          <Link href="/quiz/questions">
-            <RotateCcw className="h-4 w-4" />
-            Take the Quiz
-          </Link>
-        </Button>
+      <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">
+        {/* Footer CTAs */}
+        <div className="mt-12 flex flex-col items-center gap-4 border-t border-slate-200 pt-8 sm:flex-row sm:justify-center">
+          <Button variant="secondary" asChild className="gap-2">
+            <Link href="/quiz/questions">
+              <RotateCcw className="h-4 w-4" />
+              Take the Quiz
+            </Link>
+          </Button>
 
-        <Button
-          asChild
-          className="gap-2 bg-[#f9d544] text-slate-900 hover:bg-[#ffe362]"
-        >
-          <Link href="/#waitlist">
-            <Sparkles className="h-4 w-4" />
-            Start with First Date Labs
+          <Button asChild variant="primary" className="gap-2">
+            <Link href="/#waitlist">
+              <Sparkles className="h-4 w-4" />
+              Start with First Date Labs
+            </Link>
+          </Button>
+        </div>
+
+        {/* Info footer */}
+        <p className="mt-8 text-center text-sm text-slate-500">
+          This is a saved quiz result.
+          <br className="hidden sm:block" />
+          Want your own personalized results?{" "}
+          <Link href="/quiz" className="text-primary underline hover:no-underline">
+            Take the quiz
           </Link>
-        </Button>
+        </p>
       </div>
-
-      {/* Info footer */}
-      <p className="mt-8 text-center text-sm text-slate-500">
-        This is a saved quiz result.
-        <br className="hidden sm:block" />
-        Want your own personalized results?{" "}
-        <Link href="/quiz" className="text-[#f9d544] underline hover:no-underline">
-          Take the quiz
-        </Link>
-      </p>
     </main>
   );
 }

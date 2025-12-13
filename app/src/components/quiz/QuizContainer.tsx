@@ -13,7 +13,7 @@ import { getArchetypeById } from "@/lib/quiz/data/archetypes";
 import { generateFingerprintHash } from "@/lib/fingerprint";
 import type { QuizResults } from "@/lib/quiz/types";
 import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
-import type { SubmitQuizRequest, SubmitQuizResponse } from "@/lib/api/quiz";
+import type { CreateSessionResponse, SubmitQuizRequest, SubmitQuizResponse } from "@/lib/api/quiz";
 import { cn } from "@/lib/utils";
 
 interface QuizContainerProps {
@@ -46,6 +46,7 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [fingerprint, setFingerprint] = useState<string>("");
   const sessionInitRef = useRef(false);
+  const submitInFlightRef = useRef(false);
 
   // Generate fingerprint and validate session on mount (runs once)
   useEffect(() => {
@@ -68,7 +69,7 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
         });
 
         if (res.ok) {
-          const data = await res.json();
+          const data = (await res.json()) as CreateSessionResponse;
           if (data.sessionId) {
             setSessionId(data.sessionId);
           }
@@ -125,6 +126,8 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
   );
 
   const handleSubmit = useCallback(async () => {
+    if (submitInFlightRef.current) return;
+    submitInFlightRef.current = true;
     setIsSubmitting(true);
     setSubmitError(null);
     try {
@@ -134,7 +137,6 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
         sessionId: state.sessionId,
         fingerprintHash: fingerprint,
         answers: answerMap,
-        idempotencyKey: crypto.randomUUID(),
       };
 
       const res = await fetch("/api/quiz/complete", {
@@ -144,7 +146,9 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
       });
 
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
+        const errorData = (await res.json().catch(() => ({}))) as {
+          error?: string;
+        };
         throw new Error(errorData.error || "Server error");
       }
 
@@ -178,6 +182,7 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
       );
     } finally {
       setIsSubmitting(false);
+      submitInFlightRef.current = false;
     }
   }, [responses, state.sessionId, fingerprint, clearProgress, onComplete]);
 

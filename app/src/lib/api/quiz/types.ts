@@ -19,7 +19,9 @@ export type QuizErrorCode =
   | "INVALID_SESSION"
   | "SESSION_EXPIRED"
   | "FINGERPRINT_MISMATCH"
-  | "DUPLICATE_SUBMISSION";
+  | "DUPLICATE_SUBMISSION"
+  | "DATABASE_ERROR"
+  | "INTERNAL_ERROR";
 
 // ============================================================================
 // SESSION MANAGEMENT
@@ -53,8 +55,6 @@ export interface SubmitQuizRequest extends TrackingParams {
   answers: DBAnswerMap;
   /** Optional: user email for results delivery */
   email?: string;
-  /** Optional: idempotency key to prevent duplicate submissions */
-  idempotencyKey?: string;
   /** Optional: quiz duration in seconds */
   durationSeconds?: number;
 }

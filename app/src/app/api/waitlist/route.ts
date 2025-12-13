@@ -87,6 +87,7 @@ export async function POST(
               unsubscribeToken: result.unsubscribe_token,
               archetypeName,
               archetypeEmoji,
+              quizResultUrl: `https://firstdatelabs.com/quiz/results/${quizResultId}`,
             })
           : WaitlistConfirmation({
               email,

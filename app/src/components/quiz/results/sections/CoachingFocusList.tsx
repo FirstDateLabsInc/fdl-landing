@@ -1,14 +1,17 @@
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface CoachingFocusListProps {
   items: string[];
   ctaText: string;
+  onCtaClick?: () => void;
   className?: string;
 }
 
 export function CoachingFocusList({
   items,
   ctaText,
+  onCtaClick,
   className,
 }: CoachingFocusListProps) {
   return (
@@ -26,9 +29,13 @@ export function CoachingFocusList({
           </li>
         ))}
       </ol>
-      <button className="w-full rounded-lg bg-slate-900 px-6 py-3.5 text-base font-medium text-white transition-colors hover:bg-slate-800">
+      <Button
+        type="button"
+        onClick={onCtaClick}
+        className="w-full justify-center"
+      >
         {ctaText}
-      </button>
+      </Button>
     </div>
   );
 }

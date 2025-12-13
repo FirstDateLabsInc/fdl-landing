@@ -34,16 +34,20 @@ export function ResultsNavSidebar({
   activeSection,
   className,
 }: ResultsNavSidebarProps) {
-  const scrollToId = (id: string) => {
+  const scrollToId = (id: string): boolean => {
     const element = document.getElementById(id);
-    if (!element) return;
+    if (!element) return false;
     const offset = 120; // account for sticky navbar
     const top = element.getBoundingClientRect().top + window.scrollY - offset;
     window.scrollTo({ top, behavior: "smooth" });
+    return true;
   };
 
   const handleClick = (id: string) => {
-    scrollToId(id);
+    const didScroll = scrollToId(id);
+    if (!didScroll && id === "full-picture") {
+      window.location.assign("/#waitlist");
+    }
   };
 
   return (
