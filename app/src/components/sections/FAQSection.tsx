@@ -21,9 +21,9 @@ export function FAQSection() {
       aria-labelledby="faq-heading"
       className="py-16 sm:py-20 md:py-24"
     >
-      {/* Two images side by side - full width */}
-      <div className="mb-12 grid grid-cols-2 gap-0">
-        <div className="relative h-64 sm:h-80 md:h-96">
+      {/* Two images side by side - full width, responsive heights */}
+      <div className="mb-8 grid grid-cols-2 gap-0 sm:mb-12">
+        <div className="relative h-40 xs:h-52 sm:h-72 md:h-80 lg:h-96">
           <Image
             src="/images/faq-image-1.png"
             alt=""
@@ -33,7 +33,7 @@ export function FAQSection() {
             loader={cloudflareLoader}
           />
         </div>
-        <div className="relative h-64 sm:h-80 md:h-96">
+        <div className="relative h-40 xs:h-52 sm:h-72 md:h-80 lg:h-96">
           <Image
             src="/images/faq-image-2.png"
             alt=""

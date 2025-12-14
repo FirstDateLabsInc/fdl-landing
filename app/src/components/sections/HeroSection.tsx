@@ -21,10 +21,10 @@ export function HeroSection() {
         {/* Background image with fade effect */}
         <div className="absolute inset-0">
           <Image
-            src="/images/hero-background.png"
+            src="/images/hero-background.webp"
             alt=""
             fill
-            className="object-cover object-[center_15%] opacity-[0.75]"
+            className="object-cover object-center opacity-[0.75] sm:object-[center_15%]"
             priority
             sizes="100vw"
             loader={cloudflareLoader}

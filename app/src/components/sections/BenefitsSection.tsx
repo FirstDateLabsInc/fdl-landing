@@ -21,19 +21,19 @@ export function BenefitsSection() {
         <div className="absolute bottom-0 right-1/3 h-80 w-80 rounded-full bg-[#fde68a]/20 blur-[100px]" />
       </div>
 
-      {/* Background image - right side, height matches content */}
-      <div className="pointer-events-none absolute right-0 top-0 h-full w-1/2 lg:w-[45%]">
+      {/* Background image - right side, hidden on mobile to prevent overlap */}
+      <div className="pointer-events-none absolute right-0 top-0 hidden h-full w-[45%] md:block">
         <Image
           src="/images/benefits-romantic.png"
           alt=""
           fill
-          className="object-cover object-[center_25%] opacity-[0.9]"
-          sizes="50vw"
+          className="object-cover object-[center_10%] opacity-[0.9]"
+          sizes="(max-width: 768px) 0vw, 45vw"
           loader={cloudflareLoader}
         />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20 lg:pr-[45%]">
+      <div className="relative mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20 md:pr-[50%] lg:pr-[45%]">
         {/* Header - centered, elegant */}
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
@@ -47,11 +47,11 @@ export function BenefitsSection() {
           </p>
           <h2
             id="benefits-heading"
-            className="text-2xl font-light leading-relaxed tracking-tight text-slate-800 sm:text-3xl sm:leading-relaxed lg:text-4xl lg:leading-relaxed"
+            className="text-2xl font-bold leading-relaxed tracking-tight text-slate-800 sm:text-3xl sm:leading-relaxed lg:text-4xl lg:leading-relaxed"
           >
             Everything you need for
             <br />
-            <span className="mt-1 inline-block font-semibold text-yellow-500">the second date</span>
+            <span className="mt-1 inline-block font-bold text-yellow-500">the second date</span>
           </h2>
         </motion.div>
 

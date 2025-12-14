@@ -16,43 +16,61 @@ export function ProblemSolutionSection() {
       aria-labelledby="problem-solution-heading"
       className="relative overflow-hidden"
     >
-      {/* Full-width diagonal split container */}
-      <div className="relative min-h-[600px] sm:min-h-[650px] lg:min-h-[550px]">
-        {/* Left side - Before (light purple) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f8f5fc] to-[#f3eef9]">
-          {/* Confused man image - right side with gradient fade */}
-          <div className="pointer-events-none absolute inset-y-0 right-[45%] w-[55%]">
+      {/* Full-width diagonal split container - taller on mobile due to stacked content */}
+      <div className="relative min-h-[900px] sm:min-h-[850px] lg:min-h-[550px]">
+        {/* Left side - Before (light purple) - full on mobile, half on desktop */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#f8f5fc] to-[#f3eef9] lg:inset-x-0">
+          {/* Confused man image - fills entire Before section, hidden on mobile */}
+          <div className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block" style={{ right: '42%' }}>
             <Image
               src="/images/confuse.png"
               alt=""
               fill
-              className="object-cover object-right opacity-[0.08]"
-              sizes="55vw"
+              className="object-cover opacity-[0.08]"
+              style={{ objectPosition: 'center center' }}
+              sizes="(max-width: 1024px) 0vw, 60vw"
               loader={cloudflareLoader}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#f8f5fc] via-transparent to-transparent" />
+            {/* Gradient fade on edges to blend */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#f8f5fc]/80" />
           </div>
         </div>
 
-        {/* Right side - After (warm yellow) with soft diagonal gradient blend */}
+        {/* Right side - After (warm yellow) - vertical gradient on mobile only */}
         <div 
-          className="absolute inset-0"
+          className="absolute inset-0 lg:hidden"
           style={{
-            background: "linear-gradient(105deg, transparent 0%, transparent 40%, #fffbf0 50%, #fffbf0 100%)",
+            background: "linear-gradient(to bottom, transparent 45%, #fffbf0 55%)",
+          }}
+        />
+        {/* Desktop diagonal gradient overlay - clipped to right side only */}
+        <div 
+          className="absolute inset-0 hidden lg:block"
+          style={{
+            clipPath: "polygon(52% 0, 100% 0, 100% 100%, 42% 100%)",
+            background: "#fffbf0",
           }}
         >
+          {/* Soft gradient edge for blending */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(105deg, transparent 0%, #fffbf0 15%)",
+            }}
+          />
           {/* Holding hands image - centered in After section */}
-          <div className="pointer-events-none absolute inset-y-0 left-[55%] w-[40%]">
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-[65%]">
             <Image
               src="/images/hand.png"
               alt=""
               fill
-              className="object-cover object-center opacity-[0.12]"
-              sizes="40vw"
+              className="object-cover opacity-[0.08]"
+              style={{ objectPosition: 'center center' }}
+              sizes="(max-width: 1024px) 0vw, 50vw"
               loader={cloudflareLoader}
             />
-            {/* Gradient fade on both sides */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#fffbf0] via-transparent to-[#fffbf0]" />
+            {/* Gradient fade on edges */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#fffbf0]/80 via-transparent to-[#fffbf0]/50" />
           </div>
         </div>
 
@@ -70,9 +88,9 @@ export function ProblemSolutionSection() {
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-400">
                 Before
               </p>
-              <h3 className="mb-8 text-2xl font-semibold tracking-tight text-slate-700 sm:text-3xl">
+              <h3 className="mb-8 text-2xl font-semibold tracking-tight text-black sm:text-3xl">
                 Dating feels like a<br />
-                <span className="text-purple-300">guessing game</span>
+                <span className="text-purple-400">guessing game</span>
               </h3>
               <ul className="space-y-4">
                 {problemSolution.oldWay.map((item, index) => (
@@ -85,24 +103,36 @@ export function ProblemSolutionSection() {
                     className="flex items-start gap-3 text-left"
                   >
                     <span className="mt-2.5 size-1.5 shrink-0 rounded-full bg-purple-300" aria-hidden />
-                    <span className="text-base text-slate-500 sm:text-lg">{item}</span>
+                    <span className="text-base text-black sm:text-lg">{item}</span>
                   </motion.li>
                 ))}
               </ul>
             </div>
           </motion.div>
 
-          {/* Center connector - elegant chevrons */}
+          {/* Center connector - gradient chevrons from purple to yellow */}
           <motion.div
             initial={prefersReducedMotion ? undefined : { opacity: 0 }}
             whileInView={prefersReducedMotion ? undefined : { opacity: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-            className="hidden shrink-0 items-center gap-1 lg:flex"
+            className="flex shrink-0 items-center justify-center gap-1 py-4 lg:py-0"
           >
-            <ChevronRight className="size-5 text-yellow-300" strokeWidth={2} aria-hidden />
-            <ChevronRight className="size-6 text-yellow-400" strokeWidth={2} aria-hidden />
-            <ChevronRight className="size-7 text-yellow-500" strokeWidth={2.5} aria-hidden />
+            {/* Desktop: horizontal chevrons with gradient colors */}
+            <div className="hidden items-center gap-0.5 lg:flex">
+              <ChevronRight className="size-5 text-purple-300" strokeWidth={2} aria-hidden />
+              <ChevronRight className="size-5 text-purple-200" strokeWidth={2} aria-hidden />
+              <ChevronRight className="size-6 text-yellow-200" strokeWidth={2} aria-hidden />
+              <ChevronRight className="size-6 text-yellow-300" strokeWidth={2} aria-hidden />
+              <ChevronRight className="size-7 text-yellow-400" strokeWidth={2.5} aria-hidden />
+            </div>
+            {/* Mobile: vertical chevrons with gradient colors */}
+            <div className="flex rotate-90 items-center gap-0.5 lg:hidden">
+              <ChevronRight className="size-4 text-purple-300" strokeWidth={2} aria-hidden />
+              <ChevronRight className="size-5 text-purple-200" strokeWidth={2} aria-hidden />
+              <ChevronRight className="size-5 text-yellow-300" strokeWidth={2} aria-hidden />
+              <ChevronRight className="size-6 text-yellow-400" strokeWidth={2.5} aria-hidden />
+            </div>
           </motion.div>
 
           {/* After content - right side */}
@@ -118,9 +148,9 @@ export function ProblemSolutionSection() {
                 <Sparkles className="size-4" aria-hidden />
                 After
               </p>
-              <h3 className="mb-8 text-2xl font-semibold tracking-tight text-slate-800 sm:text-3xl">
+              <h3 className="mb-8 text-2xl font-semibold tracking-tight text-black sm:text-3xl">
                 Every date becomes a<br />
-                <span className="text-yellow-500">real opportunity</span>
+                <span className="text-yellow-600">real opportunity</span>
               </h3>
               <ul className="space-y-4">
                 {problemSolution.newWay.map((item, index) => (
@@ -135,7 +165,7 @@ export function ProblemSolutionSection() {
                     <span className="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-yellow-400 shadow-sm">
                       <Check className="size-3 text-white" strokeWidth={3} aria-hidden />
                     </span>
-                    <span className="text-base text-slate-700 sm:text-lg">{item}</span>
+                    <span className="text-base text-black sm:text-lg">{item}</span>
                   </motion.li>
                 ))}
               </ul>
