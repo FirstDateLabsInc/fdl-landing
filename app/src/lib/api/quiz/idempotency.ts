@@ -25,9 +25,9 @@ export async function computeQuizIdempotencyKey(params: {
   const { sessionId, fingerprintHash, answers } = params;
 
   const canonicalAnswers = Object.entries(answers)
-    .map(([questionId, entry]) => [
+    .map(([questionId, entry]): [string, CanonicalAnswerEntry] => [
       questionId,
-      { v: entry.v, k: entry.k } satisfies CanonicalAnswerEntry,
+      { v: entry.v, k: entry.k },
     ])
     .sort(([a], [b]) => a.localeCompare(b));
 

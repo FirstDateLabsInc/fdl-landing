@@ -3,8 +3,8 @@ import type {
   AttachmentDimension,
   CommunicationStyle,
 } from "../../types";
-import type { ArchetypeDefinition } from "./types";
-import { archetypes } from "./definitions";
+import type { ArchetypePublic } from "./types";
+import { archetypesPublic } from "./public";
 import { ARCHETYPE_MATRIX } from "./matrix";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -54,7 +54,7 @@ interface ArchetypeCell {
 }
 
 export interface ArchetypeResult {
-  archetype: ArchetypeDefinition;
+  archetype: ArchetypePublic;
   /** 0-1, higher = more distinctive profile. If < 0.3, consider showing "blended profile" UI */
   confidence: number;
   /** true if both axes have high entropy (nearly uniform) - informational for UI */
@@ -106,13 +106,13 @@ function normalize<T extends string>(
 }
 
 /** Look up archetype definition by ID, logs error and falls back to first if not found */
-function findArchetype(id: string): ArchetypeDefinition {
-  const found = archetypes.find((a) => a.id === id);
+function findArchetype(id: string): ArchetypePublic {
+  const found = archetypesPublic.find((a) => a.id === id);
   if (!found) {
     console.error(
-      `[joint-probability] Unknown archetype ID: "${id}". Check ARCHETYPE_MATRIX and definitions.`
+      `[joint-probability] Unknown archetype ID: "${id}". Check ARCHETYPE_MATRIX and public.ts.`
     );
-    return archetypes[0];
+    return archetypesPublic[0];
   }
   return found;
 }
@@ -214,11 +214,11 @@ export function computeArchetypeByProbability(
 }
 
 /**
- * Simple getter - returns just the archetype definition.
+ * Simple getter - returns just the public archetype data.
  * Use computeArchetypeByProbability() for confidence/balanced info.
  */
 export function getArchetypeByProbability(
   results: QuizResults
-): ArchetypeDefinition {
+): ArchetypePublic {
   return computeArchetypeByProbability(results).archetype;
 }

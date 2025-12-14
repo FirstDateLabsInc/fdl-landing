@@ -1,8 +1,8 @@
-import { ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import type { ArchetypePublic } from "@/lib/quiz/archetypes";
 import { ArchetypeCard } from "./ArchetypeCard";
 
 interface ArchetypesGridProps {
-  archetypes: ArchetypeDefinition[];
+  archetypes: ArchetypePublic[];
 }
 
 const GROUPS = [

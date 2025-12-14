@@ -5,7 +5,8 @@ import { RotateCcw, Sparkles } from "lucide-react";
 import { ResultsContainer } from "@/components/quiz/results";
 import { Button } from "@/components/ui/button";
 import { getSupabaseServer } from "@/lib/supabase/server";
-import { getArchetypeById } from "@/lib/quiz/archetypes";
+import { getPublicArchetypeById } from "@/lib/quiz/archetypes";
+import { getFullArchetypeById } from "@/lib/quiz/data/archetypes/selectors.server";
 import { parseDbScores } from "@/lib/quiz/utils/parse-db-scores";
 import type { Metadata } from "next";
 
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Result Not Found | First Date Labs" };
   }
 
-  const archetype = getArchetypeById(data.archetype_slug);
+  const archetype = getPublicArchetypeById(data.archetype_slug);
   if (!archetype) {
     return { title: "Result Not Found | First Date Labs" };
   }
@@ -74,8 +75,8 @@ export default async function SavedResultPage({ params }: Props) {
     notFound();
   }
 
-  // Look up archetype from definitions
-  const archetype = getArchetypeById(data.archetype_slug);
+  // Look up full archetype (server-only) for rendering
+  const archetype = getFullArchetypeById(data.archetype_slug);
   if (!archetype) {
     notFound();
   }

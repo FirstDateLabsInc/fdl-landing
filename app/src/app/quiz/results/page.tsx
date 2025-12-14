@@ -8,10 +8,9 @@ import { RotateCcw, Share2, Sparkles, Check } from "lucide-react";
 import { ResultsContainer } from "@/components/quiz/results";
 import { Button } from "@/components/ui/button";
 import { clearQuizProgress } from "@/hooks/use-quiz";
-import { getArchetypeById } from "@/lib/quiz/archetypes";
+import { getArchetypeById, type ArchetypeFull, type ArchetypePublic } from "@/lib/quiz/archetypes";
 import { cn } from "@/lib/utils";
 import type { QuizResults } from "@/lib/quiz/types";
-import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
 
 const RESULTS_STORAGE_KEY = "juliet-quiz-results";
 
@@ -31,7 +30,9 @@ interface StoredResults {
 
 interface ParsedData {
   results: QuizResults;
-  archetype: ArchetypeDefinition;
+  // TODO(Phase 4): Change to ArchetypePublic and implement gating UI
+  // Currently using ArchetypeFull for ResultsContainer compatibility
+  archetype: ArchetypeFull;
   resultId?: string;
 }
 
@@ -44,16 +45,20 @@ function parseStoredResults(stored: string): ParsedData | null {
   try {
     const parsed = JSON.parse(stored) as StoredResults;
 
-    // Look up full archetype - NO FALLBACK
+    // Look up archetype (returns ArchetypePublic)
     const archetype = getArchetypeById(parsed.archetype.id);
 
-    // Validate archetype exists and has required new fields
-    if (!archetype?.patternDescription || !archetype?.datingCycle) {
+    // Validate archetype exists and has required public fields
+    if (!archetype?.patternDescription) {
       console.error('[Quiz Results] Invalid archetype:', parsed.archetype.id);
       return null;
     }
 
-    return { results: parsed.results, archetype, resultId: parsed.resultId };
+    // TODO(Phase 4): Remove this cast when ResultsContainer accepts ArchetypePublic
+    // and implements proper gating UI for locked sections.
+    // Currently casting to ArchetypeFull - locked fields will be undefined,
+    // causing runtime issues until gating is implemented.
+    return { results: parsed.results, archetype: archetype as ArchetypeFull, resultId: parsed.resultId };
   } catch (e) {
     console.error('[Quiz Results] Parse error:', e);
     return null;

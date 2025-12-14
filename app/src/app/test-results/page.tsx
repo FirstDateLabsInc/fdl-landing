@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { getAllArchetypes, type ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import { getAllArchetypes, type ArchetypePublic, type ArchetypeFull } from "@/lib/quiz/archetypes";
 import { ResultsContainer } from "@/components/quiz/results";
 import { ArrowLeft } from "lucide-react";
 import type { QuizResults } from "@/lib/quiz/types";
@@ -99,7 +99,8 @@ export default function TestResultsPage() {
   const allArchetypes = getAllArchetypes();
 
   // Inline preview state
-  const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeDefinition | null>(null);
+  // TODO(Phase 4): Change to ArchetypePublic when ResultsContainer supports gating
+  const [selectedArchetype, setSelectedArchetype] = useState<ArchetypePublic | null>(null);
   const [mockResults, setMockResults] = useState<QuizResults | null>(null);
 
   const handlePreview = useCallback(
@@ -143,7 +144,8 @@ export default function TestResultsPage() {
         </div>
 
         {/* Actual Results Page */}
-        <ResultsContainer results={mockResults} archetype={selectedArchetype} />
+        {/* TODO(Phase 4): Remove cast when ResultsContainer supports ArchetypePublic + gating */}
+        <ResultsContainer results={mockResults} archetype={selectedArchetype as ArchetypeFull} />
       </main>
     );
   }

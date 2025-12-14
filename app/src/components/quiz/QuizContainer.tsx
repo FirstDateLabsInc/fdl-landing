@@ -12,14 +12,14 @@ import { serializeAnswers } from "@/lib/quiz/utils/answer-transform";
 import { getArchetypeById } from "@/lib/quiz/data/archetypes";
 import { generateFingerprintHash } from "@/lib/fingerprint";
 import type { QuizResults } from "@/lib/quiz/types";
-import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import type { ArchetypePublic } from "@/lib/quiz/archetypes";
 import type { CreateSessionResponse, SubmitQuizRequest, SubmitQuizResponse } from "@/lib/api/quiz";
 import { cn } from "@/lib/utils";
 
 interface QuizContainerProps {
   onComplete: (
     results: QuizResults,
-    archetype: ArchetypeDefinition,
+    archetype: ArchetypePublic,
     resultId: string
   ) => void;
 }

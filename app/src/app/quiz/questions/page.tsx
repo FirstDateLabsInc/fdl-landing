@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { QuizContainer } from "@/components/quiz/QuizContainer";
 import { clearQuizProgress } from "@/hooks/use-quiz";
 import type { QuizResults } from "@/lib/quiz/types";
-import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import type { ArchetypePublic } from "@/lib/quiz/archetypes";
 
 const RESULTS_STORAGE_KEY = "juliet-quiz-results";
 
@@ -24,7 +24,7 @@ function QuizQuestionsContent() {
   }, [searchParams, router]);
 
   const handleComplete = useCallback(
-    (results: QuizResults, archetype: ArchetypeDefinition, resultId: string) => {
+    (results: QuizResults, archetype: ArchetypePublic, resultId: string) => {
       // Save results to localStorage
       const stored = {
         version: 1 as const,

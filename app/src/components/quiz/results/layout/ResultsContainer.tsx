@@ -18,11 +18,12 @@ import { ResultsNavSidebar, SECTIONS } from "./ResultsNavSidebar";
 import { MobileFloatingNav } from "./MobileFloatingNav";
 import { cn } from "@/lib/utils";
 import type { QuizResults, AttachmentDimension, CommunicationStyle } from "@/lib/quiz/types";
-import { ARCHETYPE_MATRIX, computeArchetypeByProbability, getArchetypeById, type ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import { ARCHETYPE_MATRIX, computeArchetypeByProbability, getArchetypeById, type ArchetypeFull } from "@/lib/quiz/archetypes";
 
 interface ResultsContainerProps {
   results: QuizResults;
-  archetype: ArchetypeDefinition;
+  /** Full archetype data including locked content. Server components should use getFullArchetypeById. */
+  archetype: ArchetypeFull;
   quizResultId?: string;
   className?: string;
 }

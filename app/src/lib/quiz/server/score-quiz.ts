@@ -1,5 +1,5 @@
 import type { DBAnswerMap, QuizResponse, QuizResults } from "../types";
-import type { ArchetypeDefinition } from "../archetypes";
+import type { ArchetypePublic } from "../archetypes";
 import { deserializeAnswers, toQuizResponses } from "../utils/answer-transform";
 import { calculateAllResults } from "../scoring";
 import { computeArchetypeByProbability } from "../data/archetypes/joint-probability";
@@ -7,7 +7,7 @@ import { computeArchetypeByProbability } from "../data/archetypes/joint-probabil
 export interface ScoredQuizResult {
   responses: QuizResponse[];
   results: QuizResults;
-  archetype: ArchetypeDefinition;
+  archetype: ArchetypePublic;
   archetypeSlug: string;
   confidence: number;
   isBalanced: boolean;

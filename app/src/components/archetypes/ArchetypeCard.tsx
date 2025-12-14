@@ -3,10 +3,10 @@
 import Image from "next/image";
 import cloudflareLoader from "@/lib/cloudflare-image-loader";
 import { cn } from "@/lib/utils";
-import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import type { ArchetypePublic } from "@/lib/quiz/archetypes";
 
 interface ArchetypeCardProps {
-  archetype: ArchetypeDefinition;
+  archetype: ArchetypePublic;
   className?: string;
 }
 
