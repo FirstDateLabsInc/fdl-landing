@@ -3,7 +3,7 @@
 import Image from "next/image";
 import cloudflareLoader from "@/lib/cloudflare-image-loader";
 import { cn } from "@/lib/utils";
-import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import type { ArchetypePublic } from "@/lib/quiz/archetypes";
 
 interface Section {
   id: string;
@@ -12,7 +12,7 @@ interface Section {
 }
 
 interface ResultsNavSidebarProps {
-  archetype: ArchetypeDefinition;
+  archetype: ArchetypePublic;
   sections: Section[];
   activeSection: string;
   className?: string;

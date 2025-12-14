@@ -1,3 +1,7 @@
+// Force dynamic rendering - never cache quiz results (security: prevents content leakage)
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { RotateCcw, Sparkles } from "lucide-react";
@@ -6,7 +10,6 @@ import { ResultsContainer } from "@/components/quiz/results";
 import { Button } from "@/components/ui/button";
 import { getSupabaseServer } from "@/lib/supabase/server";
 import { getPublicArchetypeById } from "@/lib/quiz/archetypes";
-import { getFullArchetypeById } from "@/lib/quiz/data/archetypes/selectors.server";
 import { parseDbScores } from "@/lib/quiz/utils/parse-db-scores";
 import type { Metadata } from "next";
 
@@ -75,8 +78,8 @@ export default async function SavedResultPage({ params }: Props) {
     notFound();
   }
 
-  // Look up full archetype (server-only) for rendering
-  const archetype = getFullArchetypeById(data.archetype_slug);
+  // Look up PUBLIC archetype data only (locked content never reaches client)
+  const archetype = getPublicArchetypeById(data.archetype_slug);
   if (!archetype) {
     notFound();
   }
@@ -87,6 +90,7 @@ export default async function SavedResultPage({ params }: Props) {
         results={scores}
         archetype={archetype}
         quizResultId={resultId}
+        isFullView={false}  // Preview route - never show locked content
       />
 
       <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">

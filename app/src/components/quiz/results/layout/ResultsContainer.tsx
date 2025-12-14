@@ -18,12 +18,23 @@ import { ResultsNavSidebar, SECTIONS } from "./ResultsNavSidebar";
 import { MobileFloatingNav } from "./MobileFloatingNav";
 import { cn } from "@/lib/utils";
 import type { QuizResults, AttachmentDimension, CommunicationStyle } from "@/lib/quiz/types";
-import { ARCHETYPE_MATRIX, computeArchetypeByProbability, getArchetypeById, type ArchetypeFull } from "@/lib/quiz/archetypes";
+import {
+  ARCHETYPE_MATRIX,
+  computeArchetypeByProbability,
+  getArchetypeById,
+  type ArchetypePublic,
+  type ArchetypeLocked,
+} from "@/lib/quiz/archetypes";
+import { ListGate, SectionGate } from "../gating";
 
 interface ResultsContainerProps {
   results: QuizResults;
-  /** Full archetype data including locked content. Server components should use getFullArchetypeById. */
-  archetype: ArchetypeFull;
+  /** Public archetype data (always available, client-safe) */
+  archetype: ArchetypePublic;
+  /** Locked content (only passed on full share routes like /quiz/p/[slug]) */
+  lockedContent?: ArchetypeLocked;
+  /** Whether to show full unlocked content (true only on share routes) */
+  isFullView?: boolean;
   quizResultId?: string;
   className?: string;
 }
@@ -35,6 +46,8 @@ interface ResultsContainerProps {
 export function ResultsContainer({
   results,
   archetype,
+  lockedContent,
+  isFullView = false,
   quizResultId,
   className,
 }: ResultsContainerProps) {
@@ -225,7 +238,25 @@ export function ResultsContainer({
                 <h3 className="text-lg font-semibold text-slate-900 mb-3">
                   How This Plays Out
                 </h3>
-                <DatingCycleVisual steps={archetype.datingCycle} />
+                {isFullView && lockedContent ? (
+                  <DatingCycleVisual steps={lockedContent.datingCycle} />
+                ) : (
+                  <ListGate
+                    visibleItems={archetype.datingCycleTeaser.map((step, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-4 rounded-lg bg-slate-50 p-4"
+                      >
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+                          {i + 1}
+                        </span>
+                        <p className="text-slate-700">{step}</p>
+                      </div>
+                    ))}
+                    lockedCount={archetype.datingCycleTotalCount - archetype.datingCycleTeaser.length}
+                    teaserText="Discover how the rest of your dating pattern unfolds"
+                  />
+                )}
               </div>
             </ContentSection>
           </motion.div>
@@ -295,26 +326,35 @@ export function ResultsContainer({
               id="dating-meaning"
               eyebrow="Analysis"
             >
-              <div className="mb-8 flex justify-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/quiz/dating-meaning-illustration.png"
-                  alt="Dating personality illustration"
-                  width={500}
-                  height={300}
-                  className="rounded-xl object-cover"
+              {isFullView && lockedContent ? (
+                <>
+                  <div className="mb-8 flex justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/quiz/dating-meaning-illustration.png"
+                      alt="Dating personality illustration"
+                      width={500}
+                      height={300}
+                      className="rounded-xl object-cover"
+                    />
+                  </div>
+                  <div className="space-y-10">
+                    <div className="space-y-4">
+                      <h3 className="text-base font-semibold text-slate-700">Strengths</h3>
+                      <TraitGrid items={lockedContent.datingMeaning.strengths} type="strength" />
+                    </div>
+                    <div className="space-y-4">
+                      <h3 className="text-base font-semibold text-slate-700">Growth Areas</h3>
+                      <TraitGrid items={lockedContent.datingMeaning.challenges} type="challenge" />
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <SectionGate
+                  teaserText="Unlock to see your dating strengths and growth areas"
+                  illustrationSrc="/images/quiz/dating-meaning-illustration.png"
                 />
-              </div>
-              <div className="space-y-10">
-                <div className="space-y-4">
-                  <h3 className="text-base font-semibold text-slate-700">Strengths</h3>
-                  <TraitGrid items={archetype.datingMeaning.strengths} type="strength" />
-                </div>
-                <div className="space-y-4">
-                  <h3 className="text-base font-semibold text-slate-700">Growth Areas</h3>
-                  <TraitGrid items={archetype.datingMeaning.challenges} type="challenge" />
-                </div>
-              </div>
+              )}
             </ContentSection>
           </motion.div>
 
@@ -330,17 +370,47 @@ export function ResultsContainer({
               id="red-flags"
               eyebrow="Warning Signs"
             >
-              <div className="mb-8 flex justify-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/quiz/red-flags-illustration.png"
-                  alt="Red flags illustration"
-                  width={500}
-                  height={300}
-                  className="rounded-xl object-cover"
-                />
-              </div>
-              <RedFlagsList items={archetype.redFlags} />
+              {isFullView && lockedContent ? (
+                <>
+                  <div className="mb-8 flex justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/quiz/red-flags-illustration.png"
+                      alt="Red flags illustration"
+                      width={500}
+                      height={300}
+                      className="rounded-xl object-cover"
+                    />
+                  </div>
+                  <RedFlagsList items={lockedContent.redFlags} />
+                </>
+              ) : (
+                <>
+                  <div className="mb-8 flex justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/quiz/red-flags-illustration.png"
+                      alt="Red flags illustration"
+                      width={500}
+                      height={300}
+                      className="rounded-xl object-cover opacity-60"
+                    />
+                  </div>
+                  <ListGate
+                    visibleItems={archetype.redFlagsTeaser.map((flag, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-3 rounded-lg border border-red-100 bg-red-50/50 p-4"
+                      >
+                        <span className="text-lg">🚩</span>
+                        <p className="text-slate-700">{flag}</p>
+                      </div>
+                    ))}
+                    lockedCount={archetype.redFlagsTotalCount - archetype.redFlagsTeaser.length}
+                    teaserText="Learn to recognize your other warning signs"
+                  />
+                </>
+              )}
             </ContentSection>
           </motion.div>
 
@@ -356,11 +426,17 @@ export function ResultsContainer({
               id="coaching"
               eyebrow="Growth Plan"
             >
-              <CoachingFocusList
-                items={archetype.coachingFocus}
-                ctaText={archetype.callToActionCopy}
-                onCtaClick={() => scrollToId("full-picture", "/#waitlist")}
-              />
+              {isFullView && lockedContent ? (
+                <CoachingFocusList
+                  items={lockedContent.coachingFocus}
+                  ctaText={archetype.callToActionCopy}
+                  onCtaClick={() => scrollToId("full-picture", "/#waitlist")}
+                />
+              ) : (
+                <SectionGate
+                  teaserText="Unlock your personalized coaching focus areas"
+                />
+              )}
             </ContentSection>
           </motion.div>
 

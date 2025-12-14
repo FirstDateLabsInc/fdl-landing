@@ -11,6 +11,28 @@ const nextConfig: NextConfig = {
   devIndicators: {
     position: "bottom-right",
   },
+
+  // Security headers for quiz result routes - prevents caching and content leakage
+  async headers() {
+    return [
+      {
+        source: "/quiz/results/:resultId*",
+        headers: [
+          { key: "Cache-Control", value: "no-store, no-cache, must-revalidate" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+          { key: "Referrer-Policy", value: "no-referrer" },
+        ],
+      },
+      {
+        source: "/quiz/p/:slug*",
+        headers: [
+          { key: "Cache-Control", value: "no-store, no-cache, must-revalidate" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+          { key: "Referrer-Policy", value: "no-referrer" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

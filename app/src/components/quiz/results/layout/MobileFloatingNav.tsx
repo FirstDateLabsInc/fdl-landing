@@ -6,11 +6,11 @@ import { ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import cloudflareLoader from "@/lib/cloudflare-image-loader";
 import { SECTIONS } from "./ResultsNavSidebar";
-import type { ArchetypeDefinition } from "@/lib/quiz/archetypes";
+import type { ArchetypePublic } from "@/lib/quiz/archetypes";
 
 interface MobileFloatingNavProps {
   activeSection: string;
-  archetype: ArchetypeDefinition;
+  archetype: ArchetypePublic;
   className?: string;
 }
 
