@@ -109,6 +109,10 @@ CREATE TABLE public.quiz_results (
         email IS NULL OR 
         email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
     ),
+
+    -- PUBLIC SHARING
+    public_slug TEXT UNIQUE,
+    public_slug_created_at TIMESTAMPTZ,
     
     -- DATA INTEGRITY
     idempotency_key TEXT UNIQUE,
@@ -139,6 +143,9 @@ CREATE INDEX idx_results_session ON quiz_results(anonymous_session_id)
 
 CREATE INDEX idx_results_fingerprint ON quiz_results(fingerprint_hash)
     WHERE fingerprint_hash IS NOT NULL;
+
+CREATE INDEX idx_quiz_results_public_slug ON quiz_results(public_slug) 
+    WHERE public_slug IS NOT NULL;
 
 CREATE INDEX idx_results_unclaimed_email ON quiz_results(lower(email)) 
     WHERE user_id IS NULL AND email IS NOT NULL;
