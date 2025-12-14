@@ -420,6 +420,113 @@ AS $$
     ORDER BY created_at DESC;
 $$;
 
+-- ============================================
+-- RPC Functions for Quiz Results
+-- ============================================
+-- These functions provide column-level security by exposing
+-- only safe columns through SECURITY DEFINER functions.
+-- 
+-- IMPORTANT: The existing codebase uses service_role key which
+-- bypasses RLS. These RPCs are for future-proofing when/if
+-- anon key access is needed.
+-- ============================================
+
+-- 1. Preview access (safe columns only)
+-- Used by: /quiz/results/[resultId] route
+CREATE OR REPLACE FUNCTION get_quiz_preview(result_id UUID)
+RETURNS TABLE (
+  id UUID,
+  archetype_slug TEXT,
+  scores JSONB,
+  created_at TIMESTAMPTZ
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp  -- pg_temp LAST prevents temp object hijacking
+AS $$
+BEGIN
+  RETURN QUERY
+  SELECT qr.id, qr.archetype_slug, qr.scores, qr.created_at
+  FROM quiz_results qr
+  WHERE qr.id = result_id;
+END;
+$$;
+
+-- 2. Public share access (by slug)
+-- Used by: /quiz/p/[publicSlug] route
+CREATE OR REPLACE FUNCTION get_quiz_by_public_slug(slug TEXT)
+RETURNS TABLE (
+  id UUID,
+  archetype_slug TEXT,
+  scores JSONB,
+  created_at TIMESTAMPTZ
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+BEGIN
+  RETURN QUERY
+  SELECT qr.id, qr.archetype_slug, qr.scores, qr.created_at
+  FROM quiz_results qr
+  WHERE qr.public_slug = slug;
+END;
+$$;
+
+-- 3. Create/get share slug (idempotent)
+-- Used by: /api/quiz/share endpoint
+-- Returns existing slug or creates new one
+CREATE OR REPLACE FUNCTION create_or_get_share_slug(
+  p_result_id UUID,
+  p_session_id UUID,
+  p_new_slug TEXT
+)
+RETURNS TABLE (
+  public_slug TEXT,
+  created BOOLEAN
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+  v_existing_slug TEXT;
+  v_session_id UUID;
+BEGIN
+  -- Verify ownership via session_id
+  SELECT qr.anonymous_session_id, qr.public_slug
+  INTO v_session_id, v_existing_slug
+  FROM quiz_results qr
+  WHERE qr.id = p_result_id;
+  
+  -- Result not found
+  IF v_session_id IS NULL THEN
+    RAISE EXCEPTION 'RESULT_NOT_FOUND' USING ERRCODE = 'P0002';
+  END IF;
+  
+  -- Session mismatch (ownership verification)
+  IF v_session_id != p_session_id THEN
+    RAISE EXCEPTION 'ACCESS_DENIED' USING ERRCODE = 'P0001';
+  END IF;
+  
+  -- Return existing slug if present (idempotent)
+  IF v_existing_slug IS NOT NULL THEN
+    RETURN QUERY SELECT v_existing_slug, FALSE;
+    RETURN;
+  END IF;
+  
+  -- Create new slug
+  UPDATE quiz_results
+  SET public_slug = p_new_slug,
+      public_slug_created_at = NOW()
+  WHERE id = p_result_id
+    AND public_slug IS NULL;  -- Double-check for race condition
+  
+  -- Return the new slug
+  RETURN QUERY SELECT p_new_slug, TRUE;
+END;
+$$;
+
 -- ───────────────────────────────────────────────────────────
 -- FUNCTION: cleanup_sessions
 -- ───────────────────────────────────────────────────────────
@@ -474,6 +581,27 @@ GRANT EXECUTE ON FUNCTION claim_quizzes_by_email() TO authenticated;
 
 REVOKE EXECUTE ON FUNCTION get_results_by_fingerprint(TEXT) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION get_results_by_fingerprint(TEXT) TO service_role;
+
+-- ============================================
+-- Permission setup (for anon role if needed)
+-- ============================================
+-- Note: Current codebase uses service_role which bypasses RLS.
+-- These grants prepare for potential future anon key usage.
+
+-- Revoke default PUBLIC execute (security hardening)
+REVOKE ALL ON FUNCTION get_quiz_preview(UUID) FROM PUBLIC;
+REVOKE ALL ON FUNCTION get_quiz_by_public_slug(TEXT) FROM PUBLIC;
+REVOKE ALL ON FUNCTION create_or_get_share_slug(UUID, UUID, TEXT) FROM PUBLIC;
+
+-- Grant to anon role (PostgREST unauthenticated access)
+GRANT EXECUTE ON FUNCTION get_quiz_preview(UUID) TO anon;
+GRANT EXECUTE ON FUNCTION get_quiz_by_public_slug(TEXT) TO anon;
+GRANT EXECUTE ON FUNCTION create_or_get_share_slug(UUID, UUID, TEXT) TO anon;
+
+-- Grant to service_role (server-side access - already has full access but explicit is clearer)
+GRANT EXECUTE ON FUNCTION get_quiz_preview(UUID) TO service_role;
+GRANT EXECUTE ON FUNCTION get_quiz_by_public_slug(TEXT) TO service_role;
+GRANT EXECUTE ON FUNCTION create_or_get_share_slug(UUID, UUID, TEXT) TO service_role;
 
 REVOKE EXECUTE ON FUNCTION cleanup_sessions() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION cleanup_sessions() TO postgres;

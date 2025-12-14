@@ -133,3 +133,27 @@ export interface UpdateEmailResponse {
   /** Error message if update failed */
   error?: string;
 }
+
+// ============================================================================
+// SHARE LINK
+// ============================================================================
+
+/** Request to create share link for quiz result */
+export interface CreateShareRequest {
+  /** Result ID to create share link for */
+  resultId: string;
+  /** Session ID for ownership verification */
+  sessionId: string;
+}
+
+/** Response from share link creation */
+export interface CreateShareResponse {
+  /** Whether operation succeeded */
+  success: boolean;
+  /** Full public URL for sharing */
+  publicUrl?: string;
+  /** Whether a new slug was created (false if existing) */
+  created?: boolean;
+  /** Error message if failed */
+  error?: string;
+}

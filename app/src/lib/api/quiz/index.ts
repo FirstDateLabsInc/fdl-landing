@@ -16,4 +16,7 @@ export type {
   // Email
   UpdateEmailRequest,
   UpdateEmailResponse,
+  // Share
+  CreateShareRequest,
+  CreateShareResponse,
 } from "./types";
