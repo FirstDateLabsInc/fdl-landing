@@ -203,6 +203,7 @@ export function ResultsContainer({
               title="Your Dating Pattern"
               id="pattern"
               eyebrow="Your Story"
+              sectionNumber={1}
             >
               {/* Part 1: Overview - hooks with recognition */}
               <p className="text-lg leading-relaxed text-slate-700">
@@ -211,7 +212,7 @@ export function ResultsContainer({
 
               {/* Part 2: Origin - provides the "why" */}
               <div className="mt-10">
-                <h3 className="text-lg font-semibold text-slate-900 mb-3">
+                <h3 className="text-xl font-semibold text-slate-900 mb-3">
                   Where This Comes From
                 </h3>
                 <p className="text-lg leading-relaxed text-slate-600">
@@ -221,7 +222,7 @@ export function ResultsContainer({
 
               {/* Part 3: The Cycle - evidence after context */}
               <div className="mt-10">
-                <h3 className="text-lg font-semibold text-slate-900 mb-3">
+                <h3 className="text-xl font-semibold text-slate-900 mb-3">
                   How This Plays Out
                 </h3>
                 <DatingCycleVisual steps={archetype.datingCycle} />
@@ -240,6 +241,7 @@ export function ResultsContainer({
               title="Your Dating Profile"
               id="profile"
               eyebrow="Deep Dive"
+              sectionNumber={2}
             >
               <div className="grid gap-6 sm:grid-cols-2">
                 <CategoryRadarChart
@@ -277,6 +279,7 @@ export function ResultsContainer({
               title="Understanding Your Scores"
               id="score-insights"
               eyebrow="Insights"
+              sectionNumber={3}
             >
               <ScoreInsightsSection results={results} />
             </ContentSection>
@@ -293,6 +296,7 @@ export function ResultsContainer({
               title="What This Means for Dating"
               id="dating-meaning"
               eyebrow="Analysis"
+              sectionNumber={4}
             >
               <div className="mb-8 flex justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -306,11 +310,11 @@ export function ResultsContainer({
               </div>
               <div className="space-y-10">
                 <div className="space-y-4">
-                  <h3 className="text-base font-semibold text-slate-700">Strengths</h3>
+                  <h3 className="text-lg font-semibold text-slate-700">Strengths</h3>
                   <TraitGrid items={archetype.datingMeaning.strengths} type="strength" />
                 </div>
                 <div className="space-y-4">
-                  <h3 className="text-base font-semibold text-slate-700">Growth Areas</h3>
+                  <h3 className="text-lg font-semibold text-slate-700">Growth Areas</h3>
                   <TraitGrid items={archetype.datingMeaning.challenges} type="challenge" />
                 </div>
               </div>
@@ -328,17 +332,8 @@ export function ResultsContainer({
               title="When This Goes Wrong"
               id="red-flags"
               eyebrow="Warning Signs"
+              sectionNumber={5}
             >
-              <div className="mb-8 flex justify-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/quiz/red-flags-illustration.png"
-                  alt="Red flags illustration"
-                  width={500}
-                  height={300}
-                  className="rounded-xl object-cover"
-                />
-              </div>
               <RedFlagsList items={archetype.redFlags} />
             </ContentSection>
           </motion.div>
@@ -354,6 +349,7 @@ export function ResultsContainer({
               title="Your Coaching Focus"
               id="coaching"
               eyebrow="Growth Plan"
+              sectionNumber={6}
             >
               <CoachingFocusList
                 items={archetype.coachingFocus}
@@ -374,7 +370,18 @@ export function ResultsContainer({
               title="Your Love Languages"
               id="love-languages"
               eyebrow="Connection"
+              sectionNumber={7}
             >
+              <div className="mb-8 flex justify-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/quiz/red-flags-illustration.png"
+                  alt="Red flags illustration"
+                  width={500}
+                  height={300}
+                  className="rounded-xl object-cover"
+                />
+              </div>
               <LoveLanguageSuggestions loveLanguages={results.loveLanguages} />
             </ContentSection>
           </motion.div>
