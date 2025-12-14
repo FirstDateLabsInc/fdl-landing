@@ -8,7 +8,7 @@ import { RotateCcw, Share2, Sparkles, Check } from "lucide-react";
 import { ResultsContainer } from "@/components/quiz/results";
 import { Button } from "@/components/ui/button";
 import { clearQuizProgress } from "@/hooks/use-quiz";
-import { getArchetypeById, type ArchetypeFull, type ArchetypePublic } from "@/lib/quiz/archetypes";
+import { getArchetypeById, type ArchetypePublic } from "@/lib/quiz/archetypes";
 import { cn } from "@/lib/utils";
 import type { QuizResults } from "@/lib/quiz/types";
 
