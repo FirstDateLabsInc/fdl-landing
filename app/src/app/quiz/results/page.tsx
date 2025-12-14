@@ -30,9 +30,7 @@ interface StoredResults {
 
 interface ParsedData {
   results: QuizResults;
-  // TODO(Phase 4): Change to ArchetypePublic and implement gating UI
-  // Currently using ArchetypeFull for ResultsContainer compatibility
-  archetype: ArchetypeFull;
+  archetype: ArchetypePublic;
   resultId?: string;
 }
 
@@ -54,11 +52,7 @@ function parseStoredResults(stored: string): ParsedData | null {
       return null;
     }
 
-    // TODO(Phase 4): Remove this cast when ResultsContainer accepts ArchetypePublic
-    // and implements proper gating UI for locked sections.
-    // Currently casting to ArchetypeFull - locked fields will be undefined,
-    // causing runtime issues until gating is implemented.
-    return { results: parsed.results, archetype: archetype as ArchetypeFull, resultId: parsed.resultId };
+    return { results: parsed.results, archetype, resultId: parsed.resultId };
   } catch (e) {
     console.error('[Quiz Results] Parse error:', e);
     return null;
