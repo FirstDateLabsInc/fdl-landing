@@ -1,17 +1,10 @@
 "use client"
 
+import Image from "next/image"
 import { motion, useReducedMotion } from "motion/react"
-import { Heart, MessagesSquare, Sparkles, TrendingUp } from "lucide-react"
 
-import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
 import { benefits } from "@/lib/constants"
-
-const iconMap = {
-  message: MessagesSquare,
-  sparkles: Sparkles,
-  heart: Heart,
-  trending: TrendingUp,
-} as const
+import cloudflareLoader from "@/lib/cloudflare-image-loader"
 
 export function BenefitsSection() {
   const prefersReducedMotion = useReducedMotion()
@@ -20,54 +13,89 @@ export function BenefitsSection() {
     <section
       id="benefits"
       aria-labelledby="benefits-heading"
-      className="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8"
+      className="relative overflow-hidden bg-[#fffbf5]"
     >
-      <div className="mx-auto mb-12 max-w-2xl text-center">
-        <h2
-          id="benefits-heading"
-          className="text-balance text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl"
-        >
-          Everything you need to show up ready for the second date
-        </h2>
-        <p className="mt-4 text-base text-slate-600 sm:text-lg">
-          Juliet combines expert feedback, practice partners, and smart tracking
-          into a coaching system you can actually stick with.
-        </p>
+      {/* Subtle background texture */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-[#fef3c7]/30 blur-[120px]" />
+        <div className="absolute bottom-0 right-1/3 h-80 w-80 rounded-full bg-[#fde68a]/20 blur-[100px]" />
       </div>
 
-      <motion.div
-        initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.96 }}
-        whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="grid gap-6 sm:grid-cols-2"
-      >
-        {benefits.map((benefit) => {
-          const Icon = iconMap[benefit.icon]
+      {/* Background image - right side, height matches content */}
+      <div className="pointer-events-none absolute right-0 top-0 h-full w-1/2 lg:w-[45%]">
+        <Image
+          src="/images/benefits-romantic.png"
+          alt=""
+          fill
+          className="object-cover object-[center_25%] opacity-[0.9]"
+          sizes="50vw"
+          loader={cloudflareLoader}
+        />
+      </div>
 
-          return (
-            <Card
+      <div className="relative mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20 lg:pr-[45%]">
+        {/* Header - centered, elegant */}
+        <motion.div
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="mb-12 text-center"
+        >
+          <p className="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-yellow-600">
+            Why Juliet
+          </p>
+          <h2
+            id="benefits-heading"
+            className="text-2xl font-light leading-relaxed tracking-tight text-slate-800 sm:text-3xl sm:leading-relaxed lg:text-4xl lg:leading-relaxed"
+          >
+            Everything you need for
+            <br />
+            <span className="mt-1 inline-block font-semibold text-yellow-500">the second date</span>
+          </h2>
+        </motion.div>
+
+        {/* Numbered list - premium style */}
+        <div className="space-y-0">
+          {benefits.map((benefit, index) => (
+            <motion.div
               key={benefit.title}
-              className="group relative overflow-hidden border border-white/40 bg-white/80 p-10 transition-transform duration-200 hover:-translate-y-1 hover:shadow-[0_35px_45px_-35px_rgba(15,23,42,0.35)]"
+              initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+              whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+              className="group"
             >
-              <CardContent className="flex h-full flex-col gap-6">
-                <div className="flex size-12 items-center justify-center rounded-full bg-[#fff5b4] text-slate-900 shadow-soft">
-                  <Icon className="size-6" aria-hidden />
+              {/* Top border line */}
+              {index === 0 && (
+                <div className="h-px bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent" />
+              )}
+              
+              <div className="flex items-start gap-6 py-6 sm:gap-10 sm:py-8">
+                {/* Large number */}
+                <div className="shrink-0">
+                  <span className="text-4xl font-extralight tracking-tight text-yellow-300 transition-colors duration-300 group-hover:text-yellow-500 sm:text-5xl lg:text-6xl">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
                 </div>
-                <div>
-                  <CardTitle>{benefit.title}</CardTitle>
-                  <CardDescription className="mt-3 text-base text-slate-600">
+                
+                {/* Content */}
+                <div className="flex-1 pt-1">
+                  <h3 className="mb-2 text-xl font-bold tracking-tight text-slate-800 sm:text-2xl">
+                    {benefit.title}
+                  </h3>
+                  <p className="max-w-lg text-base leading-relaxed text-slate-500 sm:text-lg">
                     {benefit.description}
-                  </CardDescription>
+                  </p>
                 </div>
-              </CardContent>
-              <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden>
-                <div className="absolute inset-0 bg-gradient-to-br from-[#f9d544]/20 via-transparent to-transparent" />
               </div>
-            </Card>
-          )
-        })}
-      </motion.div>
+              
+              {/* Bottom border line */}
+              <div className="h-px bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent" />
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </section>
   )
 }

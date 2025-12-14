@@ -18,6 +18,20 @@ export function HeroSection() {
       aria-labelledby="hero-heading"
     >
       <div className="absolute inset-0 -z-10">
+        {/* Background image with fade effect */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/hero-background.png"
+            alt=""
+            fill
+            className="object-cover object-[center_15%] opacity-[0.75]"
+            priority
+            sizes="100vw"
+            loader={cloudflareLoader}
+          />
+          {/* Gradient overlay to fade the image */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-background" />
+        </div>
         <div className="pointer-events-none absolute inset-x-0 bottom-[-50%] h-[420px] w-full bg-gradient-to-t from-[#cab5d4]/30 via-transparent to-transparent blur-[90px]" />
       </div>
 
@@ -30,12 +44,12 @@ export function HeroSection() {
             className="flex flex-col items-start gap-6 text-left"
           >
             <div className="space-y-4">
-              <p className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-secondary-dark">
+              <p className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-white">
                 {heroContent.eyebrow}
               </p>
               <h1
                 id="hero-heading"
-                className="max-w-[32ch] text-left text-3xl font-semibold leading-snug tracking-tight text-balance text-foreground sm:text-[2.625rem] lg:text-[2.75rem]"
+                className="max-w-[32ch] text-left text-4xl font-semibold leading-snug tracking-tight text-balance text-white sm:text-[3rem] lg:text-[3rem]"
               >
                 {heroContent.title.map((line, index) => (
                   <span key={index} className="block">
@@ -43,14 +57,14 @@ export function HeroSection() {
                   </span>
                 ))}
               </h1>
-              <p className="max-w-xl text-left text-base leading-relaxed text-muted-foreground sm:text-lg">
+              <p className="max-w-xl text-left text-lg leading-relaxed text-white/90 sm:text-xl">
                 {heroContent.description}
               </p>
             </div>
 
             <div className="mt-8 w-full max-w-md">
               <WaitlistForm variant="inline" />
-              <p className="text-secondary-dark mt-3 flex items-center gap-1.5 text-xs">
+              <p className="text-white/80 mt-3 flex items-center gap-1.5 text-xs">
                 <Sparkles className="h-3.5 w-3.5 shrink-0" />
                 Nail every first date. Join now to claim your early-bird offer.
               </p>

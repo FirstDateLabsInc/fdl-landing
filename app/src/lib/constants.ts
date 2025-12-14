@@ -24,6 +24,7 @@ export type Testimonial = {
   company: string;
   quote: string;
   avatarInitials: string;
+  avatarImage?: string;
 };
 
 export type Navigation = {
@@ -129,6 +130,7 @@ export const testimonials: Testimonial[] = [
     quote:
       "As an engineer, I was great at details and bad at small talk. Juliet made the first five minutes easy. I’m getting more second dates.",
     avatarInitials: "EW",
+    avatarImage: "/images/avatars/evan-walker.png",
   },
   {
     name: "Melissa Lee",
@@ -137,6 +139,7 @@ export const testimonials: Testimonial[] = [
     quote:
       "I stopped overthinking. The voice drills and debriefs were gold. I feel calm and present now.",
     avatarInitials: "ML",
+    avatarImage: "/images/avatars/melissa-lee.png",
   },
   {
     name: "Jordan Patel",
@@ -145,6 +148,7 @@ export const testimonials: Testimonial[] = [
     quote:
       "Upcoming Date Prep was scary accurate. I knew what to say and when to listen.",
     avatarInitials: "JP",
+    avatarImage: "/images/avatars/jordan-patel.png",
   },
   {
     name: "Sofia Ramirez",
@@ -153,6 +157,7 @@ export const testimonials: Testimonial[] = [
     quote:
       "Juliet feels like a warm, direct coach in my ear. I can jump into any conversation without rehearsing in the mirror.",
     avatarInitials: "SR",
+    avatarImage: "/images/avatars/sofia-ramirez.png",
   },
   {
     name: "Chris Howard",
@@ -161,6 +166,7 @@ export const testimonials: Testimonial[] = [
     quote:
       "The Weekly Challenges keep things fun. I’m finally bringing my best self to every first date.",
     avatarInitials: "CH",
+    avatarImage: "/images/avatars/chris-howard.png",
   },
 ];
 

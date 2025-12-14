@@ -1,10 +1,12 @@
 "use client"
 
+import Image from "next/image"
 import { motion, useReducedMotion } from "motion/react"
 
 import { Card, CardContent } from "@/components/ui/card"
 import { testimonials } from "@/lib/constants"
 import { cn } from "@/lib/utils"
+import cloudflareLoader from "@/lib/cloudflare-image-loader"
 
 const marqueeTestimonials = [...testimonials, ...testimonials]
 
@@ -99,9 +101,22 @@ function TestimonialCard({
             “{testimonial.quote}”
           </div>
           <div className="mt-auto flex items-center gap-4">
-            <div className="flex size-12 items-center justify-center rounded-full bg-[#cab5d4]/40 text-base font-semibold text-slate-900">
-              {testimonial.avatarInitials}
-            </div>
+            {testimonial.avatarImage ? (
+              <div className="relative size-12 shrink-0 overflow-hidden rounded-full">
+                <Image
+                  src={testimonial.avatarImage}
+                  alt={testimonial.name}
+                  fill
+                  className="object-cover"
+                  sizes="48px"
+                  loader={cloudflareLoader}
+                />
+              </div>
+            ) : (
+              <div className="flex size-12 items-center justify-center rounded-full bg-[#cab5d4]/40 text-base font-semibold text-slate-900">
+                {testimonial.avatarInitials}
+              </div>
+            )}
             <div className="text-left">
               <p className="text-sm font-semibold text-slate-900">
                 {testimonial.name}

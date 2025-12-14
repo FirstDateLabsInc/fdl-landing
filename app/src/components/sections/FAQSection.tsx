@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 
 import {
@@ -9,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { faqs } from "@/lib/constants";
+import cloudflareLoader from "@/lib/cloudflare-image-loader";
 
 export function FAQSection() {
   const prefersReducedMotion = useReducedMotion();
@@ -19,6 +21,29 @@ export function FAQSection() {
       aria-labelledby="faq-heading"
       className="py-16 sm:py-20 md:py-24"
     >
+      {/* Two images side by side - full width */}
+      <div className="mb-12 grid grid-cols-2 gap-0">
+        <div className="relative h-64 sm:h-80 md:h-96">
+          <Image
+            src="/images/faq-image-1.png"
+            alt=""
+            fill
+            className="object-cover"
+            sizes="50vw"
+            loader={cloudflareLoader}
+          />
+        </div>
+        <div className="relative h-64 sm:h-80 md:h-96">
+          <Image
+            src="/images/faq-image-2.png"
+            alt=""
+            fill
+            className="object-cover"
+            sizes="50vw"
+            loader={cloudflareLoader}
+          />
+        </div>
+      </div>
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
