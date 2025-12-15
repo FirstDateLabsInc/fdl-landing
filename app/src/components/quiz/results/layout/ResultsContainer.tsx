@@ -19,9 +19,6 @@ import { MobileFloatingNav } from "./MobileFloatingNav";
 import { cn } from "@/lib/utils";
 import type { QuizResults, AttachmentDimension, CommunicationStyle } from "@/lib/quiz/types";
 import {
-  ARCHETYPE_MATRIX,
-  computeArchetypeByProbability,
-  getArchetypeById,
   type ArchetypePublic,
   type ArchetypeLocked,
 } from "@/lib/quiz/archetypes";
@@ -95,35 +92,6 @@ export function ResultsContainer({
     return `${window.location.origin}/quiz/results/${quizResultId}`;
   }, [quizResultId]);
 
-  const archetypeSignals = useMemo(
-    () => computeArchetypeByProbability(results, true),
-    [results]
-  );
-
-  const blendedNotice = useMemo(() => {
-    const confidence = archetypeSignals.confidence;
-    const isBalanced = archetypeSignals.isBalanced;
-
-    // Only show when the profile isn't sharply differentiated
-    const show = isBalanced || confidence < 0.35;
-
-    // Suggest a couple nearby archetypes (excluding the current match)
-    const alternatives: string[] = [];
-    const seen = new Set<string>([archetype.id]);
-
-    if (show && archetypeSignals.debug?.topCells) {
-      for (const cell of archetypeSignals.debug.topCells) {
-        const id = ARCHETYPE_MATRIX[cell.attachment][cell.communication];
-        if (seen.has(id)) continue;
-        seen.add(id);
-        alternatives.push(getArchetypeById(id)?.name ?? id);
-        if (alternatives.length >= 2) break;
-      }
-    }
-
-    return { show, confidence, isBalanced, alternatives };
-  }, [archetypeSignals, archetype.id]);
-
   // Prepare attachment dimensions for radar chart
   const attachmentDimensions = useMemo(() => {
     const { primary } = results.attachment;
@@ -178,34 +146,6 @@ export function ResultsContainer({
       >
         <ArchetypeHero archetype={archetype} results={results} />
       </motion.section>
-
-      {/* Blended profile notice (low-confidence or evenly distributed results) */}
-      {blendedNotice.show && (
-        <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          animate="visible"
-          className="mb-10"
-        >
-          <div className="rounded-2xl bg-secondary/15 p-5 shadow-soft">
-            <p className="text-sm font-semibold text-foreground">
-              Your profile is nuanced
-            </p>
-            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-              Your answers were close across multiple styles. This is your
-              strongest match, but you may relate to more than one archetype.
-            </p>
-            {blendedNotice.alternatives.length > 0 && (
-              <p className="mt-2 text-sm text-muted-foreground">
-                Close matches:{" "}
-                <span className="font-medium text-foreground">
-                  {blendedNotice.alternatives.join(", ")}
-                </span>
-              </p>
-            )}
-          </div>
-        </motion.section>
-      )}
 
       {/* MAIN CONTENT: 2-column layout */}
       <div className="flex gap-8">
