@@ -23,7 +23,7 @@ const SECTIONS: Section[] = [
   { id: "score-insights", number: 2, title: "Score Insights" },
   { id: "dating-meaning", number: 3, title: "What It Means" },
   { id: "red-flags", number: 4, title: "Red Flags" },
-  { id: "coaching", number: 5, title: "Coaching Focus" },
+  { id: "coaching", number: 5, title: "Win-Win Strategy" },
   { id: "love-languages", number: 6, title: "Love Languages" },
 ];
 
