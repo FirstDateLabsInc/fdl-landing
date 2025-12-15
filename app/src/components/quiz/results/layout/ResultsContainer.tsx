@@ -338,7 +338,7 @@ export function ResultsContainer({
             transition={{ delay: 0.35 }}
           >
             <ContentSection
-              title="Your Coaching Focus"
+              title="Your Win-Win Strategy"
               id="coaching"
               eyebrow="Growth Plan"
               sectionNumber={5}
