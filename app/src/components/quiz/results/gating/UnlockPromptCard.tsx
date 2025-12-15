@@ -10,8 +10,8 @@ interface UnlockPromptCardProps {
   message: string;
   /** Target section ID for CTA scroll (defaults to waitlist section) */
   ctaTargetId?: string;
-  /** 'subtle' for inline use, 'prominent' for section-level gates */
-  variant?: "subtle" | "prominent";
+  /** 'overlay' for centered on blur, 'subtle' for inline, 'prominent' for section-level */
+  variant?: "subtle" | "prominent" | "overlay";
   className?: string;
 }
 
@@ -33,6 +33,29 @@ export function UnlockPromptCard({
       window.scrollTo({ top, behavior: "smooth" });
     }
   }, [ctaTargetId]);
+
+  // Overlay variant - compact card for blur areas (matches prominent style)
+  if (variant === "overlay") {
+    return (
+      <div className={cn("relative text-center px-5 py-4 rounded-xl bg-gradient-to-br from-white via-primary/5 to-secondary/10 border border-slate-100/80 shadow-soft backdrop-blur-sm", className)}>
+        {/* Decorative sparkle */}
+        <div className="absolute -top-1.5 -right-1.5 text-primary/50">
+          <Sparkles className="h-4 w-4" />
+        </div>
+
+        {/* Compact message + button layout */}
+        <p className="mb-3 text-sm font-medium text-slate-700">{message}</p>
+        <Button
+          onClick={handleClick}
+          size="sm"
+          className="gap-1.5 bg-gradient-to-r from-primary to-accent hover:shadow-md transition-all duration-300 text-slate-800 font-semibold border-0"
+        >
+          <Sparkles className="h-3.5 w-3.5" />
+          Unlock
+        </Button>
+      </div>
+    );
+  }
 
   if (variant === "prominent") {
     return (
