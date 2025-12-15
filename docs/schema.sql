@@ -515,12 +515,12 @@ BEGIN
     RETURN;
   END IF;
   
-  -- Create new slug
-  UPDATE quiz_results
+  -- Create new slug (using table alias to avoid column name ambiguity)
+  UPDATE quiz_results qr
   SET public_slug = p_new_slug,
       public_slug_created_at = NOW()
-  WHERE id = p_result_id
-    AND public_slug IS NULL;  -- Double-check for race condition
+  WHERE qr.id = p_result_id
+    AND qr.public_slug IS NULL;  -- Double-check for race condition
   
   -- Return the new slug
   RETURN QUERY SELECT p_new_slug, TRUE;
