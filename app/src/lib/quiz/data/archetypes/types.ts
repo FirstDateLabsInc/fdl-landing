@@ -19,14 +19,16 @@ export interface ArchetypePublic extends Archetype {
   callToActionCopy: string;
 
   // Teaser data for gating UI (PUBLIC - safe for client)
-  /** First 2 steps of the dating cycle (for ListGate preview) */
+  /** First 3 steps of the dating cycle (for ListGate preview) */
   datingCycleTeaser: string[];
   /** Total count of dating cycle steps */
   datingCycleTotalCount: number;
-  /** First red flag (for ListGate preview) */
+  /** First 2 red flags (for ListGate preview) */
   redFlagsTeaser: string[];
   /** Total count of red flags */
   redFlagsTotalCount: number;
+  /** Coaching focus areas (FREE - no longer gated) */
+  coachingFocus: string[];
 }
 
 // ============================================================================

@@ -319,7 +319,7 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 5: Coaching Focus */}
+          {/* Section 5: Coaching Focus (FREE - no longer gated) */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
@@ -332,17 +332,11 @@ export function ResultsContainer({
               eyebrow="Growth Plan"
               sectionNumber={5}
             >
-              {isFullView && lockedContent ? (
-                <CoachingFocusList
-                  items={lockedContent.coachingFocus}
-                  ctaText={archetype.callToActionCopy}
-                  onCtaClick={() => scrollToId("full-picture", "/#waitlist")}
-                />
-              ) : (
-                <SectionGate
-                  teaserText="Unlock your personalized coaching focus areas"
-                />
-              )}
+              <CoachingFocusList
+                items={archetype.coachingFocus}
+                ctaText={archetype.callToActionCopy}
+                onCtaClick={() => scrollToId("full-picture", "/#waitlist")}
+              />
             </ContentSection>
           </motion.div>
 

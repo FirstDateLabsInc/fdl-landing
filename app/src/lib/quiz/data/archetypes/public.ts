@@ -27,12 +27,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "You meet someone ➜ you feel real curiosity and interest (not performing, just being yourself)",
       "You share openly ➜ you don't play games or hold back to seem \"cool\"",
+      "They feel secure ➜ because you show up in a steady, trustworthy way",
     ],
     datingCycleTotalCount: 5,
     redFlagsTeaser: [
       "You're adapting your communication style too much trying to make partners comfortable",
+      "You're being \"the patient one\" so often it starts to feel like a role",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Recognizing when a partner's insecurity needs patience vs. when you should walk away",
+      "Understanding different attachment styles so you stop being confused by anxious/avoidant behavior",
+      "Dating people who are roughly as secure as you (so it's actually effortless)",
+      "Avoiding the trap of being the \"strong one\" who rescues insecure partners",
+      "Trusting your gut when something feels off, even if they seem nice",
+    ],
   },
 
   // ========================================================================
@@ -51,12 +60,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "Date suggests a plan or idea ➜ you immediately think \"I should go with it\"",
       "You suppress your preference ➜ you say \"sounds good!\" or stay quiet",
+      "You go along with something you didn't really want ➜ frustration starts to build",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You're agreeing to dates/plans you don't actually want",
+      "You find yourself feeling clingy or needy after being agreeable (resentment building)",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Distinguishing between healthy compromise and self-abandonment",
+      "Building confidence in having preferences and expressing them kindly",
+      "Learning that saying \"I want X\" is not selfish or mean",
+      "Recognizing partners who respect your preferences vs. those who take advantage",
+      "Dating as yourself, not as a people-pleaser",
+    ],
   },
 
   // ========================================================================
@@ -75,12 +93,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "You like someone ➜ you make a plan, you're decisive",
       "You set the tone ➜ they feel the weight of your certainty",
+      "You try to move things forward ➜ the relationship speeds up",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "Your partners often say \"I feel like I don't have a choice\" about things",
+      "You're dating people significantly weaker than you (easier to control)",
     ],
     redFlagsTotalCount: 6,
+    coachingFocus: [
+      "Learning the difference between leadership and domination",
+      "Practicing letting partners have input and lead sometimes",
+      "Softening your intensity without losing your confidence",
+      "Recognizing when you're pushing vs. when you're flowing",
+      "Finding partners who are secure enough to match your energy",
+    ],
   },
 
   // ========================================================================
@@ -99,12 +126,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "You like someone ➜ you use a light, teasing tone to build connection",
       "They respond and engage ➜ the interaction feels smooth and relaxed",
+      "You tease about something that actually bothered you ➜ they don't realize you were serious",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "Partners say your jokes hurt or feel mocking",
+      "You tease about real concerns but they think you're joking",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Express frustrations directly rather than through jokes",
+      "Ensure teasing lands as playful, not hurtful",
+      "Practice direct communication when issues matter",
+      "Recognize when humor is being used to avoid emotions",
+      "Building emotional safety alongside playfulness",
+    ],
   },
 
   // ========================================================================
@@ -123,12 +159,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "You meet someone interesting ➜ you feel excited and invested",
       "You share deeply and vulnerably ➜ you say \"I like you\" quickly",
+      "They feel the intensity of your investment ➜ they get overwhelmed",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You're asking for reassurance multiple times early in dating",
+      "You're saying \"I like you\" or \"I see a future with us\" very early",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Practice self-soothing before seeking reassurance",
+      "Balance emotional expression with giving space",
+      "Trust that love does not require constant confirmation",
+      "Pace your vulnerability with how much trust is established",
+      "Recognize when you're escalating from anxiety",
+    ],
   },
 
   // ========================================================================
@@ -147,12 +192,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "You like someone ➜ you naturally start doing caring things for them",
       "You put in extra effort ➜ you hope they'll feel supported and valued",
+      "They appreciate it but don't always respond in the same way ➜ you don't speak up about how you feel",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You're doing things for dates that they didn't ask for",
+      "You're keeping score of how much you've done for them",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Practice receiving as much as giving",
+      "Assert your needs without guilt",
+      "Build identity beyond relationship status",
+      "Recognize that self-care is not selfish",
+      "Date people who give back equally",
+    ],
   },
 
   // ========================================================================
@@ -171,12 +225,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "You like someone ➜ you pursue them actively",
       "They seem distant or unsure ➜ you escalate to convince them",
+      "You text more, call more, try harder ➜ your anxiety is driving you forward",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You're texting multiple times when they haven't responded",
+      "You're pursuing harder when they pull away",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Practice pause before pursuit",
+      "Channel intensity into positive expressions",
+      "Recognize when pushing drives partners away",
+      "Develop patience with relationship pacing",
+      "Self-soothe when anxious instead of pursuing",
+    ],
   },
 
   // ========================================================================
@@ -195,12 +258,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "Something bothers you ➜ you don't say anything",
       "You drop hints hoping they'll figure it out ➜ they don't fully pick up on it",
+      "They don't fully pick up on it ➜ you feel unseen",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You're upset about things your date doesn't know bothered you",
+      "You're dropping hints about what you need instead of asking",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "State needs directly instead of hinting",
+      "Avoid testing partners to prove their love",
+      "Trust that asking for what you want is okay",
+      "Address issues when they're small, not later",
+      "Recognize when you're creating tests no one can pass",
+    ],
   },
 
   // ========================================================================
@@ -219,12 +291,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "You like someone ➜ you enjoy the connection but keep some distance",
       "They try to get closer ➜ you start to feel pressured or crowded",
+      "You want more space ➜ you become less available or more reserved",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You're pulling away when partners try to get closer",
+      "You're saying you need space frequently",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Practice letting others in without losing yourself",
+      "Recognize that interdependence is not weakness",
+      "Allow yourself to need and be needed",
+      "Stay present when closeness triggers flight",
+      "Understanding the difference between healthy boundaries and walls",
+    ],
   },
 
   // ========================================================================
@@ -243,12 +324,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "Things get emotionally real ➜ you feel overwhelmed",
       "You need to escape ➜ you go quiet",
+      "You take longer to respond ➜ you're busy or just not engaging",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You're taking longer and longer to respond to texts",
+      "When conflicts start, you go quiet or disappear",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Practice staying present during difficult conversations",
+      "Communicate when you need space rather than vanishing",
+      "Recognize withdrawal patterns before they damage bonds",
+      "Build tolerance for emotional closeness gradually",
+      "Use words instead of disappearing",
+    ],
   },
 
   // ========================================================================
@@ -267,12 +357,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "Someone tries to get close ➜ you feel threatened",
       "You respond harshly or coldly ➜ you're pushing them away",
+      "They feel rejected ➜ they back off",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You're telling people harsh things and justifying it as \"honesty\"",
+      "You're pushing partners away before they can leave you",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Recognize that armor keeps out love too",
+      "Practice vulnerability in small steps",
+      "Soften defensive reactions",
+      "Understand that past hurts do not have to define future relationships",
+      "Learning gentleness without being weak",
+    ],
   },
 
   // ========================================================================
@@ -291,12 +390,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "Something bothers you ➜ you don't say anything",
       "You go cold or distant ➜ your partner feels it",
+      "They ask what's wrong ➜ you say \"nothing, I'm fine\"",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You go cold when frustrated instead of talking about it",
+      "Your partners say \"I never know where I stand with you\"",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Express needs and frustrations directly",
+      "Avoid silent treatment as a communication tool",
+      "Let partners understand your emotional world",
+      "Practice warmth even when it feels vulnerable",
+      "Using words instead of coldness",
+    ],
   },
 
   // ========================================================================
@@ -315,12 +423,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "You meet someone ➜ you get emotionally invested and open up quickly",
       "Something triggers you ➜ you pull back hard, or create distance",
+      "They try to understand ➜ you can explain your patterns and where they come from very clearly",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You can describe your patterns perfectly but repeat them anyway",
+      "You say \"I know I'm going to sabotage this\" and then do it",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Align actions with stated intentions",
+      "Build consistency in relationship behaviors",
+      "Use insight to change, not just understand, patterns",
+      "Seek professional support for deeper healing",
+      "Moving from analysis to action",
+    ],
   },
 
   // ========================================================================
@@ -339,12 +456,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "You meet someone ➜ you quickly adapt and become the version you think they'll like",
       "They respond well to this version of you ➜ you feel seen and appreciated",
+      "Over time, more of the \"real you\" shows up ➜ the differences start to feel noticeable",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You're completely different people with different partners",
+      "You don't know who you are outside relationships",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Develop consistent sense of self",
+      "Practice having opinions and preferences",
+      "Stop abandoning yourself for acceptance",
+      "Build stable identity independent of partners",
+      "Learning to be yourself instead of adapting",
+    ],
   },
 
   // ========================================================================
@@ -363,12 +489,21 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "You meet someone ➜ you get emotionally involved and attached quickly",
       "Something triggers you ➜ you react strongly, argue, or push them away",
+      "They try to understand or calm things down ➜ you may still feel angry, hurt, or defensive",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You have intense blow-ups or aggressive moments in relationships",
+      "You cycle between being all-in and pushing people away hard",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Learn emotional regulation techniques",
+      "Pause before reacting in conflict",
+      "Channel intensity into healthy expression",
+      "Seek professional support for trauma healing",
+      "Building stability in relationships",
+    ],
   },
 
   // ========================================================================
@@ -387,11 +522,20 @@ export const archetypesPublic: ArchetypePublic[] = [
     datingCycleTeaser: [
       "You like someone ➜ you feel curious but also cautious, so you \"test\" how much they care",
       "You move closer, then suddenly create distance ➜ they feel confused by the change",
+      "Your words and actions don't always match ➜ they're unsure what to believe",
     ],
     datingCycleTotalCount: 6,
     redFlagsTeaser: [
       "You test partners: \"If they really love me, they'll...\"",
+      "You send mixed signals about how you feel",
     ],
     redFlagsTotalCount: 5,
+    coachingFocus: [
+      "Communicate directly rather than through hints or tests",
+      "Recognize manipulation patterns, even unintentional ones",
+      "Build trust through consistency",
+      "Work with a professional on attachment patterns",
+      "Learning to be transparent instead of mysterious",
+    ],
   },
 ];
