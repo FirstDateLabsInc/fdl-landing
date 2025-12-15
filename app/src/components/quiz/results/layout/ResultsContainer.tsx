@@ -300,45 +300,21 @@ export function ResultsContainer({
               sectionNumber={4}
             >
               {isFullView && lockedContent ? (
-                <>
-                  <div className="mb-8 flex justify-center">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/images/quiz/red-flags-illustration.png"
-                      alt="Red flags illustration"
-                      width={500}
-                      height={300}
-                      className="rounded-xl object-cover"
-                    />
-                  </div>
-                  <RedFlagsList items={lockedContent.redFlags} />
-                </>
+                <RedFlagsList items={lockedContent.redFlags} />
               ) : (
-                <>
-                  <div className="mb-8 flex justify-center">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/images/quiz/red-flags-illustration.png"
-                      alt="Red flags illustration"
-                      width={500}
-                      height={300}
-                      className="rounded-xl object-cover opacity-60"
-                    />
-                  </div>
-                  <ListGate
-                    visibleItems={archetype.redFlagsTeaser.map((flag, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-3 rounded-lg border border-red-100 bg-red-50/50 p-4"
-                      >
-                        <span className="text-lg">🚩</span>
-                        <p className="text-slate-700">{flag}</p>
-                      </div>
-                    ))}
-                    lockedCount={archetype.redFlagsTotalCount - archetype.redFlagsTeaser.length}
-                    teaserText="Learn to recognize your other warning signs"
-                  />
-                </>
+                <ListGate
+                  visibleItems={archetype.redFlagsTeaser.map((flag, i) => (
+                    <div
+                      key={i}
+                      className="flex items-start gap-3 rounded-lg border border-red-100 bg-red-50/50 p-4"
+                    >
+                      <span className="text-lg">🚩</span>
+                      <p className="text-slate-700">{flag}</p>
+                    </div>
+                  ))}
+                  lockedCount={archetype.redFlagsTotalCount - archetype.redFlagsTeaser.length}
+                  teaserText="Learn to recognize your other warning signs"
+                />
               )}
             </ContentSection>
           </motion.div>
