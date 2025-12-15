@@ -20,7 +20,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#f7f0fa] backdrop-blur-sm">
+    <footer className="from-background to-secondary/50 bg-gradient-to-b backdrop-blur-sm">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 py-12 sm:gap-12 sm:py-16 md:grid-cols-2 lg:grid-cols-5">
           <div className="space-y-4 lg:col-span-2">
@@ -59,6 +59,9 @@ export function Footer() {
                 );
               })}
             </div>
+            <p className="text-muted-foreground text-xs">
+              © {year} {footerContent.brandName}
+            </p>
           </div>
 
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-3 lg:grid-cols-3">
@@ -84,13 +87,10 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="py-6 sm:py-8">
-          <div className="text-muted-foreground flex flex-col gap-3 text-xs sm:flex-row sm:items-center sm:justify-between">
-            <p>
-              © {year} {footerContent.brandName}
-            </p>
-            <p>{footerContent.contact}</p>
-          </div>
+        <div className="border-t border-slate-200/50 py-6">
+          <p className="text-muted-foreground text-center text-xs">
+            {footerContent.contact}
+          </p>
         </div>
       </div>
     </footer>
