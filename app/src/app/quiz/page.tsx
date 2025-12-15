@@ -104,14 +104,26 @@ export default function QuizPage() {
             />
           </svg>
         </motion.div>
-        <motion.h1
+        {/* Eyebrow with decorative lines */}
+        <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-          className="mt-4 text-4xl leading-tight font-bold tracking-tight text-slate-900 sm:text-5xl sm:leading-tight"
+          className="mt-4 flex items-center justify-center gap-3"
         >
-          Discover Your
-          <br />
+          <span className="h-px w-8 bg-gradient-to-r from-transparent to-secondary/60" />
+          <span className="text-sm font-semibold tracking-[0.25em] uppercase text-secondary-dark sm:text-base">
+            Discover Your
+          </span>
+          <span className="h-px w-8 bg-gradient-to-l from-transparent to-secondary/60" />
+        </motion.div>
+
+        <motion.h1
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+          className="mt-3 text-4xl leading-tight font-bold tracking-tight sm:text-5xl sm:leading-tight"
+        >
           <span className="from-secondary to-primary bg-gradient-to-r bg-clip-text text-transparent">
             Dating & Relationship Personality
           </span>
