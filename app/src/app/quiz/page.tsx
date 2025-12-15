@@ -184,25 +184,25 @@ export default function QuizPage() {
           What You&apos;ll Learn
         </h2>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           {QUIZ_BENEFITS.map((benefit) => (
             <div
               key={benefit.title}
-              className="shadow-soft hover:shadow-hover rounded-xl bg-white/60 p-4 text-center transition-shadow"
+              className="shadow-soft hover:shadow-hover rounded-xl bg-white/60 p-2.5 sm:p-4 text-center transition-shadow"
             >
               <div className="mx-auto w-full overflow-hidden rounded-lg">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={benefit.image}
                   alt={benefit.title}
-                  className="h-32 w-full rounded-lg object-cover"
+                  className="h-24 sm:h-32 w-full rounded-lg object-cover"
                   style={{ objectPosition: benefit.position }}
                 />
               </div>
-              <h3 className="mt-3 text-sm font-semibold text-slate-900">
+              <h3 className="mt-2 sm:mt-3 text-xs sm:text-sm font-semibold text-slate-900">
                 {benefit.title}
               </h3>
-              <p className="mt-1 text-xs leading-relaxed text-slate-500">
+              <p className="mt-1 text-[10px] sm:text-xs leading-relaxed text-slate-500">
                 {benefit.description}
               </p>
             </div>
