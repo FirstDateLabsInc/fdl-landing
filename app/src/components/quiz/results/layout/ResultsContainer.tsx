@@ -169,13 +169,6 @@ export function ResultsContainer({
                 <h3 className="text-xl font-semibold text-slate-900 mb-3">
                   Where This Comes From
                 </h3>
-                <p className="text-lg leading-relaxed text-slate-600">
-                  {archetype.rootCause}
-                </p>
-              </div>
-
-              {/* Part 3: Dating Profile (Attachment + Communication) */}
-              <div className="mt-10">
                 <div className="grid gap-6 sm:grid-cols-2">
                   <CategoryRadarChart
                     title="Attachment Style"
@@ -198,6 +191,9 @@ export function ResultsContainer({
                     fillColor="var(--chart-3)"
                   />
                 </div>
+                <p className="mt-6 text-lg leading-relaxed text-slate-600">
+                  {archetype.rootCause}
+                </p>
               </div>
 
               {/* Part 4: The Cycle - evidence after context */}
