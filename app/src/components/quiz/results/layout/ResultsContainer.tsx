@@ -174,7 +174,33 @@ export function ResultsContainer({
                 </p>
               </div>
 
-              {/* Part 3: The Cycle - evidence after context */}
+              {/* Part 3: Dating Profile (Attachment + Communication) */}
+              <div className="mt-10">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <CategoryRadarChart
+                    title="Attachment Style"
+                    subtitle="How you connect emotionally"
+                    dimensions={attachmentDimensions}
+                    primaryLabel="Primary"
+                    primaryStyles={results.attachment.primary}
+                    mixedLabel="Mixed"
+                    accentColor="var(--secondary)"
+                    fillColor="var(--primary)"
+                  />
+                  <CategoryRadarChart
+                    title="Communication Style"
+                    subtitle="How you express yourself"
+                    dimensions={communicationDimensions}
+                    primaryLabel="Primary"
+                    primaryStyles={results.communication.primary}
+                    mixedLabel="Mixed"
+                    accentColor="var(--chart-2)"
+                    fillColor="var(--chart-3)"
+                  />
+                </div>
+              </div>
+
+              {/* Part 4: The Cycle - evidence after context */}
               <div className="mt-10">
                 <h3 className="text-xl font-semibold text-slate-900 mb-3">
                   How This Plays Out
@@ -202,45 +228,7 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 2: Dating Profile (Radar Charts) */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.1 }}
-          >
-            <ContentSection
-              title="Your Dating Profile"
-              id="profile"
-              eyebrow="Deep Dive"
-              sectionNumber={2}
-            >
-              <div className="grid gap-6 sm:grid-cols-2">
-                <CategoryRadarChart
-                  title="Attachment Style"
-                  subtitle="How you connect emotionally"
-                  dimensions={attachmentDimensions}
-                  primaryLabel="Primary"
-                  primaryStyles={results.attachment.primary}
-                  mixedLabel="Mixed"
-                  accentColor="var(--secondary)"
-                  fillColor="var(--primary)"
-                />
-                <CategoryRadarChart
-                  title="Communication Style"
-                  subtitle="How you express yourself"
-                  dimensions={communicationDimensions}
-                  primaryLabel="Primary"
-                  primaryStyles={results.communication.primary}
-                  mixedLabel="Mixed"
-                  accentColor="var(--chart-2)"
-                  fillColor="var(--chart-3)"
-                />
-              </div>
-            </ContentSection>
-          </motion.div>
-
-          {/* Section 3: Score Insights */}
+          {/* Section 2: Score Insights */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
@@ -251,13 +239,13 @@ export function ResultsContainer({
               title="Understanding Your Scores"
               id="score-insights"
               eyebrow="Insights"
-              sectionNumber={3}
+              sectionNumber={2}
             >
               <ScoreInsightsSection results={results} />
             </ContentSection>
           </motion.div>
 
-          {/* Section 4: Dating Meaning (Strengths + Challenges) */}
+          {/* Section 3: Dating Meaning (Strengths + Challenges) */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
@@ -268,7 +256,7 @@ export function ResultsContainer({
               title="What This Means for Dating"
               id="dating-meaning"
               eyebrow="Analysis"
-              sectionNumber={4}
+              sectionNumber={3}
             >
               {isFullView && lockedContent ? (
                 <>
@@ -302,7 +290,7 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 5: Red Flags */}
+          {/* Section 4: Red Flags */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
@@ -313,7 +301,7 @@ export function ResultsContainer({
               title="When This Goes Wrong"
               id="red-flags"
               eyebrow="Warning Signs"
-              sectionNumber={5}
+              sectionNumber={4}
             >
               {isFullView && lockedContent ? (
                 <>
@@ -359,7 +347,7 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 6: Coaching Focus */}
+          {/* Section 5: Coaching Focus */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
@@ -370,7 +358,7 @@ export function ResultsContainer({
               title="Your Coaching Focus"
               id="coaching"
               eyebrow="Growth Plan"
-              sectionNumber={6}
+              sectionNumber={5}
             >
               {isFullView && lockedContent ? (
                 <CoachingFocusList
@@ -386,7 +374,7 @@ export function ResultsContainer({
             </ContentSection>
           </motion.div>
 
-          {/* Section 7: Love Languages */}
+          {/* Section 6: Love Languages */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
@@ -397,7 +385,7 @@ export function ResultsContainer({
               title="Your Love Languages"
               id="love-languages"
               eyebrow="Connection"
-              sectionNumber={7}
+              sectionNumber={6}
             >
               <div className="mb-8 flex justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

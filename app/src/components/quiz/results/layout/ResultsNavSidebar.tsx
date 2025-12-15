@@ -20,12 +20,11 @@ interface ResultsNavSidebarProps {
 
 const SECTIONS: Section[] = [
   { id: "pattern", number: 1, title: "Your Story" },
-  { id: "profile", number: 2, title: "Dating Profile" },
-  { id: "score-insights", number: 3, title: "Score Insights" },
-  { id: "dating-meaning", number: 4, title: "What It Means" },
-  { id: "red-flags", number: 5, title: "Red Flags" },
-  { id: "coaching", number: 6, title: "Coaching Focus" },
-  { id: "love-languages", number: 7, title: "Love Languages" },
+  { id: "score-insights", number: 2, title: "Score Insights" },
+  { id: "dating-meaning", number: 3, title: "What It Means" },
+  { id: "red-flags", number: 4, title: "Red Flags" },
+  { id: "coaching", number: 5, title: "Coaching Focus" },
+  { id: "love-languages", number: 6, title: "Love Languages" },
 ];
 
 export function ResultsNavSidebar({
