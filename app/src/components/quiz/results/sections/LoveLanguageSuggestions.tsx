@@ -265,50 +265,48 @@ function DetailPanel({ language, className }: DetailPanelProps) {
   const showReceiveTips = language.needsGrowth ? language.receive <= GROWTH_THRESHOLD : true;
 
   return (
-    <div className={cn("rounded-2xl bg-white border border-slate-100 shadow-soft p-4 sm:p-6", className)}>
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-4">
+    <div className={cn("rounded-2xl bg-white border border-slate-100 shadow-soft p-4", className)}>
+      {/* Header - compact */}
+      <div className="flex items-center gap-2.5 mb-3">
         <div
-          className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl"
+          className="flex items-center justify-center w-9 h-9 rounded-lg"
           style={{ backgroundColor: `${language.color}15` }}
         >
-          <Icon className="h-5 w-5 sm:h-6 sm:w-6" style={{ color: language.color }} />
+          <Icon className="h-4.5 w-4.5" style={{ color: language.color }} />
         </div>
-        <div>
-          <h4 className="font-semibold text-base sm:text-lg text-slate-800">{language.name}</h4>
+        <div className="min-w-0">
+          <h4 className="font-semibold text-sm text-slate-800 truncate">{language.name}</h4>
           {language.isPriority && (
-            <span className="inline-block mt-1 rounded-full bg-secondary/20 px-2.5 py-0.5 text-xs font-medium text-secondary-dark">
-              Priority Language
+            <span className="inline-block rounded-full bg-secondary/20 px-2 py-0.5 text-[10px] font-medium text-secondary-dark">
+              Priority
             </span>
           )}
           {language.needsGrowth && !language.isPriority && (
-            <span className="inline-block mt-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">
+            <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700">
               Growth Area
             </span>
           )}
         </div>
       </div>
 
-      {/* Description */}
-      <p className="text-sm sm:text-base leading-relaxed text-slate-600 mb-5">
+      {/* Description - compact */}
+      <p className="text-xs leading-relaxed text-slate-600 mb-4">
         {language.priorityDescription}
       </p>
 
-      {/* Tips sections */}
-      <div className="space-y-5">
+      {/* Tips sections - compact */}
+      <div className="space-y-3">
         {showGiveTips && (
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100">
-                <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />
-              </div>
-              <span className="text-sm font-semibold text-emerald-700">Giving Tips</span>
+          <div className="bg-emerald-50/50 rounded-lg p-2.5">
+            <div className="flex items-center gap-1.5 mb-2">
+              <TrendingUp className="h-3 w-3 text-emerald-600" />
+              <span className="text-xs font-semibold text-emerald-700 uppercase tracking-wide">Giving Tips</span>
             </div>
-            <ul className="space-y-2.5">
+            <ul className="space-y-1.5">
               {language.giveTips.map((tip, i) => (
-                <li key={i} className="flex items-start gap-2.5 text-sm text-slate-600">
+                <li key={i} className="flex items-start gap-2 text-xs text-slate-600">
                   <span
-                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
+                    className="mt-1 h-1 w-1 shrink-0 rounded-full"
                     style={{ backgroundColor: language.color }}
                   />
                   <span>{tip}</span>
@@ -319,18 +317,16 @@ function DetailPanel({ language, className }: DetailPanelProps) {
         )}
 
         {showReceiveTips && (
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100">
-                <Heart className="h-3.5 w-3.5 text-blue-600" />
-              </div>
-              <span className="text-sm font-semibold text-blue-700">Receiving Tips</span>
+          <div className="bg-blue-50/50 rounded-lg p-2.5">
+            <div className="flex items-center gap-1.5 mb-2">
+              <Heart className="h-3 w-3 text-blue-600" />
+              <span className="text-xs font-semibold text-blue-700 uppercase tracking-wide">Receiving Tips</span>
             </div>
-            <ul className="space-y-2.5">
+            <ul className="space-y-1.5">
               {language.receiveTips.map((tip, i) => (
-                <li key={i} className="flex items-start gap-2.5 text-sm text-slate-600">
+                <li key={i} className="flex items-start gap-2 text-xs text-slate-600">
                   <span
-                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
+                    className="mt-1 h-1 w-1 shrink-0 rounded-full"
                     style={{ backgroundColor: language.color }}
                   />
                   <span>{tip}</span>
@@ -444,9 +440,9 @@ export function LoveLanguageSuggestions({
   return (
     <div className={cn("space-y-4", className)}>
       {/* Desktop/Tablet: Side-by-side layout */}
-      <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
-        {/* Bar charts - spans 2 columns on lg */}
-        <div className="lg:col-span-2 space-y-2 rounded-2xl bg-white border border-slate-100 shadow-soft p-3 sm:p-4">
+      <div className="hidden md:grid md:grid-cols-5 lg:grid-cols-3 gap-4 lg:gap-5">
+        {/* Bar charts - 3 columns on md (60%), 2 columns on lg (66%) */}
+        <div className="md:col-span-3 lg:col-span-2 space-y-2 rounded-2xl bg-white border border-slate-100 shadow-soft p-3 sm:p-4">
           {rankedLanguages.map((language) => (
             <BarChartItem
               key={language.key}
@@ -457,8 +453,8 @@ export function LoveLanguageSuggestions({
           ))}
         </div>
 
-        {/* Detail panel - spans 3 columns on lg */}
-        <div className="lg:col-span-3">
+        {/* Detail panel - 2 columns on md (40%), 1 column on lg (33%) */}
+        <div className="md:col-span-2 lg:col-span-1">
           <DetailPanel language={selectedData} className="h-full" />
         </div>
       </div>
