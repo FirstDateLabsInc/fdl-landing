@@ -278,10 +278,21 @@ export function ResultsContainer({
                   </div>
                 </>
               ) : (
-                <SectionGate
-                  teaserText="Unlock to see your dating strengths and growth areas"
-                  illustrationSrc="/images/quiz/dating-meaning-illustration.png"
-                />
+                <>
+                  <div className="mb-8 flex justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/quiz/dating-meaning-illustration.png"
+                      alt="Dating personality illustration"
+                      width={500}
+                      height={300}
+                      className="rounded-xl object-cover"
+                    />
+                  </div>
+                  <SectionGate
+                    teaserText="Unlock to see your dating strengths and growth areas"
+                  />
+                </>
               )}
             </ContentSection>
           </motion.div>
