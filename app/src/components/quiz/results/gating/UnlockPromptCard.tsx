@@ -36,9 +36,17 @@ export function UnlockPromptCard({
 
   if (variant === "prominent") {
     return (
-      <div className={cn("text-center", className)}>
-        <p className="mb-4 text-lg font-medium text-slate-700">{message}</p>
-        <Button onClick={handleClick} className="gap-2">
+      <div className={cn("relative text-center rounded-2xl bg-gradient-to-br from-white via-primary/5 to-secondary/10 p-8 border border-slate-100/80 shadow-soft", className)}>
+        {/* Decorative sparkle accent */}
+        <div className="absolute -top-2 -right-2 text-primary/50">
+          <Sparkles className="h-5 w-5" />
+        </div>
+
+        <p className="mb-5 text-lg font-medium text-slate-700">{message}</p>
+        <Button
+          onClick={handleClick}
+          className="gap-2 bg-gradient-to-r from-primary to-accent hover:shadow-hover transition-all duration-300 text-slate-800 font-semibold border-0"
+        >
           <Sparkles className="h-4 w-4" />
           Unlock Full Results
         </Button>
@@ -46,16 +54,20 @@ export function UnlockPromptCard({
     );
   }
 
-  // Subtle variant - inline CTA bar
+  // Subtle variant - glassmorphism inline CTA bar
   return (
     <div
       className={cn(
-        "mt-6 flex items-center justify-between rounded-xl bg-gradient-to-r from-primary/10 to-secondary/10 p-4",
+        "mt-6 flex items-center justify-between rounded-2xl bg-gradient-to-r from-primary/15 via-accent/8 to-secondary/15 p-4 border border-white/50 backdrop-blur-sm shadow-soft",
         className
       )}
     >
       <p className="text-sm font-medium text-slate-600">{message}</p>
-      <Button size="sm" variant="secondary" onClick={handleClick}>
+      <Button
+        size="sm"
+        onClick={handleClick}
+        className="bg-gradient-to-r from-primary to-accent text-slate-800 font-medium hover:shadow-md transition-all duration-200 border-0"
+      >
         Unlock
       </Button>
     </div>

@@ -150,6 +150,15 @@ html {
     }
   }
 
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
   .shadow-soft {
     box-shadow: var(--shadow-soft);
   }
@@ -164,6 +173,18 @@ html {
 
   .card-base {
     @apply rounded-2xl border border-slate-100 bg-white shadow-sm transition-shadow hover:shadow-md;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s infinite linear;
+  }
+
+  .glass-card {
+    @apply bg-white/60 backdrop-blur-md border border-white/40 shadow-soft;
+  }
+
+  .gradient-glow {
+    box-shadow: 0 0 40px -10px var(--primary);
   }
 }
 
