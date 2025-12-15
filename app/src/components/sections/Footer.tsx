@@ -41,10 +41,10 @@ export function Footer() {
             <p className="text-muted-foreground max-w-sm text-sm">
               {footerContent.tagline}
             </p>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-5">
               {footerContent.social.map((item) => {
                 const Icon = iconMap[item.icon];
-                const iconSize = item.icon === "tiktok" ? "size-6" : "size-5";
+                const iconSize = item.icon === "tiktok" ? "size-7" : "size-6";
                 return (
                   <Link
                     key={item.platform}
@@ -52,7 +52,7 @@ export function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={item.platform}
-                    className="text-muted-foreground hover:text-primary transition-colors"
+                    className="text-slate-500 transition-colors hover:text-primary"
                   >
                     <Icon className={iconSize} aria-hidden />
                   </Link>
