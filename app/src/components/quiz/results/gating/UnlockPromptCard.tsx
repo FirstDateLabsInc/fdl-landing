@@ -34,23 +34,23 @@ export function UnlockPromptCard({
     }
   }, [ctaTargetId]);
 
-  // Overlay variant - compact card for blur areas (matches prominent style)
+  // Overlay variant - compact card for blur areas (responsive: smaller on mobile)
   if (variant === "overlay") {
     return (
-      <div className={cn("relative text-center px-5 py-4 rounded-xl bg-gradient-to-br from-white via-primary/5 to-secondary/10 border border-slate-100/80 shadow-soft backdrop-blur-sm", className)}>
+      <div className={cn("relative text-center px-3 py-3 sm:px-5 sm:py-4 rounded-lg sm:rounded-xl bg-gradient-to-br from-white via-primary/5 to-secondary/10 border border-slate-100/80 shadow-soft backdrop-blur-sm", className)}>
         {/* Decorative sparkle */}
-        <div className="absolute -top-1.5 -right-1.5 text-primary/50">
-          <Sparkles className="h-4 w-4" />
+        <div className="absolute -top-1 -right-1 sm:-top-1.5 sm:-right-1.5 text-primary/50">
+          <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" />
         </div>
 
         {/* Compact message + button layout */}
-        <p className="mb-3 text-sm font-medium text-slate-700">{message}</p>
+        <p className="mb-2 sm:mb-3 text-xs sm:text-sm font-medium text-slate-700">{message}</p>
         <Button
           onClick={handleClick}
           size="sm"
-          className="gap-1.5 bg-gradient-to-r from-primary to-accent hover:shadow-md transition-all duration-300 text-slate-800 font-semibold border-0"
+          className="gap-1 sm:gap-1.5 text-xs sm:text-sm h-7 sm:h-8 px-3 sm:px-4 bg-gradient-to-r from-primary to-accent hover:shadow-md transition-all duration-300 text-slate-800 font-semibold border-0"
         >
-          <Sparkles className="h-3.5 w-3.5" />
+          <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
           Unlock
         </Button>
       </div>
