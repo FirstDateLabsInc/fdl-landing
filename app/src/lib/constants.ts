@@ -327,9 +327,9 @@ export const footerContent: FooterContent = {
     {
       title: "Product",
       links: [
-        { label: "How it Works", href: "#how-it-works" },
-        { label: "Benefits", href: "#benefits" },
-        { label: "FAQ", href: "#faq" },
+        { label: "How it Works", href: "/#how-it-works" },
+        { label: "Benefits", href: "/#benefits" },
+        { label: "FAQ", href: "/#faq" },
         { label: "Quiz", href: "/quiz" },
       ],
     },
