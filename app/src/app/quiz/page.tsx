@@ -183,7 +183,7 @@ export default function QuizPage() {
             className="bg-primary shadow-soft hover:bg-accent hover:shadow-hover px-8 text-slate-900 transition-all hover:-translate-y-0.5"
           >
             <Link href="/quiz/questions?new=true">
-              Start Free Quiz
+              Reveal My Archetype
               <ArrowRight className="ml-2 size-4" aria-hidden />
             </Link>
           </Button>
