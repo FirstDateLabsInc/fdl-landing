@@ -6,9 +6,6 @@ import {
   Clock,
   Lock,
   Sparkles,
-  Heart,
-  Brain,
-  MessageCircle,
   ArrowRight,
 } from "lucide-react";
 
