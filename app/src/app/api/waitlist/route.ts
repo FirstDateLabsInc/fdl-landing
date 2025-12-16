@@ -4,6 +4,7 @@ import { getResend, EMAIL_FROM } from "@/lib/email/resend";
 import { render } from "@react-email/render";
 import { WaitlistConfirmation } from "@/emails/WaitlistConfirmation";
 import { QuizResultsEmail } from "@/emails/QuizResultsEmail";
+import { verifyTurnstileToken } from "@/lib/turnstile";
 import type {
   JoinWaitlistRequest,
   JoinWaitlistResponse,
@@ -23,7 +24,38 @@ export async function POST(
 ): Promise<NextResponse<JoinWaitlistResponse>> {
   try {
     const body = (await request.json()) as JoinWaitlistRequest;
-    const { email, source, utmSource, utmMedium, utmCampaign, referrer, quizResultId, archetypeName, archetypeEmoji } = body;
+    const {
+      email,
+      source,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      referrer,
+      quizResultId,
+      archetypeName,
+      archetypeEmoji,
+      turnstileToken,
+    } = body;
+
+    // Verify Turnstile token if provided (before any DB operations)
+    if (turnstileToken) {
+      const clientIP =
+        request.headers.get("cf-connecting-ip") ||
+        request.headers.get("x-forwarded-for") ||
+        undefined;
+      const verification = await verifyTurnstileToken(turnstileToken, clientIP);
+
+      if (!verification.success) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: verification.error || "Verification failed",
+            errorCode: "TURNSTILE_FAILED",
+          },
+          { status: 400 }
+        );
+      }
+    }
 
     if (!email) {
       return NextResponse.json(

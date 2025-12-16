@@ -68,6 +68,12 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
           }),
         });
 
+        // Handle rate limiting - silently continue with existing session
+        if (res.status === 429) {
+          console.warn("Session creation rate limited");
+          return;
+        }
+
         if (res.ok) {
           const data = (await res.json()) as CreateSessionResponse;
           if (data.sessionId) {
@@ -146,9 +152,25 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
       });
 
       if (!res.ok) {
+        // Handle rate limiting specifically
+        if (res.status === 429) {
+          throw new Error(
+            "You're submitting too quickly. Please wait a moment and try again."
+          );
+        }
+
         const errorData = (await res.json().catch(() => ({}))) as {
           error?: string;
+          errorCode?: string;
         };
+
+        // Also check for rate limit in response body
+        if (errorData.errorCode === "RATE_LIMITED") {
+          throw new Error(
+            "You're submitting too quickly. Please wait a moment and try again."
+          );
+        }
+
         throw new Error(errorData.error || "Server error");
       }
 

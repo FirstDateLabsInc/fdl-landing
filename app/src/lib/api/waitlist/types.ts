@@ -18,7 +18,8 @@ export type WaitlistErrorCode =
   | "INVALID_EMAIL"
   | "ALREADY_EXISTS"
   | "DATABASE_ERROR"
-  | "INTERNAL_ERROR";
+  | "INTERNAL_ERROR"
+  | "TURNSTILE_FAILED";
 
 // ============================================================================
 // WAITLIST SIGNUP
@@ -34,6 +35,8 @@ export interface JoinWaitlistRequest extends TrackingParams {
   archetypeName?: string;
   /** Archetype emoji for quiz-specific email */
   archetypeEmoji?: string;
+  /** Cloudflare Turnstile verification token */
+  turnstileToken?: string;
 }
 
 /** Response from waitlist signup */

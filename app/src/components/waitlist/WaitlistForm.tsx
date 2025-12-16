@@ -7,6 +7,7 @@ import { z } from "zod/v4";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Turnstile } from "@/components/ui/turnstile";
 import { cn } from "@/lib/utils";
 import type {
   JoinWaitlistRequest,
@@ -40,6 +41,9 @@ export function WaitlistForm({
     "idle" | "loading" | "success" | "already-subscribed" | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [turnstileToken, setTurnstileToken] = useState<string>("");
+  // Use key to reset Turnstile widget by forcing remount
+  const [turnstileKey, setTurnstileKey] = useState(0);
 
   const {
     register,
@@ -67,6 +71,7 @@ export function WaitlistForm({
       quizResultId,
       archetypeName,
       archetypeEmoji,
+      turnstileToken: turnstileToken || undefined,
     };
 
     try {
@@ -76,6 +81,15 @@ export function WaitlistForm({
         body: JSON.stringify(payload),
       });
 
+      // Handle rate limiting before parsing JSON
+      if (res.status === 429) {
+        setStatus("error");
+        setErrorMessage(
+          "Too many attempts. Please wait a minute and try again."
+        );
+        return;
+      }
+
       const result: JoinWaitlistResponse = await res.json();
 
       if (result.success) {
@@ -83,10 +97,25 @@ export function WaitlistForm({
         reset();
       } else {
         setStatus("error");
-        setErrorMessage(result.error || "Something went wrong");
+        // Reset turnstile on error so user can retry
+        setTurnstileKey((k) => k + 1);
+        setTurnstileToken("");
+        // Handle rate limit from response body
+        if (
+          (result as { errorCode?: string }).errorCode === "RATE_LIMITED"
+        ) {
+          setErrorMessage(
+            "Too many attempts. Please wait a minute and try again."
+          );
+        } else {
+          setErrorMessage(result.error || "Something went wrong");
+        }
       }
     } catch {
       setStatus("error");
+      // Reset turnstile on error so user can retry
+      setTurnstileKey((k) => k + 1);
+      setTurnstileToken("");
       setErrorMessage("Network error. Please try again.");
     }
   };
@@ -168,11 +197,19 @@ export function WaitlistForm({
               "h-10 shrink-0 rounded-full px-4 text-base font-medium",
               "w-full sm:w-auto"
             )}
-            disabled={status === "loading"}
+            disabled={status === "loading" || !turnstileToken}
           >
             {status === "loading" ? "Joining..." : "Get Early Access"}
           </Button>
         </div>
+
+        {/* Turnstile widget */}
+        <Turnstile
+          key={turnstileKey}
+          onSuccess={setTurnstileToken}
+          onExpire={() => setTurnstileToken("")}
+          className="px-3"
+        />
 
         {/* Error messages */}
         {errors.email && (
@@ -214,12 +251,18 @@ export function WaitlistForm({
           )}
         </div>
 
+        <Turnstile
+          key={turnstileKey}
+          onSuccess={setTurnstileToken}
+          onExpire={() => setTurnstileToken("")}
+        />
+
         <Button
           type="submit"
           variant="primary"
           size="lg"
           className="w-full"
-          disabled={status === "loading"}
+          disabled={status === "loading" || !turnstileToken}
         >
           {status === "loading" ? "Joining..." : "Get Early Access"}
         </Button>
