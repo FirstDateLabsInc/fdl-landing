@@ -86,11 +86,11 @@ export function ProblemSolutionSection() {
           >
             <div className="max-w-md">
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-400">
-                Before
+                The Old Way
               </p>
               <h3 className="mb-8 text-2xl font-semibold tracking-tight text-black sm:text-3xl">
-                Dating feels like a<br />
-                <span className="text-purple-400">guessing game</span>
+                Dating without<br />
+                <span className="text-purple-400">a game plan</span>
               </h3>
               <ul className="space-y-4">
                 {problemSolution.oldWay.map((item, index) => (
@@ -146,11 +146,11 @@ export function ProblemSolutionSection() {
             <div className="max-w-md lg:ml-auto">
               <p className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-yellow-600">
                 <Sparkles className="size-4" aria-hidden />
-                After
+                With Juliet
               </p>
               <h3 className="mb-8 text-2xl font-semibold tracking-tight text-black sm:text-3xl">
-                Every date becomes a<br />
-                <span className="text-yellow-600">real opportunity</span>
+                Same you.<br />
+                <span className="text-yellow-600">Better results.</span>
               </h3>
               <ul className="space-y-4">
                 {problemSolution.newWay.map((item, index) => (

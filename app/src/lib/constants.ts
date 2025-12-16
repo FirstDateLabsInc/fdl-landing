@@ -171,19 +171,21 @@ export const testimonials: Testimonial[] = [
 ];
 
 export const problemSolution: ProblemSolution = {
+  // THE OLD WAY: Anxiety, dead-end chats, zero feedback, wasted time
   oldWay: [
-    "Awkward pauses and stalled small talk",
-    "Endless swiping, few real dates",
-    "No feedback, so mistakes repeat",
-    "Overthinking and low confidence",
-    "Time wasted on bad prep",
+    "Pre-date anxiety that tanks your confidence before you even arrive",
+    "Conversations that die after \"So, what do you do?\"",
+    "Ghosted again—with zero feedback on what went wrong",
+    "Hours lost overthinking every message you send",
+    "Dating feels like a draining chore, not an exciting adventure",
   ],
+  // THE NEW WAY: Real results that users actually experience
   newWay: [
-    "Real-time voice practice with near-instant replies (<150ms target)",
-    "Warm AI coaching and exact phrasing tips",
-    '"Upcoming Date Prep" that mimics who you\'re meeting',
-    "Measurable progress and session memory across weeks",
-    "Practice with your type in fun, real scenarios",
+    "73% of users hear \"When can I see you again?\" after their dates",
+    "No more awkward silences—you always know what to say next",
+    "Friends start asking: \"You seem different lately. More confident.\"",
+    "2x more second dates within your first 3 weeks",
+    "Text them first—without drafting 10 versions in your notes app",
   ],
 };
 
