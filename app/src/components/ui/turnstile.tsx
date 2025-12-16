@@ -1,7 +1,7 @@
 "use client";
 
 import { Turnstile as TurnstileWidget } from "@marsidev/react-turnstile";
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export interface TurnstileRef {
@@ -18,11 +18,16 @@ interface TurnstileProps {
 
 export const Turnstile = forwardRef<TurnstileRef, TurnstileProps>(
   function Turnstile({ onSuccess, onError, onExpire, className }, ref) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const widgetRef = useRef<any>(null);
+    const widgetRef = useRef<React.ComponentRef<typeof TurnstileWidget>>(null);
+
+    // Dynamic visibility: hidden by default, shown when Cloudflare requires interaction
+    const [needsInteraction, setNeedsInteraction] = useState(false);
 
     useImperativeHandle(ref, () => ({
-      reset: () => widgetRef.current?.reset(),
+      reset: () => {
+        widgetRef.current?.reset();
+        setNeedsInteraction(false);
+      },
       getToken: () => widgetRef.current?.getResponse(),
     }));
 
@@ -36,13 +41,38 @@ export const Turnstile = forwardRef<TurnstileRef, TurnstileProps>(
     }
 
     return (
-      <div className={cn("h-0 overflow-hidden", className)}>
+      <div
+        className={cn(
+          // Dynamic height: hidden by default, visible when interaction needed
+          needsInteraction ? "h-auto" : "h-0 overflow-hidden",
+          // Smooth transition for better UX
+          "transition-[height] duration-200",
+          className
+        )}
+      >
         <TurnstileWidget
           ref={widgetRef}
           siteKey={siteKey}
-          onSuccess={onSuccess}
-          onError={onError}
-          onExpire={onExpire}
+          onSuccess={(token) => {
+            setNeedsInteraction(false);
+            onSuccess(token);
+          }}
+          onError={() => {
+            setNeedsInteraction(false);
+            onError?.();
+          }}
+          onExpire={() => {
+            setNeedsInteraction(false);
+            onExpire?.();
+          }}
+          // Cloudflare calls this when interactive challenge is required
+          // (VPN, Tor, datacenter IPs, suspicious fingerprints, etc.)
+          onBeforeInteractive={() => {
+            setNeedsInteraction(true);
+          }}
+          onAfterInteractive={() => {
+            // Don't hide here - wait for onSuccess to ensure token received
+          }}
           options={{
             theme: "light",
             size: "flexible",
