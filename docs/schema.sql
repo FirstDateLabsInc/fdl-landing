@@ -211,13 +211,9 @@ CREATE POLICY "sessions_service_only" ON anonymous_sessions
 
 -- QUIZ_RESULTS POLICIES
 -- Note: Anonymous INSERT handled by insert_quiz_result() function
-
-CREATE POLICY "results_select_anon" ON quiz_results 
-    FOR SELECT TO anon
-    USING (
-        anonymous_session_id::text = 
-            current_setting('request.headers', true)::json->>'x-session-id'
-    );
+-- Note: results_select_anon policy REMOVED (2025-12-15 security lockdown)
+--       Web access now uses service_role key which bypasses RLS
+--       Mobile access uses authenticated JWT with results_select_authenticated
 
 CREATE POLICY "results_insert_authenticated" ON quiz_results
     FOR INSERT TO authenticated
@@ -528,6 +524,86 @@ END;
 $$;
 
 -- ───────────────────────────────────────────────────────────
+-- FUNCTION: create_or_get_full_report_slug (AUTHENTICATED ONLY)
+-- ───────────────────────────────────────────────────────────
+-- Business Logic:
+--   - Web users can share general report (preview URL) without login
+--   - Full report sharing requires: (1) authenticated user, (2) claimed the quiz
+--   - Once full report link exists, ANYONE can view it (gate is on creation, not viewing)
+CREATE OR REPLACE FUNCTION create_or_get_full_report_slug(
+  p_result_id UUID,
+  p_new_slug TEXT
+)
+RETURNS TABLE (public_slug TEXT, created BOOLEAN)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+  v_uid UUID;
+  v_existing_slug TEXT;
+  v_claimed_at TIMESTAMPTZ;
+BEGIN
+  -- Must be authenticated
+  v_uid := auth.uid();
+  IF v_uid IS NULL THEN
+    RAISE EXCEPTION 'NOT_AUTHENTICATED' USING ERRCODE = 'P0001';
+  END IF;
+
+  -- Validate slug format (nanoid 21 chars, URL-safe alphabet)
+  IF p_new_slug IS NULL OR p_new_slug !~ '^[A-Za-z0-9_-]{21}$' THEN
+    RAISE EXCEPTION 'INVALID_SLUG' USING ERRCODE = '22023';
+  END IF;
+
+  -- Check ownership AND claimed status
+  SELECT qr.public_slug, qr.claimed_at INTO v_existing_slug, v_claimed_at
+  FROM quiz_results qr
+  WHERE qr.id = p_result_id
+    AND qr.user_id = v_uid;
+
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'RESULT_NOT_FOUND_OR_NOT_OWNED' USING ERRCODE = 'P0002';
+  END IF;
+
+  -- Must have claimed the quiz (logged into mobile app)
+  IF v_claimed_at IS NULL THEN
+    RAISE EXCEPTION 'QUIZ_NOT_CLAIMED' USING ERRCODE = 'P0001';
+  END IF;
+
+  -- Return existing slug if already created (idempotent)
+  IF v_existing_slug IS NOT NULL THEN
+    RETURN QUERY SELECT v_existing_slug, FALSE;
+    RETURN;
+  END IF;
+
+  -- Create new slug
+  UPDATE quiz_results qr
+  SET public_slug = p_new_slug,
+      public_slug_created_at = now()
+  WHERE qr.id = p_result_id
+    AND qr.user_id = v_uid
+    AND qr.public_slug IS NULL;
+
+  IF NOT FOUND THEN
+    -- Race condition: another request created the slug
+    SELECT qr.public_slug INTO v_existing_slug
+    FROM quiz_results qr
+    WHERE qr.id = p_result_id;
+
+    RETURN QUERY SELECT v_existing_slug, FALSE;
+    RETURN;
+  END IF;
+
+  RETURN QUERY SELECT p_new_slug, TRUE;
+END;
+$$;
+
+COMMENT ON FUNCTION create_or_get_full_report_slug IS
+'Creates or retrieves a public sharing slug for quiz results.
+Requires authenticated user who owns AND has claimed the quiz result.
+Once created, the public_slug allows anyone to view the full report.';
+
+-- ───────────────────────────────────────────────────────────
 -- FUNCTION: cleanup_sessions
 -- ───────────────────────────────────────────────────────────
 CREATE OR REPLACE FUNCTION public.cleanup_sessions()
@@ -568,43 +644,64 @@ CREATE TRIGGER on_auth_user_created
 
 
 -- ============================================================
--- 9. FUNCTION PERMISSIONS
+-- 9. FUNCTION PERMISSIONS (Security Lockdown v1 - 2025-12-15)
 -- ============================================================
-REVOKE EXECUTE ON FUNCTION verify_or_create_session(TEXT, UUID) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION verify_or_create_session(TEXT, UUID) TO anon, authenticated;
+-- ARCHITECTURE:
+--   Web: Cloudflare WAF → Next.js API routes → service_role key → Supabase
+--   Mobile: Supabase Auth → authenticated JWT → RLS (for claim only)
+--
+-- This pattern locks down all RPC functions to service_role only,
+-- with exceptions for:
+--   • claim_quizzes_by_email: authenticated + service_role (mobile direct)
+--   • Auth triggers: supabase_auth_admin + service_role
+--   • create_or_get_full_report_slug: authenticated + service_role (mobile only)
+-- ============================================================
 
-REVOKE EXECUTE ON FUNCTION insert_quiz_result FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION insert_quiz_result TO anon, authenticated;
+-- -----------------------------------------------------------------------------
+-- 9.1 Website-Only Functions → service_role Only
+-- These are called via Next.js API routes which use SUPABASE_SERVICE_ROLE_KEY
+-- -----------------------------------------------------------------------------
 
-REVOKE EXECUTE ON FUNCTION claim_quizzes_by_email() FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION claim_quizzes_by_email() TO authenticated;
+REVOKE EXECUTE ON FUNCTION verify_or_create_session(TEXT, UUID) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION verify_or_create_session(TEXT, UUID) TO service_role;
 
-REVOKE EXECUTE ON FUNCTION get_results_by_fingerprint(TEXT) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION get_results_by_fingerprint(TEXT) TO service_role;
+REVOKE EXECUTE ON FUNCTION insert_quiz_result(uuid, text, jsonb, jsonb, text, text, text, text, text, text, text, integer) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION insert_quiz_result(uuid, text, jsonb, jsonb, text, text, text, text, text, text, text, integer) TO service_role;
 
--- ============================================
--- Permission setup (for anon role if needed)
--- ============================================
--- Note: Current codebase uses service_role which bypasses RLS.
--- These grants prepare for potential future anon key usage.
-
--- Revoke default PUBLIC execute (security hardening)
-REVOKE ALL ON FUNCTION get_quiz_preview(UUID) FROM PUBLIC;
-REVOKE ALL ON FUNCTION get_quiz_by_public_slug(TEXT) FROM PUBLIC;
-REVOKE ALL ON FUNCTION create_or_get_share_slug(UUID, UUID, TEXT) FROM PUBLIC;
-
--- Grant to anon role (PostgREST unauthenticated access)
-GRANT EXECUTE ON FUNCTION get_quiz_preview(UUID) TO anon;
-GRANT EXECUTE ON FUNCTION get_quiz_by_public_slug(TEXT) TO anon;
-GRANT EXECUTE ON FUNCTION create_or_get_share_slug(UUID, UUID, TEXT) TO anon;
-
--- Grant to service_role (server-side access - already has full access but explicit is clearer)
-GRANT EXECUTE ON FUNCTION get_quiz_preview(UUID) TO service_role;
-GRANT EXECUTE ON FUNCTION get_quiz_by_public_slug(TEXT) TO service_role;
+REVOKE EXECUTE ON FUNCTION create_or_get_share_slug(UUID, UUID, TEXT) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION create_or_get_share_slug(UUID, UUID, TEXT) TO service_role;
 
-REVOKE EXECUTE ON FUNCTION cleanup_sessions() FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION cleanup_sessions() TO postgres;
+REVOKE EXECUTE ON FUNCTION get_results_by_fingerprint(TEXT) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION get_results_by_fingerprint(TEXT) TO service_role;
+
+REVOKE EXECUTE ON FUNCTION get_quiz_preview(UUID) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION get_quiz_preview(UUID) TO service_role;
+
+REVOKE EXECUTE ON FUNCTION get_quiz_by_public_slug(TEXT) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION get_quiz_by_public_slug(TEXT) TO service_role;
+
+REVOKE EXECUTE ON FUNCTION cleanup_sessions() FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION cleanup_sessions() TO service_role;
+
+-- -----------------------------------------------------------------------------
+-- 9.2 Mobile-Only Functions → authenticated + service_role
+-- Called directly from mobile app with Supabase Auth JWT
+-- -----------------------------------------------------------------------------
+
+REVOKE EXECUTE ON FUNCTION claim_quizzes_by_email() FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION claim_quizzes_by_email() TO authenticated, service_role;
+
+-- Full report sharing requires authenticated user who has claimed the quiz
+REVOKE EXECUTE ON FUNCTION create_or_get_full_report_slug(UUID, TEXT) FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION create_or_get_full_report_slug(UUID, TEXT) TO authenticated, service_role;
+
+-- -----------------------------------------------------------------------------
+-- 9.3 Auth Trigger Functions → supabase_auth_admin + service_role
+-- CRITICAL: These are triggers on auth.users, executed by supabase_auth_admin
+-- -----------------------------------------------------------------------------
+
+REVOKE EXECUTE ON FUNCTION handle_new_user() FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION handle_new_user() TO supabase_auth_admin, service_role;
 
 
 -- ============================================================
@@ -830,16 +927,22 @@ CREATE TRIGGER on_user_created_convert_waitlist
   EXECUTE FUNCTION auto_convert_waitlist();
 
 -- ============================================================
--- 17. WAITLIST FUNCTION PERMISSIONS
+-- 17. WAITLIST FUNCTION PERMISSIONS (Security Lockdown v1)
 -- ============================================================
-REVOKE EXECUTE ON FUNCTION join_waitlist FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION join_waitlist TO anon, authenticated;
 
-REVOKE EXECUTE ON FUNCTION waitlist_unsubscribe FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION waitlist_unsubscribe TO anon, authenticated;
+-- Website-only functions → service_role only
+REVOKE EXECUTE ON FUNCTION join_waitlist(text, text, text, text, text, text, uuid) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION join_waitlist(text, text, text, text, text, text, uuid) TO service_role;
 
-REVOKE EXECUTE ON FUNCTION waitlist_mark_converted FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION waitlist_mark_converted TO service_role;
+REVOKE EXECUTE ON FUNCTION waitlist_unsubscribe(uuid) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION waitlist_unsubscribe(uuid) TO service_role;
+
+REVOKE EXECUTE ON FUNCTION waitlist_mark_converted(text, uuid) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION waitlist_mark_converted(text, uuid) TO service_role;
+
+-- Auth trigger → supabase_auth_admin + service_role
+REVOKE EXECUTE ON FUNCTION auto_convert_waitlist() FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION auto_convert_waitlist() TO supabase_auth_admin, service_role;
 
 -- ============================================================
 -- 18. WAITLIST ANALYTICS VIEW
@@ -1183,9 +1286,38 @@ ORDER BY w.converted_at DESC;
 
 
 -- ============================================================
--- SCHEMA COMPLETE
+-- 20. ANALYTICS VIEW SECURITY (Security Lockdown v1 - 2025-12-15)
 -- ============================================================
+-- All analytics views are admin-only. Use ALTER VIEW to set security_invoker
+-- (safer than DROP/CREATE as it preserves any view dependents).
+-- SECURITY INVOKER means views respect RLS of the querying user.
 
+ALTER VIEW waitlist_stats SET (security_invoker = true);
+ALTER VIEW quiz_completion_stats SET (security_invoker = true);
+ALTER VIEW quiz_to_waitlist_funnel SET (security_invoker = true);
+ALTER VIEW quiz_to_app_funnel SET (security_invoker = true);
+ALTER VIEW conversion_by_archetype SET (security_invoker = true);
+ALTER VIEW conversion_by_source SET (security_invoker = true);
+ALTER VIEW daily_quiz_conversions SET (security_invoker = true);
+ALTER VIEW time_to_conversion SET (security_invoker = true);
+
+-- Revoke all access from anon/authenticated (admin-only analytics)
+REVOKE ALL ON waitlist_stats FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON quiz_completion_stats FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON quiz_to_waitlist_funnel FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON quiz_to_app_funnel FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON conversion_by_archetype FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON conversion_by_source FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON daily_quiz_conversions FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON time_to_conversion FROM PUBLIC, anon, authenticated;
+
+-- Ensure service_role can still query all tables/views
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO service_role;
+
+
+-- ============================================================
+-- 21. ARCHIVE FUNCTION
+-- ============================================================
 
 -- Archive old raw answers after 1 year to save storage (35-55% reduction)
 -- Scores and attribution are preserved, only raw answers cleared
@@ -1207,6 +1339,9 @@ SELECT cron.schedule(
     '0 4 1 * *',
     'SELECT public.archive_old_answers();'
 );
+
+REVOKE EXECUTE ON FUNCTION archive_old_answers() FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION archive_old_answers() TO service_role;
 
 
 -- ============================================================
