@@ -499,13 +499,13 @@ describe('isQuizComplete', () => {
     expect(isQuizComplete(responses)).toBe(false);
   });
 
-  it('returns true when all 47 questions answered', () => {
-    // Create responses for all question IDs
+  it('returns true when all 48 questions answered', () => {
+    // Create responses for all question IDs (48 total)
     const allIds = [
       'S1', 'S2', 'S3', 'AX1', 'AX2', 'AX3', 'AV1', 'AV2', 'AV3', 'D1', 'D2', 'D3',
       'COM_PASSIVE_1', 'COM_PASSIVE_2', 'COM_AGGRESSIVE_1', 'COM_AGGRESSIVE_2',
       'COM_PAGG_1', 'COM_PAGG_2', 'COM_ASSERTIVE_1', 'COM_ASSERTIVE_2', 'COM_SCENARIO_1',
-      'C1', 'C2', 'C3', 'C4', 'C5',
+      'C1', 'C2', 'C3', 'C4', 'C5', 'C6',
       'EA1', 'EA2', 'EA3', 'EA4', 'EA5',
       'IC1', 'IC2', 'IC3', 'BA1', 'BA2', 'BA3',
       'LL1', 'LL2', 'LL3', 'LL4', 'LL5', 'LL6', 'LL7', 'LL8', 'LL9', 'LL10',
@@ -523,13 +523,13 @@ describe('getCompletionPercentage', () => {
   });
 
   it('calculates percentage correctly', () => {
-    // 47 total questions, so 47 responses = 100%
-    const responses = Array.from({ length: 47 }, (_, i) => r(`Q${i}`, 3));
+    // 48 total questions, so 48 responses = 100%
+    const responses = Array.from({ length: 48 }, (_, i) => r(`Q${i}`, 3));
     expect(getCompletionPercentage(responses)).toBe(100);
   });
 
   it('rounds to nearest integer', () => {
-    // 1 out of 47 = 2.13% → rounds to 2%
+    // 1 out of 48 = 2.08% → rounds to 2%
     expect(getCompletionPercentage([r('S1', 5)])).toBe(2);
   });
 });

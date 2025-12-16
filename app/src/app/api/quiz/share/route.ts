@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { nanoid } from "nanoid";
-import { getSupabaseServer } from "@/lib/supabase/server";
 import type { CreateShareRequest, CreateShareResponse } from "@/lib/api/quiz";
 
-/** RPC response type for create_or_get_share_slug function */
-interface ShareSlugResponse {
-  public_slug: string;
-  created: boolean;
-}
-
+/**
+ * Web Share Endpoint - Returns Preview URL Only
+ *
+ * SECURITY: This endpoint returns a preview URL (general report) for web users.
+ * Full report sharing (with public_slug) requires:
+ * 1. Authenticated user (mobile app login)
+ * 2. Quiz result claimed (claim_quizzes_by_email called)
+ * 3. Call to create_or_get_full_report_slug RPC from mobile app
+ *
+ * This prevents unauthenticated users from minting public_slug via direct API calls.
+ */
 export async function POST(
   request: NextRequest
 ): Promise<NextResponse<CreateShareResponse>> {
@@ -33,49 +36,15 @@ export async function POST(
       );
     }
 
-    const supabase = getSupabaseServer();
-
-    // Generate new slug (21 chars = 126 bits entropy)
-    const newSlug = nanoid(21);
-
-    // Call RPC - handles ownership verification + idempotency
-    const { data, error } = await supabase
-      .rpc("create_or_get_share_slug", {
-        p_result_id: resultId,
-        p_session_id: sessionId,
-        p_new_slug: newSlug,
-      })
-      .single<ShareSlugResponse>();
-
-    if (error) {
-      // Map PostgreSQL error codes to HTTP responses
-      if (error.code === "P0002") {
-        return NextResponse.json(
-          { success: false, error: "Result not found" },
-          { status: 404 }
-        );
-      }
-      if (error.code === "P0001") {
-        return NextResponse.json(
-          { success: false, error: "Access denied" },
-          { status: 403 }
-        );
-      }
-      console.error("Share creation error:", error);
-      return NextResponse.json(
-        { success: false, error: "Failed to create share link" },
-        { status: 500 }
-      );
-    }
-
-    // Build public URL
+    // Return preview URL (general report) - no public_slug minting
+    // Full report sharing requires authenticated + claimed quiz via mobile app
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://firstdatelabs.com";
-    const publicUrl = `${baseUrl}/quiz/p/${data.public_slug}`;
+    const publicUrl = `${baseUrl}/quiz/results/${resultId}`;
 
     return NextResponse.json({
       success: true,
       publicUrl,
-      created: data.created,
+      created: false, // No slug was created - this is a preview URL
     });
   } catch (err) {
     console.error("Share API error:", err);
