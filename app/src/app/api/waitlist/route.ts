@@ -104,8 +104,11 @@ export async function POST(
       );
     }
 
-    // Send confirmation email for new signups
-    if (result.is_new && result.unsubscribe_token) {
+    // Send email for:
+    // 1) New signups (welcome or quiz email)
+    // 2) Returning users coming from quiz flow (they expect quiz results email)
+    const isQuizSubmission = !!quizResultId;
+    if (result.unsubscribe_token && (result.is_new || isQuizSubmission)) {
       try {
         const resend = getResend();
 

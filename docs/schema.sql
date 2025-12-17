@@ -842,7 +842,8 @@ BEGIN
     utm_source = COALESCE(waitlist.utm_source, EXCLUDED.utm_source),
     utm_medium = COALESCE(waitlist.utm_medium, EXCLUDED.utm_medium),
     utm_campaign = COALESCE(waitlist.utm_campaign, EXCLUDED.utm_campaign),
-    quiz_result_id = COALESCE(waitlist.quiz_result_id, EXCLUDED.quiz_result_id)
+    -- Quiz is last-touch attribution (newest quiz wins)
+    quiz_result_id = COALESCE(EXCLUDED.quiz_result_id, waitlist.quiz_result_id)
   RETURNING id, (xmax = 0), unsubscribe_token
   INTO v_id, v_is_new, v_unsubscribe_token;
 

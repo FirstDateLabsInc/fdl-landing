@@ -136,7 +136,9 @@ export function WaitlistForm({
           You&apos;re on the list!
         </p>
         <p className="text-sm text-muted-foreground sm:text-base">
-          Check your inbox for confirmation.
+          {quizResultId
+            ? "Check your inbox for your quiz results."
+            : "Check your inbox for confirmation."}
         </p>
       </div>
     );
@@ -152,10 +154,14 @@ export function WaitlistForm({
         )}
       >
         <p className="text-lg font-semibold text-foreground sm:text-xl">
-          You&apos;re already on the list.
+          {quizResultId
+            ? "Check your inbox for your quiz results!"
+            : "You&apos;re already on the list."}
         </p>
         <p className="text-sm text-muted-foreground sm:text-base">
-          We&apos;ll notify you when we launch.
+          {quizResultId
+            ? "You're already on the early access list — we've saved your latest results."
+            : "We&apos;ll notify you when we launch."}
         </p>
       </div>
     );

@@ -4,7 +4,6 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2025-10-26",
   "compatibility_flags": ["nodejs_compat"],
-  // SUPABASE_SERVICE_ROLE_KEY must be set via: npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
   "vars": {
     "NEXT_PUBLIC_TURNSTILE_SITE_KEY":"0x4AAAAAACHEU1eqFStgqkCY"
   },
