@@ -9,6 +9,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
+import { EmailSocialLinks } from "./components/EmailSocialLinks";
 
 interface WaitlistConfirmationProps {
   email: string;
@@ -57,6 +58,8 @@ export function WaitlistConfirmation({
               you.
             </Text>
           </Section>
+
+          <EmailSocialLinks source="waitlist" />
 
           <Section style={footer}>
             <Text style={footerText}>

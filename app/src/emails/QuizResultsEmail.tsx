@@ -10,6 +10,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
+import { EmailSocialLinks } from "./components/EmailSocialLinks";
 
 interface QuizResultsEmailProps {
   email: string;
@@ -92,6 +93,8 @@ export function QuizResultsEmail({
               Questions? Just reply to this email.
             </Text>
           </Section>
+
+          <EmailSocialLinks source="quiz-results" />
 
           <Section style={footer}>
             <Text style={footerText}>
