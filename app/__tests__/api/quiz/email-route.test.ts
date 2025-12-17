@@ -66,7 +66,7 @@ describe("POST /api/quiz/email", () => {
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
-      expect(data.error).toBe("Missing required fields");
+      expect(data.error).toBe("Invalid request payload");
     });
 
     it("returns 400 when resultId is missing", async () => {
@@ -79,7 +79,7 @@ describe("POST /api/quiz/email", () => {
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
-      expect(data.error).toBe("Missing required fields");
+      expect(data.error).toBe("Invalid request payload");
     });
 
     it("returns 400 when sessionId is missing", async () => {
@@ -92,7 +92,7 @@ describe("POST /api/quiz/email", () => {
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
-      expect(data.error).toBe("Missing required fields");
+      expect(data.error).toBe("Invalid request payload");
     });
 
     it("returns 400 when all fields are missing", async () => {
@@ -102,7 +102,7 @@ describe("POST /api/quiz/email", () => {
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
-      expect(data.error).toBe("Missing required fields");
+      expect(data.error).toBe("Invalid request payload");
     });
 
     it("returns 400 when email is empty string", async () => {
@@ -115,7 +115,49 @@ describe("POST /api/quiz/email", () => {
       const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(400);
-      expect(data.error).toBe("Missing required fields");
+      expect(data.error).toBe("Invalid request payload");
+    });
+
+    it("returns 400 when email format is invalid", async () => {
+      const request = createRequest({
+        email: "not-an-email",
+        resultId: TEST_UUIDS.resultId,
+        sessionId: TEST_UUIDS.sessionId,
+      });
+      const response = await POST(request);
+      const data = (await response.json()) as Record<string, unknown>;
+
+      expect(response.status).toBe(400);
+      expect(data.success).toBe(false);
+      expect(data.error).toBe("Invalid request payload");
+    });
+
+    it("returns 400 when resultId is not a valid UUID", async () => {
+      const request = createRequest({
+        email: TEST_EMAIL,
+        resultId: "not-a-uuid",
+        sessionId: TEST_UUIDS.sessionId,
+      });
+      const response = await POST(request);
+      const data = (await response.json()) as Record<string, unknown>;
+
+      expect(response.status).toBe(400);
+      expect(data.success).toBe(false);
+      expect(data.error).toBe("Invalid request payload");
+    });
+
+    it("returns 400 when sessionId is not a valid UUID", async () => {
+      const request = createRequest({
+        email: TEST_EMAIL,
+        resultId: TEST_UUIDS.resultId,
+        sessionId: "not-a-uuid",
+      });
+      const response = await POST(request);
+      const data = (await response.json()) as Record<string, unknown>;
+
+      expect(response.status).toBe(400);
+      expect(data.success).toBe(false);
+      expect(data.error).toBe("Invalid request payload");
     });
   });
 
