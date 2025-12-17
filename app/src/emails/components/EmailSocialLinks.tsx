@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { Section, Text, Link } from "@react-email/components";
 
 interface EmailSocialLinksProps {
