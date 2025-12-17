@@ -5,7 +5,7 @@
  * Usage: vi.mock("@/lib/supabase/server", () => ({ getSupabaseServer: mockSupabaseServer }))
  */
 
-import { vi } from "vitest";
+import { vi, beforeEach, afterEach } from "vitest";
 
 /**
  * Create a mock Supabase client for unit tests
@@ -49,7 +49,7 @@ export function mockQueryResponse<T>(data: T, error: Error | null = null) {
 }
 
 /**
- * Mock quiz result data
+ * Mock quiz result data (DB row format)
  */
 export function mockQuizResult(overrides: Record<string, unknown> = {}) {
   return {
@@ -58,20 +58,33 @@ export function mockQuizResult(overrides: Record<string, unknown> = {}) {
     scores: {
       attachment: {
         primary: "anxious",
-        scores: { secure: 3, anxious: 8, avoidant: 4, disorganized: 2 },
+        scores: { secure: 30, anxious: 80, avoidant: 40, disorganized: 20 },
       },
       communication: {
-        primary: "expressive",
-        scores: { expressive: 7, receptive: 5, analytical: 4, intuitive: 6 },
+        primary: "assertive",
+        scores: { passive: 30, aggressive: 20, passive_aggressive: 25, assertive: 70 },
+      },
+      confidence: 65,
+      emotional: 72,
+      intimacy: {
+        comfort: 68,
+        boundaries: 75,
       },
       loveLanguages: {
-        primary: "quality-time",
+        ranked: ["time", "words", "touch", "service", "gifts"],
         scores: {
-          "quality-time": 9,
-          "words-of-affirmation": 7,
-          "physical-touch": 6,
-          "acts-of-service": 4,
-          gifts: 3,
+          words: 70,
+          time: 90,
+          service: 40,
+          gifts: 30,
+          touch: 60,
+        },
+        giveReceive: {
+          words: { give: 75, receive: 65 },
+          time: { give: 85, receive: 95 },
+          service: { give: 45, receive: 35 },
+          gifts: { give: 30, receive: 30 },
+          touch: { give: 55, receive: 65 },
         },
       },
     },
@@ -92,10 +105,11 @@ export function mockQuizResult(overrides: Record<string, unknown> = {}) {
  */
 export function mockArchetypePublic(overrides: Record<string, unknown> = {}) {
   return {
-    slug: "fiery-pursuer",
+    id: "fiery-pursuer",
     name: "The Fiery Pursuer",
     emoji: "🔥",
-    tagline: "You love deeply and chase connection fearlessly",
+    summary: "You love deeply and chase connection fearlessly",
+    image: "/images/archetypes/fiery-pursuer.png",
     patternDescription:
       "You tend to seek intense emotional connections quickly...",
     rootCause: "Your attachment style developed from early experiences...",
@@ -146,6 +160,11 @@ export function mockArchetypeLocked(overrides: Record<string, unknown> = {}) {
         "May rush commitment",
       ],
     },
+    coachingFocus: [
+      "Practice self-soothing techniques",
+      "Build secure attachment patterns",
+      "Learn to tolerate uncertainty",
+    ],
     ...overrides,
   };
 }
@@ -157,20 +176,33 @@ export function mockQuizResults(overrides: Record<string, unknown> = {}) {
   return {
     attachment: {
       primary: "anxious" as const,
-      scores: { secure: 3, anxious: 8, avoidant: 4, disorganized: 2 },
+      scores: { secure: 30, anxious: 80, avoidant: 40, disorganized: 20 },
     },
     communication: {
-      primary: "expressive" as const,
-      scores: { expressive: 7, receptive: 5, analytical: 4, intuitive: 6 },
+      primary: "assertive" as const,
+      scores: { passive: 30, aggressive: 20, passive_aggressive: 25, assertive: 70 },
+    },
+    confidence: 65,
+    emotional: 72,
+    intimacy: {
+      comfort: 68,
+      boundaries: 75,
     },
     loveLanguages: {
-      primary: "quality-time" as const,
+      ranked: ["time", "words", "touch", "service", "gifts"] as ("words" | "time" | "service" | "gifts" | "touch")[],
       scores: {
-        "quality-time": 9,
-        "words-of-affirmation": 7,
-        "physical-touch": 6,
-        "acts-of-service": 4,
-        gifts: 3,
+        words: 70,
+        time: 90,
+        service: 40,
+        gifts: 30,
+        touch: 60,
+      },
+      giveReceive: {
+        words: { give: 75, receive: 65 },
+        time: { give: 85, receive: 95 },
+        service: { give: 45, receive: 35 },
+        gifts: { give: 30, receive: 30 },
+        touch: { give: 55, receive: 65 },
       },
     },
     ...overrides,
@@ -262,20 +294,33 @@ export function createMockScores() {
   return {
     attachment: {
       primary: "anxious" as const,
-      scores: { secure: 3, anxious: 8, avoidant: 4, disorganized: 2 },
+      scores: { secure: 30, anxious: 80, avoidant: 40, disorganized: 20 },
     },
     communication: {
-      primary: "expressive" as const,
-      scores: { expressive: 7, receptive: 5, analytical: 4, intuitive: 6 },
+      primary: "assertive" as const,
+      scores: { passive: 30, aggressive: 20, passive_aggressive: 25, assertive: 70 },
+    },
+    confidence: 65,
+    emotional: 72,
+    intimacy: {
+      comfort: 68,
+      boundaries: 75,
     },
     loveLanguages: {
-      primary: "quality-time" as const,
+      ranked: ["time", "words", "touch", "service", "gifts"] as ("words" | "time" | "service" | "gifts" | "touch")[],
       scores: {
-        "quality-time": 9,
-        "words-of-affirmation": 7,
-        "physical-touch": 6,
-        "acts-of-service": 4,
-        gifts: 3,
+        words: 70,
+        time: 90,
+        service: 40,
+        gifts: 30,
+        touch: 60,
+      },
+      giveReceive: {
+        words: { give: 75, receive: 65 },
+        time: { give: 85, receive: 95 },
+        service: { give: 45, receive: 35 },
+        gifts: { give: 30, receive: 30 },
+        touch: { give: 55, receive: 65 },
       },
     },
   };

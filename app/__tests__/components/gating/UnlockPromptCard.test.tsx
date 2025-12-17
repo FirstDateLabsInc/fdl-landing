@@ -229,8 +229,9 @@ describe("UnlockPromptCard", () => {
       expect(button).toHaveClass("bg-gradient-to-r");
     });
 
-    it("has sparkles icon in button", () => {
-      render(<UnlockPromptCard {...defaultProps} />);
+    it("has sparkles icon in button for overlay variant", () => {
+      // Only overlay and prominent variants have sparkles in button
+      render(<UnlockPromptCard {...defaultProps} variant="overlay" />);
 
       const button = screen.getByRole("button");
       expect(button.querySelector("svg")).toBeInTheDocument();

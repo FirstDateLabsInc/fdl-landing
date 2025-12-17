@@ -46,7 +46,7 @@ describe("POST /api/quiz/session", () => {
     it("returns 400 when fingerprintHash is missing", async () => {
       const request = createRequest({});
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(400);
       expect(data.sessionId).toBe("");
@@ -56,7 +56,7 @@ describe("POST /api/quiz/session", () => {
     it("returns 400 when fingerprintHash is empty string", async () => {
       const request = createRequest({ fingerprintHash: "" });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(400);
       expect(data.sessionId).toBe("");
@@ -66,7 +66,7 @@ describe("POST /api/quiz/session", () => {
     it("returns 400 when fingerprintHash is null", async () => {
       const request = createRequest({ fingerprintHash: null });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(400);
       expect(data.error).toBe("Fingerprint required");
@@ -77,7 +77,7 @@ describe("POST /api/quiz/session", () => {
     it("creates new session with fingerprint", async () => {
       const request = createRequest({ fingerprintHash: VALID_FINGERPRINT });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(200);
       expect(data.sessionId).toBe(TEST_UUIDS.sessionId);
@@ -201,7 +201,7 @@ describe("POST /api/quiz/session", () => {
     it("returns sessionId on success", async () => {
       const request = createRequest({ fingerprintHash: VALID_FINGERPRINT });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data).toEqual({
         sessionId: TEST_UUIDS.sessionId,
@@ -217,7 +217,7 @@ describe("POST /api/quiz/session", () => {
 
       const request = createRequest({ fingerprintHash: VALID_FINGERPRINT });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data.sessionId).toBe(existingSessionId);
     });
@@ -232,7 +232,7 @@ describe("POST /api/quiz/session", () => {
 
       const request = createRequest({ fingerprintHash: VALID_FINGERPRINT });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(500);
       expect(data.sessionId).toBe("");
@@ -245,7 +245,7 @@ describe("POST /api/quiz/session", () => {
       } as unknown as NextRequest;
 
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(500);
       expect(data.sessionId).toBe("");
@@ -257,7 +257,7 @@ describe("POST /api/quiz/session", () => {
 
       const request = createRequest({ fingerprintHash: VALID_FINGERPRINT });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(500);
       expect(data.error).toBe("Internal error");

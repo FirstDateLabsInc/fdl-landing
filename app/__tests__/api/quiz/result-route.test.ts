@@ -36,6 +36,18 @@ import { GET } from "@/app/api/quiz/result/[id]/route";
 import { parseDbScores } from "@/lib/quiz/utils/parse-db-scores";
 import { TEST_UUIDS, createMockScores } from "../../helpers/mocks";
 
+// Type for API response
+interface ResultApiResponse {
+  success?: boolean;
+  error?: string;
+  result?: {
+    id: string;
+    archetypeSlug: string;
+    scores: ReturnType<typeof createMockScores>;
+    createdAt: string;
+  };
+}
+
 describe("GET /api/quiz/result/[id]", () => {
   const mockScores = createMockScores();
   const mockDbScores = { raw: "scores" }; // Simulated DB format
@@ -77,7 +89,7 @@ describe("GET /api/quiz/result/[id]", () => {
     it("returns quiz result data for valid resultId", async () => {
       const { request, params } = createRequestWithParams(TEST_UUIDS.resultId);
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as ResultApiResponse;
 
       expect(response.status).toBe(200);
       expect(data.success).toBe(true);
@@ -87,34 +99,34 @@ describe("GET /api/quiz/result/[id]", () => {
     it("includes archetype_slug in response", async () => {
       const { request, params } = createRequestWithParams(TEST_UUIDS.resultId);
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as ResultApiResponse;
 
-      expect(data.result.archetypeSlug).toBe("romantic-idealist");
+      expect(data.result?.archetypeSlug).toBe("romantic-idealist");
     });
 
     it("includes parsed scores in response", async () => {
       const { request, params } = createRequestWithParams(TEST_UUIDS.resultId);
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as ResultApiResponse;
 
-      expect(data.result.scores).toEqual(mockScores);
+      expect(data.result?.scores).toEqual(mockScores);
       expect(parseDbScores).toHaveBeenCalledWith(mockDbScores);
     });
 
     it("includes id in response", async () => {
       const { request, params } = createRequestWithParams(TEST_UUIDS.resultId);
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as ResultApiResponse;
 
-      expect(data.result.id).toBe(TEST_UUIDS.resultId);
+      expect(data.result?.id).toBe(TEST_UUIDS.resultId);
     });
 
     it("includes createdAt in response", async () => {
       const { request, params } = createRequestWithParams(TEST_UUIDS.resultId);
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as ResultApiResponse;
 
-      expect(data.result.createdAt).toBe("2024-01-01T00:00:00Z");
+      expect(data.result?.createdAt).toBe("2024-01-01T00:00:00Z");
     });
   });
 
@@ -157,7 +169,7 @@ describe("GET /api/quiz/result/[id]", () => {
 
       const { request, params } = createRequestWithParams(TEST_UUIDS.resultId);
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(404);
       expect(data.success).toBe(false);
@@ -173,7 +185,7 @@ describe("GET /api/quiz/result/[id]", () => {
 
       const { request, params } = createRequestWithParams(TEST_UUIDS.resultId);
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(404);
       expect(data.success).toBe(false);
@@ -189,7 +201,7 @@ describe("GET /api/quiz/result/[id]", () => {
 
       const { request, params } = createRequestWithParams(nonExistentId);
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(404);
     });
@@ -201,7 +213,7 @@ describe("GET /api/quiz/result/[id]", () => {
 
       const { request, params } = createRequestWithParams(TEST_UUIDS.resultId);
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(404);
       expect(data.success).toBe(false);
@@ -227,7 +239,7 @@ describe("GET /api/quiz/result/[id]", () => {
 
       const { request, params } = createRequestWithParams(TEST_UUIDS.resultId);
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(500);
       expect(data.success).toBe(false);
@@ -239,7 +251,7 @@ describe("GET /api/quiz/result/[id]", () => {
       const params = Promise.reject(new Error("Params error"));
 
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(500);
       expect(data.error).toBe("Internal server error");
@@ -250,7 +262,7 @@ describe("GET /api/quiz/result/[id]", () => {
     it("returns expected success response shape", async () => {
       const { request, params } = createRequestWithParams(TEST_UUIDS.resultId);
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data).toEqual({
         success: true,
@@ -268,7 +280,7 @@ describe("GET /api/quiz/result/[id]", () => {
 
       const { request, params } = createRequestWithParams(TEST_UUIDS.resultId);
       const response = await GET(request, { params });
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data).toEqual({
         success: false,

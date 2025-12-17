@@ -149,40 +149,43 @@ describe("SectionGate", () => {
     });
 
     it("renders blurred illustration when provided", () => {
-      render(
+      const { container } = render(
         <SectionGate
           {...defaultProps}
           illustrationSrc="/images/dating-meaning.png"
         />
       );
 
-      const img = screen.getByRole("img", { hidden: true });
+      // Decorative images with alt="" don't have img role, use querySelector
+      const img = container.querySelector("img");
       expect(img).toBeInTheDocument();
       expect(img).toHaveAttribute("src", "/images/dating-meaning.png");
     });
 
     it("illustration has blur styling", () => {
-      render(
+      const { container } = render(
         <SectionGate
           {...defaultProps}
           illustrationSrc="/images/dating-meaning.png"
         />
       );
 
-      const img = screen.getByRole("img", { hidden: true });
+      // Decorative images with alt="" don't have img role, use querySelector
+      const img = container.querySelector("img");
       expect(img).toHaveClass("blur-md");
       expect(img).toHaveClass("opacity-15");
     });
 
     it("illustration has empty alt for decorative image", () => {
-      render(
+      const { container } = render(
         <SectionGate
           {...defaultProps}
           illustrationSrc="/images/dating-meaning.png"
         />
       );
 
-      const img = screen.getByRole("img", { hidden: true });
+      // Decorative images with alt="" don't have img role, use querySelector
+      const img = container.querySelector("img");
       expect(img).toHaveAttribute("alt", "");
     });
   });
@@ -232,16 +235,18 @@ describe("SectionGate", () => {
     });
 
     it("illustration source is only used for blurred background", () => {
-      render(
+      const { container } = render(
         <SectionGate
           {...defaultProps}
           illustrationSrc="/images/locked-content.png"
         />
       );
 
-      const img = screen.getByRole("img", { hidden: true });
-      // Image should be decorative and blurred
-      expect(img).toHaveClass("pointer-events-none");
+      // Decorative images with alt="" don't have img role, use querySelector
+      const img = container.querySelector("img");
+      // Image should be decorative and blurred (parent container has pointer-events-none)
+      const imgParent = img?.parentElement;
+      expect(imgParent).toHaveClass("pointer-events-none");
     });
   });
 

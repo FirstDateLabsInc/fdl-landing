@@ -35,7 +35,7 @@ describe("POST /api/quiz/share", () => {
     it("returns 400 when resultId is missing", async () => {
       const request = createRequest({ sessionId: TEST_UUIDS.sessionId });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
@@ -45,7 +45,7 @@ describe("POST /api/quiz/share", () => {
     it("returns 400 when sessionId is missing", async () => {
       const request = createRequest({ resultId: TEST_UUIDS.resultId });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
@@ -55,7 +55,7 @@ describe("POST /api/quiz/share", () => {
     it("returns 400 when both fields are missing", async () => {
       const request = createRequest({});
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
@@ -78,7 +78,7 @@ describe("POST /api/quiz/share", () => {
           sessionId: TEST_UUIDS.sessionId,
         });
         const response = await POST(request);
-        const data = await response.json();
+        const data = (await response.json()) as Record<string, unknown>;
 
         expect(response.status).toBe(400);
         expect(data.success).toBe(false);
@@ -94,7 +94,7 @@ describe("POST /api/quiz/share", () => {
           sessionId: invalidUuid,
         });
         const response = await POST(request);
-        const data = await response.json();
+        const data = (await response.json()) as Record<string, unknown>;
 
         expect(response.status).toBe(400);
         expect(data.success).toBe(false);
@@ -110,7 +110,7 @@ describe("POST /api/quiz/share", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(200);
       expect(data.success).toBe(true);
@@ -125,7 +125,7 @@ describe("POST /api/quiz/share", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(200);
       expect(data.created).toBe(false);
@@ -137,7 +137,7 @@ describe("POST /api/quiz/share", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data.publicUrl).not.toContain("/quiz/p/");
       expect(data.publicUrl).toContain("/quiz/results/");
@@ -149,7 +149,7 @@ describe("POST /api/quiz/share", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data).not.toHaveProperty("public_slug");
     });
@@ -164,7 +164,7 @@ describe("POST /api/quiz/share", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data.publicUrl).toBe(
         `https://custom-domain.com/quiz/results/${TEST_UUIDS.resultId}`
@@ -179,7 +179,7 @@ describe("POST /api/quiz/share", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data.publicUrl).toBe(
         `https://firstdatelabs.com/quiz/results/${TEST_UUIDS.resultId}`
@@ -193,7 +193,7 @@ describe("POST /api/quiz/share", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data.publicUrl).toContain(specificResultId);
     });
@@ -206,7 +206,7 @@ describe("POST /api/quiz/share", () => {
       } as unknown as NextRequest;
 
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(500);
       expect(data.success).toBe(false);
@@ -221,7 +221,7 @@ describe("POST /api/quiz/share", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data).toEqual({
         success: true,
@@ -233,7 +233,7 @@ describe("POST /api/quiz/share", () => {
     it("returns expected response shape on validation error", async () => {
       const request = createRequest({});
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data).toEqual({
         success: false,

@@ -182,7 +182,7 @@ async function testServiceRoleAllowed() {
 async function testViewsSecurityInvoker() {
   log("\n--- Test P16: Analytics views have security_invoker ---");
 
-  const { data, error } = await adminClient.rpc("", {}).then(() => null).catch(() => null);
+  // Note: This line was a placeholder for testing RPC - we test views directly below
 
   // Query view security settings directly
   const { data: viewData, error: viewError } = await adminClient
@@ -259,14 +259,15 @@ async function testRLSPolicyRemoved() {
     .select("id")
     .limit(1);
 
-  // Should get no data because RLS policy was removed
-  if (!data || data.length === 0) {
-    tracker.pass("P17", "results_select_anon policy removed - no data returned");
+  // Check error first
+  if (error && (error as { code?: string }).code === "42501") {
+    tracker.pass("P17", "Permission denied at table level");
     return;
   }
 
-  if (error && error.code === "42501") {
-    tracker.pass("P17", "Permission denied at table level");
+  // Should get no data because RLS policy was removed
+  if (!data || data.length === 0) {
+    tracker.pass("P17", "results_select_anon policy removed - no data returned");
     return;
   }
 

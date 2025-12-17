@@ -62,7 +62,7 @@ describe("POST /api/quiz/email", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
@@ -75,7 +75,7 @@ describe("POST /api/quiz/email", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
@@ -88,7 +88,7 @@ describe("POST /api/quiz/email", () => {
         resultId: TEST_UUIDS.resultId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
@@ -98,7 +98,7 @@ describe("POST /api/quiz/email", () => {
     it("returns 400 when all fields are missing", async () => {
       const request = createRequest({});
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
@@ -112,7 +112,7 @@ describe("POST /api/quiz/email", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(400);
       expect(data.error).toBe("Missing required fields");
@@ -133,7 +133,7 @@ describe("POST /api/quiz/email", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(403);
       expect(data.success).toBe(false);
@@ -152,7 +152,7 @@ describe("POST /api/quiz/email", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(403);
       expect(data.success).toBe(false);
@@ -181,7 +181,7 @@ describe("POST /api/quiz/email", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(200);
       expect(data.success).toBe(true);
@@ -228,7 +228,7 @@ describe("POST /api/quiz/email", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       // Select error results in "not found" which is 403
       expect(response.status).toBe(403);
@@ -248,7 +248,7 @@ describe("POST /api/quiz/email", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(500);
       expect(data.success).toBe(false);
@@ -261,7 +261,7 @@ describe("POST /api/quiz/email", () => {
       } as unknown as NextRequest;
 
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(500);
       expect(data.success).toBe(false);
@@ -279,7 +279,7 @@ describe("POST /api/quiz/email", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(response.status).toBe(500);
       expect(data.error).toBe("Internal server error");
@@ -294,7 +294,7 @@ describe("POST /api/quiz/email", () => {
         sessionId: TEST_UUIDS.sessionId,
       });
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data).toEqual({ success: true });
     });
@@ -302,7 +302,7 @@ describe("POST /api/quiz/email", () => {
     it("returns success: false with error on validation failure", async () => {
       const request = createRequest({});
       const response = await POST(request);
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
 
       expect(data.success).toBe(false);
       expect(data.error).toBeDefined();
