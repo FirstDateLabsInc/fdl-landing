@@ -92,10 +92,12 @@ CREATE TABLE public.quiz_results (
     archetype_slug TEXT NOT NULL,
     scores JSONB NOT NULL CHECK (jsonb_typeof(scores) = 'object'),
     answers JSONB NOT NULL CHECK (jsonb_typeof(answers) = 'object'),
-    -- JSONB preserves array structure for ties like ["anxious", "avoidant"]
-    -- Use -> (not ->>) to keep JSONB type instead of extracting as TEXT
-    primary_attachment JSONB GENERATED ALWAYS AS (
-        scores->'attachment'->'primary'
+    -- Extracts both attachment and communication primary styles
+    -- Format: {"attachment": "secure", "communication": "assertive"}
+    -- Values can be string, array (ties), or "mixed"
+    primary_styles JSONB GENERATED ALWAYS AS (
+        ('{"attachment":' || (scores->'attachment'->'primary')::text ||
+         ',"communication":' || (scores->'communication'->'primary')::text || '}')::jsonb
     ) STORED,
     
     -- ANALYTICS & ATTRIBUTION
@@ -151,11 +153,11 @@ CREATE INDEX idx_results_unclaimed_email ON quiz_results(lower(email))
     WHERE user_id IS NULL AND email IS NOT NULL;
 
 -- GIN index for JSONB enables efficient containment queries:
---   WHERE primary_attachment ? 'anxious'  (contains element)
---   WHERE primary_attachment @> '"secure"' (matches value)
-CREATE INDEX idx_results_attachment ON quiz_results
-    USING GIN (primary_attachment)
-    WHERE primary_attachment IS NOT NULL;
+--   WHERE primary_styles @> '{"attachment": "secure"}'
+--   WHERE primary_styles->'attachment' ? 'anxious'
+CREATE INDEX idx_results_primary_styles ON quiz_results
+    USING GIN (primary_styles)
+    WHERE primary_styles IS NOT NULL;
 
 CREATE INDEX idx_results_archetype ON quiz_results(archetype_slug);
 
