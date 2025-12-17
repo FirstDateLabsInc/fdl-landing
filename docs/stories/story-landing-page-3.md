@@ -1,39 +1,36 @@
-# Story: Pricing, FAQ, CTA, Footer & Deployment
+# Story: FAQ, CTA, Footer & Deployment
 
 Status: Draft
 
 ## Story
 
 As a **potential customer**,
-I want **to see pricing options, get answers to common questions, and take action through clear CTAs**,
+I want **to get answers to common questions, and take action through clear CTAs**,
 so that **I can make an informed decision and convert into a user**.
 
 ## Acceptance Criteria
 
-1. **AC1:** PricingSection.tsx displays 3-tier pricing cards (Plan A, B, C) with plan name, price, features list, and CTA button
-2. **AC2:** "Most Popular" badge displays on Plan B
-3. **AC3:** Enterprise plan shows "Contact Us" instead of fixed price
-4. **AC4:** Pricing cards responsive: stacked on mobile, 3-column grid on desktop
-5. **AC5:** FAQSection.tsx implements accordion component from Shadcn UI with 4 Q&A pairs
-6. **AC6:** FAQ accordion expands/collapses smoothly with animations
-7. **AC7:** FAQ addresses top objections: pricing/value, technical/integration, security/privacy, support/onboarding
-8. **AC8:** FinalCTASection.tsx displays action-focused CTA similar to Hero but more urgent/prominent
-9. **AC9:** Final CTA includes social proof indicator (e.g., "Join 10,000+ users")
-10. **AC10:** Footer.tsx implements multi-column layout with Logo, Quick Links, Company, Legal, Social
-11. **AC11:** Footer includes copyright notice with current year
-12. **AC12:** Footer responsive: stacked on mobile, multi-column on desktop
-13. **AC13:** All CTA buttons functional and linked properly
-14. **AC14:** Smooth scroll behavior works for all internal links
-15. **AC15:** All animations polished using Framer Motion and Tailwind transitions
-16. **AC16:** Lighthouse performance score ≥ 90 on all metrics (Performance, Accessibility, Best Practices, SEO)
-17. **AC17:** Successfully deployed to Cloudflare Workers via `npm run deploy`
-18. **AC18:** Custom domain configured and working with HTTPS
-19. **AC19:** No console errors or warnings in production build
-20. **AC20:** All 9 sections complete and polished
+1. **AC1:** FAQSection.tsx implements accordion component from Shadcn UI with 4 Q&A pairs
+2. **AC2:** FAQ accordion expands/collapses smoothly with animations
+3. **AC3:** FAQ addresses top objections: technical/integration, security/privacy, support/onboarding, general questions
+4. **AC4:** FinalCTASection.tsx displays action-focused CTA with email waitlist input (reuse WaitlistForm component from Hero)
+5. **AC5:** Final CTA includes social proof indicator (e.g., "Join 10,000+ users")
+6. **AC6:** Final CTA email input uses same WaitlistForm component with `variant="inline"` as Hero section
+7. **AC7:** Footer.tsx implements multi-column layout with Logo, Quick Links, Company, Legal, Social
+8. **AC8:** Footer includes copyright notice with current year
+9. **AC9:** Footer responsive: stacked on mobile, multi-column on desktop
+10. **AC10:** All CTA buttons functional and linked properly
+11. **AC11:** Smooth scroll behavior works for all internal links
+12. **AC12:** All animations polished using Framer Motion and Tailwind transitions
+13. **AC13:** Lighthouse performance score ≥ 90 on all metrics (Performance, Accessibility, Best Practices, SEO)
+14. **AC14:** Successfully deployed to Cloudflare Workers via `npm run deploy`
+15. **AC15:** Custom domain configured and working with HTTPS
+16. **AC16:** No console errors or warnings in production build
+17. **AC17:** All 8 sections complete and polished
 
 ## Tasks / Subtasks
 
-### Install Shadcn UI Components (AC: #5)
+### Install Shadcn UI Components (AC: #1)
 
 **Choose your installation method:**
 
@@ -50,52 +47,34 @@ so that **I can make an informed decision and convert into a user**.
 **Both methods:**
 - [ ] Test accordion component in isolation
 
-### Pricing Section (AC: #1, #2, #3, #4)
-- [ ] Create components/sections/PricingSection.tsx
-- [ ] Implement 3-tier pricing card layout with borderless design
-- [ ] Plan A & C cards:
-  - [ ] White background (bg-white)
-  - [ ] shadow-soft for subtle elevation
-  - [ ] rounded-2xl for soft corners
-  - [ ] Generous padding (p-8)
-- [ ] Plan B (Most Popular) card:
-  - [ ] bg-secondary (#cab5d4) for standout appearance
-  - [ ] shadow-hover for elevated feel
-  - [ ] "Most Popular" badge: bg-primary (#f9d544) pill, top-right position
-- [ ] Add plan name, price, features list with checkmark icons (text-primary)
-- [ ] CTA buttons: bg-primary with hover:bg-accent transition
-- [ ] Handle "Contact Us" display for enterprise plan
-- [ ] Implement responsive layout: grid-cols-1 (mobile), grid-cols-3 (desktop)
-- [ ] Add hover effects: shadow-hover + subtle scale transform
-- [ ] Add pricing data to lib/constants.ts (3 plans with features arrays)
-
-### FAQ Section (AC: #5, #6, #7)
+### FAQ Section (AC: #1, #2, #3)
 - [ ] Create components/sections/FAQSection.tsx
 - [ ] Implement Shadcn Accordion component
 - [ ] Add 4 FAQ items addressing key objections:
-  - Q1: Pricing/value concern (e.g., "Is it worth the cost?")
-  - Q2: Technical/integration question (e.g., "How does it integrate?")
-  - Q3: Security/privacy concern (e.g., "Is my data secure?")
-  - Q4: Support/onboarding question (e.g., "How do I get started?")
+  - Q1: Technical/integration question (e.g., "How does it work?")
+  - Q2: Security/privacy concern (e.g., "Is my data secure?")
+  - Q3: Support/onboarding question (e.g., "How do I get started?")
+  - Q4: General question (e.g., "What makes this different?")
 - [ ] Style accordion with Tailwind classes
 - [ ] Test expand/collapse animations
 - [ ] Add FAQ data to lib/constants.ts (4 Q&A pairs)
 
-### Final CTA Section (AC: #8, #9)
+### Final CTA Section (AC: #4, #5, #6)
 - [ ] Create components/sections/FinalCTASection.tsx
 - [ ] Implement layout similar to Hero but more action-focused
 - [ ] Add reinforced value proposition headline
-- [ ] Add prominent CTA button (larger, more colorful than earlier CTAs)
+- [ ] Add WaitlistForm component with `variant="inline"` (reuse from Hero section)
+- [ ] Style email input container with proper spacing and responsive layout
 - [ ] Add social proof indicator (e.g., "Join 10,000+ users" with count)
 - [ ] Add gradient background similar to Hero
 - [ ] Make responsive and centered
 - [ ] Add content to lib/constants.ts (final CTA headline, subtext, social proof count)
 
-### Footer (AC: #10, #11, #12)
+### Footer (AC: #7, #8, #9)
 - [ ] Create components/sections/Footer.tsx
 - [ ] Implement multi-column layout (5 columns):
   - Column 1: Logo + tagline
-  - Column 2: Quick links (Product, Features, Pricing)
+  - Column 2: Quick links (Product, Features, Quiz)
   - Column 3: Company (About, Blog, Careers)
   - Column 4: Legal (Terms, Privacy, Cookies)
   - Column 5: Social links (icons with links)
@@ -105,9 +84,8 @@ so that **I can make an informed decision and convert into a user**.
 - [ ] Add footer data to lib/constants.ts (links arrays, social links)
 - [ ] Use Lucide React icons for social media icons
 
-### Content Finalization (AC: #13, #14)
+### Content Finalization (AC: #10, #11)
 - [ ] Update lib/constants.ts with:
-  - Pricing: 3 plan objects with features arrays
   - FAQ: 4 Q&A objects
   - Final CTA: headline, subtext, social proof
   - Footer: navigation links, legal links, social media links
@@ -115,31 +93,29 @@ so that **I can make an informed decision and convert into a user**.
 - [ ] Verify all content is production-ready
 - [ ] Ensure all links are valid (or use # for placeholders)
 
-### Page Integration (AC: #13, #14, #20)
-- [ ] Import Pricing, FAQ, FinalCTA, Footer sections into app/page.tsx
-- [ ] Verify all 9 sections render in correct order:
+### Page Integration (AC: #10, #11, #17)
+- [ ] Import FAQ, FinalCTA, Footer sections into app/page.tsx
+- [ ] Verify all 8 sections render in correct order:
   1. Hero
   2. Social Proof
   3. Problem/Solution
   4. Benefits
   5. How It Works
-  6. Pricing
-  7. FAQ
-  8. Final CTA
-  9. Footer
+  6. FAQ
+  7. Final CTA
+  8. Footer
 - [ ] Test smooth scroll behavior between sections
 - [ ] Verify all internal navigation links work
 - [ ] Test all CTA buttons (even if they link to #)
 
-### Animations & Polish (AC: #15)
-- [ ] Add Framer Motion entrance animations to Pricing cards
+### Animations & Polish (AC: #12)
 - [ ] Add subtle animations to FAQ accordion
 - [ ] Add Final CTA entrance animation (fade + scale)
 - [ ] Polish all hover states and transitions
 - [ ] Test animations on slower devices
 - [ ] Ensure smooth 60fps animations throughout
 
-### Performance Optimization (AC: #16)
+### Performance Optimization (AC: #13)
 - [ ] Run Lighthouse audit in incognito mode
 - [ ] Optimize images (use Next.js Image component everywhere)
 - [ ] Ensure fonts loaded with next/font (no FOUT/FOIT)
@@ -149,7 +125,7 @@ so that **I can make an informed decision and convert into a user**.
 - [ ] Fix any performance warnings
 - [ ] Achieve ≥ 90 score on all 4 Lighthouse metrics
 
-### Accessibility & Quality Checks (AC: #16, #19)
+### Accessibility & Quality Checks (AC: #13, #16)
 - [ ] Test keyboard navigation through all interactive elements
 - [ ] Verify all images have alt text
 - [ ] Check color contrast ratios (WCAG AA minimum)
@@ -159,7 +135,7 @@ so that **I can make an informed decision and convert into a user**.
 - [ ] Check for console warnings in production build
 - [ ] Verify no React hydration errors
 
-### Deployment to Cloudflare Workers (AC: #17, #18, #19)
+### Deployment to Cloudflare Workers (AC: #14, #15, #16)
 - [ ] Login to Cloudflare: `npx wrangler login`
 - [ ] Verify wrangler configuration: `npx wrangler whoami`
 - [ ] Run local preview: `npm run preview`
@@ -173,9 +149,9 @@ so that **I can make an informed decision and convert into a user**.
 - [ ] Verify HTTPS working correctly
 - [ ] Test page load speed on production
 
-### Final Verification (AC: #16, #17, #18, #19, #20)
+### Final Verification (AC: #13, #14, #15, #16, #17)
 - [ ] Run final Lighthouse audit on production URL
-- [ ] Test all 9 sections on production
+- [ ] Test all 8 sections on production
 - [ ] Test responsive behavior on production (mobile, tablet, desktop)
 - [ ] Verify no console errors on production
 - [ ] Test all CTA buttons and links on production
@@ -186,10 +162,9 @@ so that **I can make an informed decision and convert into a user**.
 
 ### Technical Summary
 
-Complete the landing page by implementing the final conversion-focused sections: Pricing (3-tier cards with Most Popular badge), FAQ (Shadcn accordion addressing objections), Final CTA (urgent call-to-action with social proof), and Footer (multi-column navigation). Integrate Shadcn UI for the FAQ accordion component. Polish all animations and transitions using Framer Motion. Apply the **premium minimalist, borderless aesthetic** consistently across all sections. Optimize performance to achieve Lighthouse score ≥ 90 on all metrics. Deploy to Cloudflare Workers using the @opennextjs/cloudflare adapter and configure custom domain with automatic DNS + TLS.
+Complete the landing page by implementing the final conversion-focused sections: FAQ (Shadcn accordion addressing objections), Final CTA (urgent call-to-action with email waitlist input reusing WaitlistForm component from Hero with `variant="inline"`), and Footer (multi-column navigation). Integrate Shadcn UI for the FAQ accordion component. Polish all animations and transitions using Framer Motion. Apply the **premium minimalist, borderless aesthetic** consistently across all sections. Optimize performance to achieve Lighthouse score ≥ 90 on all metrics. Deploy to Cloudflare Workers using the @opennextjs/cloudflare adapter and configure custom domain with automatic DNS + TLS.
 
 **Design System Application:**
-- **Pricing Cards:** Plan B uses bg-secondary (#cab5d4) to stand out, Plans A&C use white with shadow-soft
 - **CTA Buttons:** bg-primary (#f9d544) with hover:bg-accent (#ffe362) transitions
 - **Borderless Throughout:** All cards use shadows (no borders) for depth and separation
 - **Premium Feel:** Generous padding (p-8), rounded corners (rounded-2xl), clean typography
@@ -212,15 +187,14 @@ Complete the landing page by implementing the final conversion-focused sections:
 ### Project Structure Notes
 
 - **Files to create:**
-  - components/sections/PricingSection.tsx
   - components/sections/FAQSection.tsx
   - components/sections/FinalCTASection.tsx
   - components/sections/Footer.tsx
   - components/ui/accordion.tsx (auto-generated by Shadcn)
 
 - **Files to modify:**
-  - lib/constants.ts (add pricing, FAQ, final CTA, footer content)
-  - app/page.tsx (import and render final 4 sections)
+  - lib/constants.ts (add FAQ, final CTA, footer content)
+  - app/page.tsx (import and render final 3 sections)
   - README.md (optional: document deployment process)
 
 - **Expected test locations:**

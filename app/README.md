@@ -14,6 +14,16 @@ A premium, borderless landing page for Juliet (First Date Labs) built with Next.
 
 > ⚠️ Run `npm run preview` at least once before `npm run deploy`. The preview flow uses the same OpenNext compilation pipeline and catches adapter/runtime mismatches that `npm run dev` cannot surface.
 
+## Internal Test Routes (Disabled)
+
+This repo includes a few test-only routes/pages that are intentionally disabled so they can’t be deployed by accident:
+
+- `src/app/api/test-email/route.disabled.ts` (was `/api/test-email`)
+- `src/app/test-images/page.disabled.tsx` (was `/test-images`)
+- `src/app/test-results/page.disabled.tsx` (was `/test-results`)
+
+To re-enable locally, rename them back to `route.ts` / `page.tsx`.
+
 ## Design Tokens & Structure
 
 - Tailwind tokens live in `tailwind.config.ts`, mapping project colors (`#fffdf6`, `#f9d544`, `#cab5d4`, `#ffe362`), Poppins font family, and premium shadows.

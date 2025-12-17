@@ -2,16 +2,27 @@
 
 import { useCallback, useEffect, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import cloudflareLoader from "@/lib/cloudflare-image-loader";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { navigation } from "@/lib/constants";
 import { cn, smoothScrollToHash } from "@/lib/utils";
 
+const normalizePath = (href: string) => {
+  const url = new URL(href, "http://placeholder");
+  const cleanedPath = url.pathname.replace(/\/$/, "");
+  return cleanedPath === "" ? "/" : cleanedPath;
+};
+
 export function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const normalizedPathname = normalizePath(pathname);
 
   const handleCtaClick = useCallback(
     (event: ReactMouseEvent<HTMLAnchorElement>) => {
@@ -88,7 +99,7 @@ export function Navbar() {
     <header
       className={cn(
         "sticky top-0 z-50 w-full border-b border-white/10 transition-shadow duration-300",
-        "bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60",
+        "bg-background/80 backdrop-blur-xl supports-backdrop-filter:bg-background/60",
         scrolled
           ? "shadow-[0_12px_40px_-20px_rgba(15,23,42,0.35)]"
           : "shadow-none"
@@ -97,13 +108,19 @@ export function Navbar() {
       <nav className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6 md:grid md:grid-cols-[auto_1fr_auto] md:items-center md:gap-6 md:py-3 lg:px-8">
         <div className="flex items-center justify-between">
           <Link
-            href="#hero"
+            href="/#hero"
             className="flex items-center gap-2 text-lg font-semibold tracking-tight text-slate-900 transition-colors hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:outline-none"
             onClick={closeMenu}
           >
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-sm font-bold tracking-[0.18em] text-white uppercase shadow-[0_10px_30px_-15px_rgba(15,23,42,0.65)]">
-              {navigation.logoText[0] ?? "J"}
-            </span>
+            <Image
+              loader={cloudflareLoader}
+              src="/logos/icon.png"
+              alt="First Date Labs logo"
+              width={28}
+              height={28}
+              className="h-7 w-7"
+              priority
+            />
             <span className="leading-tight">{navigation.logoText}</span>
           </Link>
 
@@ -128,16 +145,23 @@ export function Navbar() {
               : "hidden md:flex"
           )}
         >
-          {navigation.links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="transition-colors hover:text-slate-900 focus-visible:text-slate-900 focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:outline-none"
-              onClick={closeMenu}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navigation.links.map((link) => {
+            const isActive = normalizedPathname === normalizePath(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "transition-colors hover:text-slate-900 focus-visible:text-slate-900 focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:outline-none",
+                  isActive && "text-slate-900"
+                )}
+                aria-current={isActive ? "page" : undefined}
+                onClick={closeMenu}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
 
         <div

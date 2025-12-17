@@ -6,17 +6,17 @@
 
 **Epic Slug:** landing-page
 
-**Goal:** Launch a high-converting landing page that establishes Juliet's online presence and drives user engagement through a professionally designed 9-section layout optimized for performance and user experience.
+**Goal:** Launch a high-converting landing page that establishes Juliet's online presence and drives user engagement through a professionally designed 8-section layout optimized for performance and user experience.
 
 **Scope:**
-- Design and implement 9 core sections (Hero, Social Proof, Problem/Solution, Benefits, How It Works, Pricing, FAQ, Final CTA, Footer)
+- Design and implement 8 core sections (Hero, Social Proof, Problem/Solution, Benefits, How It Works, FAQ, Final CTA, Footer)
 - Build responsive, mobile-first design using Next.js 16 + React 19 + Tailwind CSS 4
 - Implement reusable UI components (Button, Card)
 - Deploy to Cloudflare Workers with SSR support
 - Achieve Lighthouse score 90+ on all metrics
 
 **Success Criteria:**
-- ✅ All 9 sections fully implemented and responsive (mobile, tablet, desktop)
+- ✅ All 8 sections fully implemented and responsive (mobile, tablet, desktop)
 - ✅ Page loads in < 2 seconds on 3G connection
 - ✅ Lighthouse performance score ≥ 90
 - ✅ Zero accessibility violations (WCAG AA compliance)
@@ -38,7 +38,7 @@
 Epic: Professional Landing Page (8 points)
 ├── Story 1: Project Setup & Structure (2 points)
 ├── Story 2: Core Sections Implementation (3 points)
-└── Story 3: Pricing, FAQ, CTA, Footer (3 points)
+└── Story 3: FAQ, CTA, Footer (3 points)
 ```
 
 **Total Story Points:** 8
@@ -84,12 +84,11 @@ Epic: Professional Landing Page (8 points)
 - Content from constants.ts renders properly
 - Responsive breakpoints working as specified
 
-#### Story 3: Pricing, FAQ, CTA, Footer (3 points)
+#### Story 3: FAQ, CTA, Footer (3 points)
 
-**Deliverable:** Complete landing page with all 9 sections, animations, and deployment
+**Deliverable:** Complete landing page with all 8 sections, animations, and deployment
 
 **Key Tasks:**
-- Implement PricingSection.tsx with 3-tier pricing cards
 - Implement FAQSection.tsx with Shadcn accordion component
 - Implement FinalCTASection.tsx
 - Implement Footer.tsx with multi-column layout
@@ -99,7 +98,7 @@ Epic: Professional Landing Page (8 points)
 - Configure custom domain
 
 **Acceptance Criteria:**
-- All 9 sections complete and polished
+- All 8 sections complete and polished
 - FAQ accordion expands/collapses smoothly
 - All CTA buttons functional
 - Footer links organized in proper columns

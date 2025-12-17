@@ -1,0 +1,12 @@
+<svg width="390" height="844" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f9d544;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#cab5d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffe362;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="390" height="844" fill="url(#grad4)"/>
+  <text x="195" y="400" font-family="Poppins, Arial, sans-serif" font-size="120" font-weight="bold" fill="#1e293b" text-anchor="middle">4</text>
+  <text x="195" y="460" font-family="Poppins, Arial, sans-serif" font-size="24" fill="#475569" text-anchor="middle">Debrief</text>
+</svg>

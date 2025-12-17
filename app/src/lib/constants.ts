@@ -5,11 +5,10 @@ export type Cta = {
 
 export type HeroContent = {
   eyebrow: string;
-  title: string;
+  title: string[];
   description: string;
   primaryCta: Cta;
   secondaryCta: Cta;
-  metrics: { label: string; value: string }[];
 };
 
 export type LandingSection = {
@@ -25,6 +24,7 @@ export type Testimonial = {
   company: string;
   quote: string;
   avatarInitials: string;
+  avatarImage?: string;
 };
 
 export type Navigation = {
@@ -50,32 +50,43 @@ export type HowItWorksStep = {
   description: string;
 };
 
-export type PricingTier = {
-  name: string;
-  price: string;
-  cadence: string;
-  description: string;
-  features: string[];
-  highlighted?: boolean;
-};
-
 export type FaqItem = {
   question: string;
   answer: string;
 };
 
+export type FinalCtaContent = {
+  headline: string;
+  subheadline: string;
+  socialProof: string;
+  quizCta: Cta;
+};
+
+export type FooterLink = {
+  label: string;
+  href: string;
+};
+
+export type FooterColumn = {
+  title: string;
+  links: FooterLink[];
+};
+
+export type FooterContent = {
+  tagline: string;
+  columns: FooterColumn[];
+  social: { platform: string; href: string; icon: "linkedin" | "instagram" | "twitter" | "tiktok" }[];
+  contact: string;
+  brandName: string;
+};
+
 export const heroContent: HeroContent = {
   eyebrow: "Built for intentional daters",
-  title: "Get more second dates and build real connections.",
+  title: ["Get more dates", "Build real connections"],
   description:
     "Meet Juliet: an AI dating coach that helps you practice real first-date conversations, get instant feedback, and prepare for your next date—so you can build meaningful connections.",
   primaryCta: { label: "Get Early Access", href: "#waitlist" },
   secondaryCta: { label: "See how it works", href: "#how-it-works" },
-  metrics: [
-    { label: "Second-date uplift", value: "+28%" },
-    { label: "Practice drills completed", value: "125K" },
-    { label: "Avg. response time", value: "140ms" },
-  ],
 };
 
 export const landingSections: LandingSection[] = [
@@ -119,6 +130,7 @@ export const testimonials: Testimonial[] = [
     quote:
       "As an engineer, I was great at details and bad at small talk. Juliet made the first five minutes easy. I’m getting more second dates.",
     avatarInitials: "EW",
+    avatarImage: "/images/avatars/evan-walker.png",
   },
   {
     name: "Melissa Lee",
@@ -127,6 +139,7 @@ export const testimonials: Testimonial[] = [
     quote:
       "I stopped overthinking. The voice drills and debriefs were gold. I feel calm and present now.",
     avatarInitials: "ML",
+    avatarImage: "/images/avatars/melissa-lee.png",
   },
   {
     name: "Jordan Patel",
@@ -135,6 +148,7 @@ export const testimonials: Testimonial[] = [
     quote:
       "Upcoming Date Prep was scary accurate. I knew what to say and when to listen.",
     avatarInitials: "JP",
+    avatarImage: "/images/avatars/jordan-patel.png",
   },
   {
     name: "Sofia Ramirez",
@@ -143,6 +157,7 @@ export const testimonials: Testimonial[] = [
     quote:
       "Juliet feels like a warm, direct coach in my ear. I can jump into any conversation without rehearsing in the mirror.",
     avatarInitials: "SR",
+    avatarImage: "/images/avatars/sofia-ramirez.png",
   },
   {
     name: "Chris Howard",
@@ -151,23 +166,26 @@ export const testimonials: Testimonial[] = [
     quote:
       "The Weekly Challenges keep things fun. I’m finally bringing my best self to every first date.",
     avatarInitials: "CH",
+    avatarImage: "/images/avatars/chris-howard.png",
   },
 ];
 
 export const problemSolution: ProblemSolution = {
+  // THE OLD WAY: Anxiety, dead-end chats, zero feedback, wasted time
   oldWay: [
-    "Awkward pauses and stalled small talk",
-    "Endless swiping, few real dates",
-    "No feedback, so mistakes repeat",
-    "Overthinking and low confidence",
-    "Time wasted on bad prep",
+    "Pre-date anxiety that tanks your confidence before you even arrive",
+    "Conversations that die after \"So, what do you do?\"",
+    "Ghosted again—with zero feedback on what went wrong",
+    "Hours lost overthinking every message you send",
+    "Dating feels like a draining chore, not an exciting adventure",
   ],
+  // THE NEW WAY: Real results that users actually experience
   newWay: [
-    "Real-time voice practice with near-instant replies (<150ms target)",
-    "Warm AI coaching and exact phrasing tips",
-    '"Upcoming Date Prep" that mimics who you\'re meeting',
-    "Measurable progress and session memory across weeks",
-    "Practice with your type in fun, real scenarios",
+    "73% of users hear \"When can I see you again?\" after their dates",
+    "No more awkward silences—you always know what to say next",
+    "Friends start asking: \"You seem different lately. More confident.\"",
+    "2x more second dates within your first 3 weeks",
+    "Text them first—without drafting 10 versions in your notes app",
   ],
 };
 
@@ -224,16 +242,118 @@ export const howItWorksSteps: HowItWorksStep[] = [
   },
 ];
 
+export type WalkthroughStep = {
+  number: number;
+  title: string;
+  description: string;
+  image: string;
+};
+
+export const howAppWorksSteps: WalkthroughStep[] = [
+  {
+    number: 1,
+    title: "Fast onboarding + goals",
+    description:
+      "Set intentions and tell Juliet who you want to become on your next dates.",
+    image: "/walkthrough/step-1-onboarding.svg",
+  },
+  {
+    number: 2,
+    title: "Daily voice practice",
+    description:
+      "Choose your Dating Practice Partner and rehearse real scenarios with responsive dialogue.",
+    image: "/walkthrough/step-2-practice.svg",
+  },
+  {
+    number: 3,
+    title: "Upcoming Date Prep",
+    description:
+      "Simulate the real person you're about to meet so you're calm, confident, and ready.",
+    image: "/walkthrough/step-3-date-prep.svg",
+  },
+  {
+    number: 4,
+    title: "Smart debrief",
+    description:
+      "Review actionable insights, track improvements, and unlock weekly challenges tailored to you.",
+    image: "/walkthrough/step-4-debrief.svg",
+  },
+];
+
 export const navigation: Navigation = {
   logoText: "First Date Labs",
   links: [
     { label: "Home", href: "/" },
-    { label: "Press", href: "/press" },
-    { label: "Login", href: "/login" },
+    { label: "Contact", href: "/contact" },
+    // { label: "Login", href: "/login" },
+    { label: "Quiz", href: "/quiz" },
   ],
   cta: { label: "Get Early Access", href: "/#waitlist" },
 };
 
-export const pricingTiers: PricingTier[] = [];
+export const faqs: FaqItem[] = [
+  {
+    question: "Will this feel awkward?",
+    answer:
+      "Juliet's warm coaching style and the low-pressure Weekly Challenges make practice feel natural and engaging instead of forced.",
+  },
+  {
+    question: "Is my voice and data private?",
+    answer:
+      "We built a privacy-first experience. Your voice data is used only to improve your sessions and isn't shared with third parties.",
+  },
+  {
+    question: "Does this actually improve real dates?",
+    answer:
+      "Engaged members typically see a 25–30% uplift in second-date conversion within about a month of regular practice.",
+  },
+  {
+    question: "How much time does it take?",
+    answer:
+      "Most people do 3–10 minutes a day. Quick drills before a date can be just a few minutes, with longer sessions when you want them.",
+  },
+];
 
-export const faqs: FaqItem[] = [];
+export const finalCtaContent: FinalCtaContent = {
+  headline: "Ready to ace your next date?",
+  subheadline:
+    "Stop guessing and start connecting. Get exclusive access and build the confidence to handle any date with ease.",
+  socialProof: "Join 2,500+ singles already on the waitlist",
+  quizCta: { label: "Take the free quiz", href: "/quiz" },
+};
+
+export const footerContent: FooterContent = {
+  tagline: "Your AI dating coach for meaningful connections",
+  brandName: "First Date Labs",
+  columns: [
+    {
+      title: "Product",
+      links: [
+        { label: "How it Works", href: "/#how-it-works" },
+        { label: "Benefits", href: "/#benefits" },
+        { label: "FAQ", href: "/#faq" },
+        { label: "Quiz", href: "/quiz" },
+      ],
+    },
+    {
+      title: "Company",
+      links: [
+        { label: "Contact", href: "/contact" },
+      ],
+    },
+    {
+      title: "Legal",
+      links: [
+        { label: "Privacy Policy", href: "/privacy" },
+        { label: "Terms of Service", href: "/terms" },
+      ],
+    },
+  ],
+  social: [
+    { platform: "LinkedIn", href: "https://www.linkedin.com/company/first-date-labs/", icon: "linkedin" },
+    { platform: "Instagram", href: "https://www.instagram.com/firstdatelabs?igsh=eDgzZ3BleDh1NnU4&utm_source=qr", icon: "instagram" },
+    { platform: "Twitter", href: "https://x.com/firstdatelabs", icon: "twitter" },
+    { platform: "TikTok", href: "https://www.tiktok.com/@firstdatelabs?_r=1&_t=ZT-928jHCWaI2g", icon: "tiktok" },
+  ],
+  contact: "",
+};

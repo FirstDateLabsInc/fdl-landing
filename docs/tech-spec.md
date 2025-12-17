@@ -23,15 +23,14 @@ juliet-landing/
 │   │   ├── ProblemSolutionSection.tsx # [CREATE] Section 3: Problem vs Solution
 │   │   ├── BenefitsSection.tsx    # [CREATE] Section 4: Key Benefits
 │   │   ├── HowItWorksSection.tsx  # [CREATE] Section 5: How It Works
-│   │   ├── PricingSection.tsx     # [CREATE] Section 6: Pricing
-│   │   ├── FAQSection.tsx         # [CREATE] Section 7: FAQ
-│   │   ├── FinalCTASection.tsx    # [CREATE] Section 8: Final CTA
-│   │   └── Footer.tsx             # [CREATE] Section 9: Footer
+│   │   ├── FAQSection.tsx         # [CREATE] Section 6: FAQ
+│   │   ├── FinalCTASection.tsx    # [CREATE] Section 7: Final CTA
+│   │   └── Footer.tsx             # [CREATE] Section 8: Footer
 │   └── ui/
 │       ├── Button.tsx             # [CREATE] Reusable button component
 │       └── Card.tsx               # [CREATE] Reusable card component
 ├── lib/
-│   └── constants.ts               # [CREATE] Copy text, testimonials, pricing data
+│   └── constants.ts               # [CREATE] Copy text, testimonials, FAQ data
 ├── public/
 │   ├── images/                    # [CREATE] Image assets directory
 │   └── icons/                     # [CREATE] Icon assets directory
@@ -176,44 +175,28 @@ juliet-landing/
   - Step description
 - Timeline layout with connecting lines between steps
 
-### 6. Pricing Section
-
-- 3-tier pricing cards
-- Plan A, B, C with:
-  - Plan name
-  - Price (or "Contact Us" for enterprise)
-  - Key features list
-  - CTA button
-- **Card Design:**
-  - Plan A & C: White background, `shadow-soft`, borderless
-  - Plan B (Most Popular): `bg-secondary` (#cab5d4) with `shadow-hover`, elevated appearance
-  - "Most Popular" badge: `bg-primary` (#f9d544) pill, positioned top-right
-- CTA buttons: `bg-primary` with hover state `bg-accent`
-- Feature lists: Checkmark icons with `text-primary`
-- Generous card padding (p-8) for premium feel
-
-### 7. FAQ Section
+### 6. FAQ Section
 
 - Accordion component from Shadcn UI for Q&A
 - 4 questions addressing top objections:
-  - Q1: Pricing/value concern
-  - Q2: Technical/integration question
-  - Q3: Security/privacy concern
-  - Q4: Support/onboarding question
+  - Q1: Technical/integration question
+  - Q2: Security/privacy concern
+  - Q3: Support/onboarding question
+  - Q4: General question
 - Smooth expand/collapse animations
 
-### 8. Final CTA Section
+### 7. Final CTA Section
 
 - Similar to Hero but more action-focused
 - Reinforces value proposition
 - Prominent CTA button
 - Social proof indicators (optional: "Join 10,000+ users")
 
-### 9. Footer
+### 8. Footer
 
 - Multi-column layout:
   - Column 1: Logo + tagline
-  - Column 2: Quick links (Product, Features, Pricing)
+  - Column 2: Quick links (Product, Features, Quiz)
   - Column 3: Company (About, Blog, Careers)
   - Column 4: Legal (Terms, Privacy, Cookies)
   - Column 5: Social links
@@ -508,16 +491,15 @@ No environment variables required for initial implementation.
 
 **Deliverable:** 5 functional sections with responsive layouts
 
-### Phase 3: Pricing, FAQ, CTA, Footer (Story 3)
+### Phase 3: FAQ, CTA, Footer (Story 3)
 
-1. Implement PricingSection.tsx with 3-tier cards
-2. Implement FAQSection.tsx with accordion (Shadcn UI)
-3. Implement FinalCTASection.tsx
-4. Implement Footer.tsx with multi-column layout
-5. Add smooth scroll behavior
-6. Polish animations and transitions
+1. Implement FAQSection.tsx with accordion (Shadcn UI)
+2. Implement FinalCTASection.tsx
+3. Implement Footer.tsx with multi-column layout
+4. Add smooth scroll behavior
+5. Polish animations and transitions
 
-**Deliverable:** Complete landing page with all 9 sections
+**Deliverable:** Complete landing page with all 8 sections
 
 ---
 
@@ -563,7 +545,6 @@ No environment variables required for initial implementation.
 - All copy text displays correctly
 - No Lorem Ipsum in final version
 - All images have alt text
-- Pricing information accurate
 
 ---
 

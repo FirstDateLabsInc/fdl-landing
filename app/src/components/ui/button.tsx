@@ -5,17 +5,17 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold tracking-tight transition-transform duration-200 ease-out disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-900 focus-visible:ring-offset-white aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
+  "group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-transform duration-200 ease-out disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-foreground focus-visible:ring-offset-background aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
         primary:
-          "bg-[#f9d544] text-slate-900 shadow-soft hover:-translate-y-0.5 hover:shadow-hover focus-visible:-translate-y-0.5",
+          "bg-primary text-primary-foreground shadow-soft hover:-translate-y-0.5 hover:shadow-hover focus-visible:-translate-y-0.5",
         secondary:
-          "bg-white text-slate-900 shadow-soft hover:-translate-y-0.5 hover:shadow-hover focus-visible:-translate-y-0.5",
+          "bg-card text-foreground border border-border shadow-soft hover:-translate-y-0.5 hover:shadow-hover focus-visible:-translate-y-0.5",
         ghost:
-          "text-slate-900 hover:bg-black/5",
-        link: "text-slate-900 underline-offset-4 hover:underline",
+          "text-foreground hover:bg-foreground/5",
+        link: "text-foreground underline-offset-4 hover:underline",
       },
       size: {
         default: "px-6 py-3",

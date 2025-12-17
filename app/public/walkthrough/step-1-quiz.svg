@@ -1,0 +1,119 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Soft blue gradient background -->
+    <linearGradient id="bgGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f4fc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d4ebf7;stop-opacity:1" />
+    </linearGradient>
+    <!-- Heart gradient -->
+    <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7eb8d8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5a9fc4;stop-opacity:1" />
+    </linearGradient>
+    <!-- Brain pattern gradient -->
+    <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a8d4ed;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8bc4e0;stop-opacity:1" />
+    </linearGradient>
+    <!-- Gear gradient -->
+    <linearGradient id="gearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a9bb5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3d8299;stop-opacity:1" />
+    </linearGradient>
+    <!-- Glow effect -->
+    <filter id="glow1" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Sparkle filter -->
+    <filter id="sparkle1">
+      <feGaussianBlur stdDeviation="1" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#bgGrad1)" rx="16"/>
+
+  <!-- Decorative circles in background -->
+  <circle cx="50" cy="50" r="30" fill="#c5e3f3" opacity="0.5"/>
+  <circle cx="350" cy="250" r="25" fill="#c5e3f3" opacity="0.4"/>
+  <circle cx="370" cy="60" r="15" fill="#b8ddef" opacity="0.5"/>
+
+  <!-- Main heart shape with brain pattern -->
+  <g transform="translate(200, 145)">
+    <!-- Outer glow -->
+    <path d="M0,-45 C25,-70 65,-55 65,-25 C65,15 0,55 0,55 C0,55 -65,15 -65,-25 C-65,-55 -25,-70 0,-45 Z"
+          fill="#7eb8d8" opacity="0.3" filter="url(#glow1)" transform="scale(1.15)"/>
+
+    <!-- Main heart -->
+    <path d="M0,-45 C25,-70 65,-55 65,-25 C65,15 0,55 0,55 C0,55 -65,15 -65,-25 C-65,-55 -25,-70 0,-45 Z"
+          fill="url(#heartGrad)" stroke="#5a9fc4" stroke-width="2"/>
+
+    <!-- Brain pattern inside heart - left hemisphere -->
+    <path d="M-35,-20 Q-25,-35 -15,-25 Q-5,-15 -20,-5 Q-35,5 -30,-10 Q-25,-20 -35,-20"
+          fill="url(#brainGrad)" opacity="0.8"/>
+    <path d="M-40,-5 Q-30,-15 -25,0 Q-20,15 -35,10 Q-45,5 -40,-5"
+          fill="url(#brainGrad)" opacity="0.7"/>
+
+    <!-- Brain pattern inside heart - right hemisphere -->
+    <path d="M35,-20 Q25,-35 15,-25 Q5,-15 20,-5 Q35,5 30,-10 Q25,-20 35,-20"
+          fill="url(#brainGrad)" opacity="0.8"/>
+    <path d="M40,-5 Q30,-15 25,0 Q20,15 35,10 Q45,5 40,-5"
+          fill="url(#brainGrad)" opacity="0.7"/>
+
+    <!-- Center connection -->
+    <ellipse cx="0" cy="-10" rx="12" ry="20" fill="url(#brainGrad)" opacity="0.6"/>
+
+    <!-- Small gear - left -->
+    <g transform="translate(-25, 15)">
+      <circle cx="0" cy="0" r="12" fill="url(#gearGrad)"/>
+      <circle cx="0" cy="0" r="6" fill="#e8f4fc"/>
+      <!-- Gear teeth -->
+      <rect x="-3" y="-15" width="6" height="6" fill="url(#gearGrad)" rx="1"/>
+      <rect x="-3" y="9" width="6" height="6" fill="url(#gearGrad)" rx="1"/>
+      <rect x="-15" y="-3" width="6" height="6" fill="url(#gearGrad)" rx="1"/>
+      <rect x="9" y="-3" width="6" height="6" fill="url(#gearGrad)" rx="1"/>
+    </g>
+
+    <!-- Small gear - right -->
+    <g transform="translate(25, 15)">
+      <circle cx="0" cy="0" r="10" fill="url(#gearGrad)"/>
+      <circle cx="0" cy="0" r="5" fill="#e8f4fc"/>
+      <!-- Gear teeth -->
+      <rect x="-2.5" y="-13" width="5" height="5" fill="url(#gearGrad)" rx="1"/>
+      <rect x="-2.5" y="8" width="5" height="5" fill="url(#gearGrad)" rx="1"/>
+      <rect x="-13" y="-2.5" width="5" height="5" fill="url(#gearGrad)" rx="1"/>
+      <rect x="8" y="-2.5" width="5" height="5" fill="url(#gearGrad)" rx="1"/>
+    </g>
+  </g>
+
+  <!-- Sparkles around the heart -->
+  <g filter="url(#sparkle1)">
+    <!-- Top sparkles -->
+    <polygon points="120,80 123,88 131,88 125,93 127,101 120,96 113,101 115,93 109,88 117,88" fill="#4a9bb5" opacity="0.8"/>
+    <polygon points="280,70 282,76 288,76 284,80 285,86 280,82 275,86 276,80 272,76 278,76" fill="#4a9bb5" opacity="0.7"/>
+
+    <!-- Side sparkles -->
+    <polygon points="90,150 92,156 98,156 94,160 95,166 90,162 85,166 86,160 82,156 88,156" fill="#5a9fc4" opacity="0.6"/>
+    <polygon points="310,140 312,145 317,145 314,148 315,153 310,150 305,153 306,148 303,145 308,145" fill="#5a9fc4" opacity="0.7"/>
+
+    <!-- Bottom sparkles -->
+    <circle cx="150" cy="220" r="3" fill="#7eb8d8" opacity="0.6"/>
+    <circle cx="250" cy="230" r="2.5" fill="#7eb8d8" opacity="0.5"/>
+    <circle cx="100" cy="200" r="2" fill="#a8d4ed" opacity="0.6"/>
+    <circle cx="300" cy="210" r="2" fill="#a8d4ed" opacity="0.5"/>
+  </g>
+
+  <!-- Small floating hearts -->
+  <path d="M85,120 C87,117 92,118 92,122 C92,126 85,130 85,130 C85,130 78,126 78,122 C78,118 83,117 85,120 Z"
+        fill="#7eb8d8" opacity="0.5"/>
+  <path d="M320,180 C321,178 324,178.5 324,181 C324,183.5 320,186 320,186 C320,186 316,183.5 316,181 C316,178.5 319,178 320,180 Z"
+        fill="#7eb8d8" opacity="0.4"/>
+</svg>

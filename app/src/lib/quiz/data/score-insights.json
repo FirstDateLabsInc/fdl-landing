@@ -1,0 +1,171 @@
+{
+  "scoreRanges": {
+    "low": { "min": 0, "max": 39 },
+    "moderate": { "min": 40, "max": 69 },
+    "strong": { "min": 70, "max": 100 }
+  },
+  "confidence": {
+    "title": "Dating Confidence",
+    "key": "confidence",
+    "low": {
+      "range": [0, 39],
+      "label": "You're in a more cautious phase with dating confidence.",
+      "strengths": [
+        "You don't rush into anyone just because you feel you should be dating.",
+        "You think carefully about how you show up and care about making a good impression."
+      ],
+      "growth": [
+        "Start with tiny risks: reply, say yes to a short coffee, or start one new chat.",
+        "Treat awkward dates as normal practice, not proof that you are not good enough."
+      ]
+    },
+    "moderate": {
+      "range": [40, 69],
+      "label": "Your dating confidence is in a healthy, mid-range zone.",
+      "strengths": [
+        "You can take initiative when a connection feels promising.",
+        "You usually recover from a bad or awkward date instead of quitting completely."
+      ],
+      "growth": [
+        "Notice where you still hold back and push one step further, like suggesting a meetup or replying sooner.",
+        "Swap thoughts like 'I will be awkward' for 'It is okay if I am awkward, I am still worth meeting'."
+      ]
+    },
+    "strong": {
+      "range": [70, 100],
+      "label": "You have strong dating confidence.",
+      "strengths": [
+        "You're willing to start conversations and suggest in-person plans.",
+        "You see rejection and awkward dates as part of the process, not a verdict on you."
+      ],
+      "growth": [
+        "Keep your confidence tuned to the other person's pace and boundaries.",
+        "Focus on being real, not just performing well, so people see the honest you."
+      ]
+    }
+  },
+  "emotional": {
+    "title": "Emotional Availability",
+    "key": "emotional",
+    "low": {
+      "range": [0, 39],
+      "label": "Right now, you lean more toward keeping your deeper emotions private in dating.",
+      "strengths": [
+        "You're selective about who you open up to, which can protect you.",
+        "You can stay functional and keep going even when life is heavy."
+      ],
+      "growth": [
+        "Try adding one more honest line, for example mentioning that this week has been stressful and why.",
+        "When you feel hurt, name it softly instead of only pulling away."
+      ]
+    },
+    "moderate": {
+      "range": [40, 69],
+      "label": "You're somewhat emotionally open, with room to deepen.",
+      "strengths": [
+        "You share parts of your inner world once some trust is there.",
+        "You can talk about problems after you've had time to think."
+      ],
+      "growth": [
+        "Experiment with sharing a bit earlier, not only when things feel serious.",
+        "Use simple feeling words such as 'I felt disappointed', 'I felt happy', or 'I felt nervous'."
+      ]
+    },
+    "strong": {
+      "range": [70, 100],
+      "label": "You're strongly emotionally available.",
+      "strengths": [
+        "You can talk about feelings, stress, and needs in a clear, grounded way.",
+        "You're willing to bring up hurt or confusion instead of letting it pile up."
+      ],
+      "growth": [
+        "Protect your own limits; you do not have to be available for deep talks all the time.",
+        "Notice if you overshare too fast to create instant closeness, and let trust build step by step."
+      ]
+    }
+  },
+  "intimacy": {
+    "title": "Intimacy",
+    "key": "intimacy",
+    "comfort": {
+      "title": "Comfort with Closeness",
+      "key": "comfort",
+      "low": {
+        "range": [0, 39],
+        "label": "You currently approach physical and sexual closeness quite cautiously.",
+        "strengths": [
+          "You don't let anyone rush your pace into intimacy.",
+          "You often prioritize emotional safety over ticking boxes about how far you went."
+        ],
+        "growth": [
+          "Define what feels okay for you, such as hugs, hand-holding, or cuddling, and say that clearly.",
+          "Use simple lines like 'Let's stay here for now' or 'Can we just cuddle tonight?'."
+        ]
+      },
+      "moderate": {
+        "range": [40, 69],
+        "label": "You have a moderate level of comfort with intimacy.",
+        "strengths": [
+          "You can enjoy affection when you feel safe and respected.",
+          "You notice when something feels off and can adjust."
+        ],
+        "growth": [
+          "Share more about what helps you feel relaxed and connected, not just what you do not want.",
+          "Be a bit more proactive in saying what you like and when you want to slow down."
+        ]
+      },
+      "strong": {
+        "range": [70, 100],
+        "label": "You're generally comfortable with physical and sexual intimacy.",
+        "strengths": [
+          "You can be present and enjoy physical closeness when it feels right.",
+          "You're fairly tuned in to your body's signals and needs."
+        ],
+        "growth": [
+          "Check that your physical pace also matches your emotional readiness.",
+          "Keep checking in with the other person's comfort, not only your own."
+        ]
+      }
+    },
+    "boundaries": {
+      "title": "Boundary Assertiveness",
+      "key": "boundaries",
+      "low": {
+        "range": [0, 39],
+        "label": "You're still finding your voice around physical and sexual boundaries.",
+        "strengths": [
+          "You care deeply about other people's feelings.",
+          "You're very sensitive to the other person's mood and reactions."
+        ],
+        "growth": [
+          "Practice short boundary lines like 'Let's stop here' or 'I don't want to do more tonight'.",
+          "Remind yourself that your comfort and consent matter just as much as theirs."
+        ]
+      },
+      "moderate": {
+        "range": [40, 69],
+        "label": "You sometimes hold your boundaries, but it's still hard in some moments.",
+        "strengths": [
+          "You can say no or slow down when something clearly doesn't feel right.",
+          "You try to balance your needs with the other person's desires."
+        ],
+        "growth": [
+          "Watch the grey-zone moments where you go along just to keep the peace.",
+          "Prepare one or two go-to phrases so speaking up feels easier in the moment."
+        ]
+      },
+      "strong": {
+        "range": [70, 100],
+        "label": "You're strong at setting and communicating boundaries.",
+        "strengths": [
+          "You can say no, slow down, or change course when you're not comfortable.",
+          "You can discuss differences in desire or pace and look for a fair middle ground."
+        ],
+        "growth": [
+          "Make sure clear boundaries do not turn into rigid rules; stay open to discussion.",
+          "If you feel guilty after saying no, remind yourself that you are allowed to protect your comfort and safety."
+        ]
+      }
+    }
+  }
+}

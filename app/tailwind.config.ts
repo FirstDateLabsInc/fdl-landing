@@ -4,11 +4,15 @@ const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
+      size: {
+        "13": "52px",
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: "var(--primary)",
         secondary: "var(--secondary)",
+        "secondary-dark": "var(--secondary-dark)",
         accent: "var(--accent)",
       },
       boxShadow: {

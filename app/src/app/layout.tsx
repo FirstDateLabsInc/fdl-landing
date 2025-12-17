@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
 import { Navbar } from "@/components/layout/Navbar"
+import { Footer } from "@/components/sections/Footer"
 import { poppins } from "./fonts"
 
 import "./globals.css"
@@ -30,8 +31,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.variable}>
       <body className="antialiased bg-[#fffdf6] text-slate-900">
-        <Navbar />
-        <main>{children}</main>
+        <div className="flex min-h-screen flex-col">
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   )
