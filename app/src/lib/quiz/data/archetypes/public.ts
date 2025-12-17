@@ -23,7 +23,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You genuinely enjoy dating and people can feel it. You say what you want, handle disagreement calmly, and make partners feel safe. This is rare.",
     patternDescription: `You're the kind of person who lights up when you meet someone interesting. You're comfortable saying "I like you," and you actually enjoy building a relationship, not just the chase. Your friends might say, "You just make people feel at ease," and they're not wrong. You didn't grow up with a lot of mixed signals about love, so you don't feel like you have to decode everything or constantly protect yourself.`,
     rootCause: `You have secure attachment at your core. You weren't sent mixed signals about love growing up, so you don't have to decode relationships or protect yourself defensively. This is genuinely rare and valuable. It means you date from a place of "this is nice" rather than "please don't leave me" or "I need to control this."`,
-    callToActionCopy: "Get Coaching on Finding Your Match",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "You meet someone ➜ you feel real curiosity and interest (not performing, just being yourself)",
       "You share openly ➜ you don't play games or hold back to seem \"cool\"",
@@ -56,7 +56,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You're easy to be around, but sometimes you end up in the background. You say \"yes\" when you mean \"no,\" and later feel upset about choices you technically agreed to.",
     patternDescription: `You're the person who says, "Whatever you want is fine," even when you quietly care about how things go. You really don't like conflict, so you go along with plans you don't fully want and then feel frustrated afterward. On dates, when the other person suggests something, your first instinct is to agree—even if you had something else in mind. You tell yourself you're being flexible. Over time, what you want just gets pushed to the side.`,
     rootCause: `You have secure attachment (good base) but you communicate passively (learned pattern). This usually comes from childhood messaging like "be easy to be around" or "don't cause problems" or "your needs are less important than keeping the peace." You learned that speaking up = conflict, and conflict = danger/rejection.`,
-    callToActionCopy: "Get Coaching on Finding Your Voice in Dating",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "Date suggests a plan or idea ➜ you immediately think \"I should go with it\"",
       "You suppress your preference ➜ you say \"sounds good!\" or stay quiet",
@@ -89,7 +89,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You take the lead in dating, but sometimes your pace can feel like a lot for other people. You move quickly and naturally expect partners to keep up.",
     patternDescription: `You know what you want and you're not shy about saying it. On dates, you're the one who takes charge — you suggest the restaurant, map out the plan, and guide the conversation. Your friends probably describe you as "strong" or "confident." And you are. But sometimes people seem intimidated or overwhelmed by how much you dominate the dating dynamic. You're not trying to be pushy; taking the lead just feels natural to you. Some people relax into that, and others quietly back away.`,
     rootCause: `You have secure attachment (solid foundation) + aggressive communication style (learned that directness = respect, that hesitation = weakness). This often comes from family messaging like "be decisive," "winners don't ask permission," "hesitation is for losers." You learned that taking charge = respect. You're right in business. In dating, you're wrong.`,
-    callToActionCopy: "Get Coaching on Collaborative Dating",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "You like someone ➜ you make a plan, you're decisive",
       "You set the tone ➜ they feel the weight of your certainty",
@@ -122,7 +122,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You tend to use a light, relaxed tone in dating. It makes interactions feel easy at first, but sometimes partners aren't sure how seriously to take what you say.",
     patternDescription: `You have an engaging way of relating to people, and you often bring a lighter tone into conversations. You use gentle teasing to create closeness. You're generally secure and your intention is to make the interaction feel comfortable, not critical. But you express something that genuinely matters to you in this lighter style instead of saying it more directly. Partners don't always catch that. Over time, they may feel a bit unsure about how seriously to take your feelings.`,
     rootCause: `You have secure attachment (solid foundation) but you communicate indirectly through humor (learned pattern). This often comes from family where humor was the main language—serious conversations didn't happen, problems got laughed off, emotions were deflected with jokes. You're not trying to be hurtful; you're using the language you were taught.`,
-    callToActionCopy: "Get Coaching on Serious Conversations",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "You like someone ➜ you use a light, teasing tone to build connection",
       "They respond and engage ➜ the interaction feels smooth and relaxed",
@@ -155,7 +155,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You open up quickly in dating. You share a lot early on and tend to get emotionally involved faster. They struggle to keep up and feel overwhelmed.",
     patternDescription: `You're expressive and open-hearted, and you show your feelings clearly. You're not afraid to say what someone means to you, and you're willing to be emotionally honest early on. You share personal and vulnerable things sooner, and you often want the relationship to move forward at a quicker pace. Your wish for closeness and reassurance can sometimes feel intense for partners who are still getting to know you.`,
     rootCause: `You have anxious attachment. You learned early that love was inconsistent. You developed a strategy: if you invest MORE, love more, share more vulnerably, surely THEN they won't leave. Your assertiveness (you say what you want directly) actually makes your anxiety worse because you push harder when anxious, which pushes partners away.`,
-    callToActionCopy: "Get Coaching on Pacing Your Love",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "You meet someone interesting ➜ you feel excited and invested",
       "You share deeply and vulnerably ➜ you say \"I like you\" quickly",
@@ -188,7 +188,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You put a lot of care and effort into your relationships. You naturally focus on your partner's needs. But you end up feeling unseen or unappreciated for how much you give.",
     patternDescription: `You form strong attachments and tend to show love through doing things for the other person. Your willingness to give and support is a real strength, but at times you set your own needs aside for too long. You notice the small details. You remember what they like. When this isn't matched or clearly acknowledged, it can quietly become painful for you, and the relationship can start to feel uneven.`,
     rootCause: `You have anxious attachment with a "giver" strategy. You learned that love = work and effort. You think if you just do enough, love enough, care enough, they'll stay. But love isn't a transaction. Your hypervigilance to their needs comes from fear they'll leave if you stop being useful.`,
-    callToActionCopy: "Get Coaching on Healthy Giving in Relationships",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "You like someone ➜ you naturally start doing caring things for them",
       "You put in extra effort ➜ you hope they'll feel supported and valued",
@@ -221,7 +221,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You bring a lot of energy and passion into dating. When you really care about someone, you lean in. When you feel anxious, you move even closer, which can feel intense for the other person.",
     patternDescription: `You don't hide your interest. When you like someone, you're engaged, responsive, and willing to invest. You value emotional intensity and clear signs of connection. When you sense distance or mixed signals, it's hard for you to sit back and wait — reaching out more feels like the way to keep the connection alive. What feels like care and effort on your side can feel like pressure on theirs, and that gap can create the distance you're trying to avoid.`,
     rootCause: `You have anxious attachment with an aggressive communication style. You learned that pursuing = caring, that intensity = love. When anxious (which is often), you don't slow down—you speed up. You don't pull back—you push forward. But this combination is exhausting for partners.`,
-    callToActionCopy: "Get Coaching on Healthy Pursuit in Dating",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "You like someone ➜ you pursue them actively",
       "They seem distant or unsure ➜ you escalate to convince them",
@@ -254,7 +254,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You're highly observant in relationships. You pick up on details and subtle shifts, and hope partners will understand your needs or feelings without talking to them directly.",
     patternDescription: `You notice a lot—tone changes, delayed replies, small actions. You think about what these signs might mean and often draw your own conclusions. When something bothers you, you do not bring it up right away. Instead, you hint at it or change your tone, hoping the other person will understand it. When they don't respond the way you were hoping, you feel disappointing. From their side, things can suddenly feel tense, but they're not sure what happened.`,
     rootCause: `You have anxious attachment with passive-aggressive communication. You learned that expressing needs = conflict = abandonment. So you hide your needs, test partners with hints, and feel rejected when they don't pass the test. But you never gave them the actual test.`,
-    callToActionCopy: "Get Coaching on Direct Communication",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "Something bothers you ➜ you don't say anything",
       "You drop hints hoping they'll figure it out ➜ they don't fully pick up on it",
@@ -287,7 +287,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You care deeply about having your own space and direction in life. When relationships start to feel like they might limit that, you create distance or pull back.",
     patternDescription: `You're comfortable on your own and confident in who you are. You know your limits and you protect them. As emotional closeness grows, it can start to feel like pressure or expectation. When that happens, you step back—taking more space, keeping things lighter or focusing on your own world again—so you can feel grounded and independent.`,
     rootCause: `You have avoidant attachment with assertive communication (you say you want space clearly). You learned that relationships = loss of self. Intimacy = vulnerability = danger. Your independence is a protective strategy, not a character trait.`,
-    callToActionCopy: "Get Coaching on Opening Up Without Losing Yourself",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "You like someone ➜ you enjoy the connection but keep some distance",
       "They try to get closer ➜ you start to feel pressured or crowded",
@@ -320,7 +320,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "When relationships start to feel intense or demanding, you pull back. Instead of staying engaged, you create distance, and partners can be left feeling confused or shut out.",
     patternDescription: `When things become more emotionally real, your system can feel overloaded. Stepping back feels safer than staying in the moment. You go quiet, reply more slowly, or disappear for a while. For you, it's a way to calm down and get space. For the other person, it can look like you suddenly lost interest or stopped caring.`,
     rootCause: `You have avoidant attachment with passive communication. You learned that conflict = pain, so you escape. You also learned not to speak up, so you just withdraw instead of saying "I need space." Disappearing feels safer than communicating.`,
-    callToActionCopy: "Get Coaching on Staying Present",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "Things get emotionally real ➜ you feel overwhelmed",
       "You need to escape ➜ you go quiet",
@@ -353,7 +353,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You're highly protective of your inner world. When people get close, you respond with distance or sharpness, and relationships can start to feel risky rather than safe.",
     patternDescription: `Over time, you've learned to rely on strong defenses. Keeping some distance feels safer than letting someone in and possibly getting hurt. On the outside, you might look cold, harsh, or uninterested. Inside, you're mostly trying to stay safe, not trying to hurt anyone.`,
     rootCause: `You have avoidant attachment with aggressive communication. You learned that vulnerability = danger. People = pain. Your harshness is a defense mechanism. You attack first so you don't get hurt.`,
-    callToActionCopy: "Get Coaching on Opening Your Heart",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "Someone tries to get close ➜ you feel threatened",
       "You respond harshly or coldly ➜ you're pushing them away",
@@ -386,7 +386,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You tend to stay emotionally distant in relationships. Partners often end up guessing what you're really thinking or feeling. When you're upset, you're more likely to pull back than to talk about it directly.",
     patternDescription: `You often keep your inner world private. You express displeasure through coldness or withdrawal rather than words, creating an air of mystery that can feel like rejection. From your side, this is a way of protecting yourself and calming down. From the other person's side, it can feel like you've suddenly pulled the plug on closeness.`,
     rootCause: `You have avoidant attachment with passive-aggressive communication. You learned not to speak up AND not to get close. When frustrated, you don't express it—you punish through withdrawal and coldness.`,
-    callToActionCopy: "Get Coaching on Warm Communication",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "Something bothers you ➜ you don't say anything",
       "You go cold or distant ➜ your partner feels it",
@@ -419,7 +419,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You understand yourself very well. You can see your own patterns and explain them clearly. But turning this insight into action remains difficult.",
     patternDescription: `You're thoughtful and self-aware. You can describe your fears, triggers, and reactions in detail—even when your actions don't match what you say you want. You're not clueless about your issues; in fact, you might understand them better than most people. The challenge is that insight and change don't always move at the same speed. Your mind gets it, but your reactions still follow old habits.`,
     rootCause: `You have disorganized attachment with assertive communication. You can identify your patterns but haven't done the deeper work to change them. You might say "I know I sabotage relationships" but continue sabotaging them. Self-awareness without action.`,
-    callToActionCopy: "Get Coaching on Turning Awareness Into Change",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "You meet someone ➜ you get emotionally invested and open up quickly",
       "Something triggers you ➜ you pull back hard, or create distance",
@@ -452,7 +452,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You're very good at adapting to other people. In relationships, you often change to fit what the other person seems to want, and over time it can feel like you've lost touch with your own needs and identity.",
     patternDescription: `You're sensitive to the people around you and quick to adjust. When you like someone, you naturally tune into their preferences, moods, and expectations. At first, this can make the connection feel smooth and easy. But as time goes on, the parts of you that don't really fit that version start to come out. You feel tired from keeping up the "ideal" version of yourself, and they feel confused because you suddenly don't seem like the person they first met.`,
     rootCause: `You have disorganized attachment with passive communication. You never learned a stable sense of self. You learned to be what others need to survive. Now you automatically shape-shift to keep people close.`,
-    callToActionCopy: "Get Coaching on Finding Your True Self",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "You meet someone ➜ you quickly adapt and become the version you think they'll like",
       "They respond well to this version of you ➜ you feel seen and appreciated",
@@ -485,7 +485,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "Your relationships can feel very intense—for you and for the other person. You swing between wanting a lot of closeness and then needing to push people away when it all feels too much.",
     patternDescription: `Your feelings in relationships tend to be strong. When you care about someone, you feel it deeply and get very involved. But when you're triggered, overwhelmed, or scared of getting hurt, your reactions can become big and sudden—pulling away or starting conflict. You're not trying to cause chaos; your emotions just move quickly, and it's hard to slow things down in the moment. For partners, this up-and-down pattern can feel confusing and tiring.`,
     rootCause: `You have disorganized attachment with aggressive communication. Your nervous system learned that relationships = danger + safety simultaneously. You swing between intense pursuit and aggressive rejection. You're not stable in the middle.`,
-    callToActionCopy: "Get Coaching on Managing Your Intensity",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "You meet someone ➜ you get emotionally involved and attached quickly",
       "Something triggers you ➜ you react strongly, argue, or push them away",
@@ -518,7 +518,7 @@ export const archetypesPublic: ArchetypePublic[] = [
       "You're layered and complex. In relationships, you can send mixed signals—sometimes warm, sometimes distant—so partners often feel unsure about where they stand with you.",
     patternDescription: `You feel a lot underneath the surface, and your feelings about closeness can change quickly. Part of you wants connection and intimacy; another part gets scared, guarded, or skeptical. You might test people without fully realizing it—pulling them closer to see if they care, then stepping back to see if they'll follow. You're not trying to play games; you're trying to feel safe and understood in a pattern that's hard even for you to untangle.`,
     rootCause: `You have disorganized attachment with passive-aggressive communication. You learned that relationships were unpredictable. You test people indirectly before committing. You communicate through manipulation rather than words.`,
-    callToActionCopy: "Get Coaching on Clear Communication",
+    callToActionCopy: "Practice This in the App",
     datingCycleTeaser: [
       "You like someone ➜ you feel curious but also cautious, so you \"test\" how much they care",
       "You move closer, then suddenly create distance ➜ they feel confused by the change",
