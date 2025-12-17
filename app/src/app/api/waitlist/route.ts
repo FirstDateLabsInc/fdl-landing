@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { getSupabaseServer } from "@/lib/supabase/server";
 import { getResend, EMAIL_FROM } from "@/lib/email/resend";
 import { render } from "@react-email/render";
@@ -6,10 +7,21 @@ import { WaitlistConfirmation } from "@/emails/WaitlistConfirmation";
 import { QuizResultsEmail } from "@/emails/QuizResultsEmail";
 import { getPublicArchetypeById } from "@/lib/quiz/archetypes";
 import { verifyTurnstileToken } from "@/lib/turnstile";
-import type {
-  JoinWaitlistRequest,
-  JoinWaitlistResponse,
-} from "@/lib/api/waitlist";
+import type { JoinWaitlistResponse } from "@/lib/api/waitlist";
+
+// Zod schema aligned with waitlist table CHECK constraints
+const JoinWaitlistSchema = z.object({
+  email: z.string().email(),
+  source: z
+    .enum(["web", "web-hero", "web-cta", "quiz", "referral", "other"])
+    .optional(),
+  utmSource: z.string().optional(),
+  utmMedium: z.string().optional(),
+  utmCampaign: z.string().optional(),
+  referrer: z.string().optional(),
+  quizResultId: z.string().uuid().optional(),
+  turnstileToken: z.string().optional(),
+});
 
 /** Response shape from join_waitlist() RPC */
 interface JoinWaitlistRpcResult {
@@ -24,7 +36,20 @@ export async function POST(
   request: NextRequest
 ): Promise<NextResponse<JoinWaitlistResponse>> {
   try {
-    const body = (await request.json()) as JoinWaitlistRequest;
+    const rawBody: unknown = await request.json();
+    const parsed = JoinWaitlistSchema.safeParse(rawBody);
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid request payload",
+          errorCode: "VALIDATION_ERROR",
+        },
+        { status: 400 }
+      );
+    }
+
     const {
       email,
       source,
@@ -34,7 +59,7 @@ export async function POST(
       referrer,
       quizResultId,
       turnstileToken,
-    } = body;
+    } = parsed.data;
 
     // Verify Turnstile token if provided (before any DB operations)
     if (turnstileToken) {
@@ -54,17 +79,6 @@ export async function POST(
           { status: 400 }
         );
       }
-    }
-
-    if (!email) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Email is required",
-          errorCode: "VALIDATION_ERROR",
-        },
-        { status: 400 }
-      );
     }
 
     const supabase = getSupabaseServer();
