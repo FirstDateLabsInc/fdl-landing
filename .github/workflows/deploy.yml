@@ -41,4 +41,7 @@ jobs:
         working-directory: app
         env:
           NODE_ENV: production
+          # NEXT_PUBLIC_* vars must be available at build time (inlined by Next.js)
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: 0x4AAAAAACHEU1eqFStgqkCY
+          NEXT_PUBLIC_SITE_URL: https://firstdatelabs.com
         run: npm run deploy
