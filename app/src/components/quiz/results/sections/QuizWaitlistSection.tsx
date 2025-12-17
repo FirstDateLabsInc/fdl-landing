@@ -2,6 +2,7 @@
 
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 import { Mail, Sparkles } from "lucide-react";
+import { finalCtaContent } from "@/lib/constants";
 
 interface QuizWaitlistSectionProps {
   quizResultId: string;
@@ -16,6 +17,13 @@ export function QuizWaitlistSection({
   archetypeEmoji,
   intent = "claim",
 }: QuizWaitlistSectionProps) {
+  const title =
+    intent === "waitlist" ? finalCtaContent.headline : "Want the Full Picture?";
+  const description =
+    intent === "waitlist"
+      ? finalCtaContent.subheadline
+      : `Save your ${archetypeEmoji} ${archetypeName} results and get early access to in-depth analysis when we launch.`;
+
   return (
     <div className="from-primary/10 to-secondary/10 rounded-2xl bg-gradient-to-br via-white p-6 sm:p-8">
       <div className="mx-auto max-w-lg text-center">
@@ -26,14 +34,20 @@ export function QuizWaitlistSection({
 
         {/* Heading */}
         <h3 className="text-foreground mb-2 text-xl font-semibold">
-          Want the Full Picture?
+          {title}
         </h3>
 
         {/* Description */}
         <p className="text-muted-foreground mb-6">
-          Save your {archetypeEmoji}{" "}
-          <span className="font-medium">{archetypeName}</span> results and get
-          early access to in-depth analysis when we launch.
+          {intent === "waitlist" ? (
+            description
+          ) : (
+            <>
+              Save your {archetypeEmoji}{" "}
+              <span className="font-medium">{archetypeName}</span> results and
+              get early access to in-depth analysis when we launch.
+            </>
+          )}
         </p>
 
         {/* Form */}
