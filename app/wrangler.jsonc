@@ -16,10 +16,6 @@
     {
       "pattern": "firstdatelabs.com",
       "custom_domain": true
-    },
-    {
-      "pattern": "www.firstdatelabs.com",
-      "custom_domain": true
     }
   ]
 }
