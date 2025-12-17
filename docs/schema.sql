@@ -798,6 +798,7 @@ CREATE POLICY "waitlist_service_only" ON waitlist
 -- ───────────────────────────────────────────────────────────
 -- FUNCTION: join_waitlist
 -- Handles new signups AND reactivations (single row per email)
+-- Also syncs email to quiz_results for claim_quizzes_by_email flow
 -- ───────────────────────────────────────────────────────────
 CREATE OR REPLACE FUNCTION join_waitlist(
   p_email TEXT,
@@ -842,6 +843,15 @@ BEGIN
     quiz_result_id = COALESCE(waitlist.quiz_result_id, EXCLUDED.quiz_result_id)
   RETURNING id, (xmax = 0), unsubscribe_token
   INTO v_id, v_is_new, v_unsubscribe_token;
+
+  -- Sync email to quiz_results for claim_quizzes_by_email flow
+  -- First-touch attribution: only set if email is currently NULL
+  IF p_quiz_result_id IS NOT NULL THEN
+    UPDATE quiz_results
+    SET email = v_email_normalized
+    WHERE id = p_quiz_result_id
+      AND email IS NULL;
+  END IF;
 
   RETURN json_build_object(
     'success', true,
