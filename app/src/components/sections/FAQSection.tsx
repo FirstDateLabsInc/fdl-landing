@@ -56,10 +56,10 @@ export function FAQSection() {
             id="faq-heading"
             className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl md:text-4xl"
           >
-            Common questions
+            Got questions? We&apos;ve got answers.
           </h2>
           <p className="mt-4 text-sm text-muted-foreground sm:text-base md:text-lg">
-            Everything you need to know before you start practicing with Juliet.
+            Here&apos;s what people ask before they start seeing results.
           </p>
         </motion.div>
 

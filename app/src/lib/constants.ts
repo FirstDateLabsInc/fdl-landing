@@ -293,24 +293,29 @@ export const navigation: Navigation = {
 
 export const faqs: FaqItem[] = [
   {
-    question: "Will this feel awkward?",
+    question: "Will I sound scripted or fake on my dates?",
     answer:
-      "Juliet's warm coaching style and the low-pressure Weekly Challenges make practice feel natural and engaging instead of forced.",
+      "No. Juliet builds your natural conversation skills—not scripts. Users consistently say they feel 'more like themselves,' not like they're performing.",
   },
   {
-    question: "Is my voice and data private?",
+    question: "How is this different from reading dating advice online?",
     answer:
-      "We built a privacy-first experience. Your voice data is used only to improve your sessions and isn't shared with third parties.",
+      "Reading and doing are completely different. Juliet lets you practice with your actual voice in real-time, building muscle memory. That's why 73% of users feel more confident on real dates.",
   },
   {
-    question: "Does this actually improve real dates?",
+    question: "I'm busy. How much time does this actually take?",
     answer:
-      "Engaged members typically see a 25–30% uplift in second-date conversion within about a month of regular practice.",
+      "5 minutes a day is enough. Most users practice during their commute, on a walk, or right before a date. No schedule, no pressure.",
   },
   {
-    question: "How much time does it take?",
+    question: "How soon will I notice a difference?",
     answer:
-      "Most people do 3–10 minutes a day. Quick drills before a date can be just a few minutes, with longer sessions when you want them.",
+      "Most users feel more confident within the first week. By week 3, they're averaging 2x more second dates than before.",
+  },
+  {
+    question: "Is my voice and conversation data private?",
+    answer:
+      "100%. Your data is only used to improve your experience—never shared with third parties. Privacy-first, always.",
   },
 ];
 
