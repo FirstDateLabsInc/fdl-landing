@@ -118,6 +118,15 @@ export function WaitlistConfirmation({
             </Text>
           </Section>
 
+          <Text style={paragraph}>
+            (First message with someone new? Building real chemistry? Knowing if
+            there&apos;s genuine connection?)
+          </Text>
+
+          <Text style={paragraph}>
+            We read every reply. People who engage get exclusive early access.
+          </Text>
+
           <Text style={signOff}>See you on the other side,</Text>
           <Text style={brandSignature}>FirstDateLabs</Text>
 
