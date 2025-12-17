@@ -41,10 +41,15 @@ export function WaitlistConfirmation({
             you&apos;ll be among the first to experience it.
           </Text>
 
-          <Text style={paragraph}>
-            We&apos;ll notify you as soon as we launch. In the meantime, keep
-            an eye on your inbox for updates and sneak peeks.
-          </Text>
+          <Text style={sectionTitle}>What to expect next:</Text>
+
+          <Section style={bulletList}>
+            <Text style={bulletItem}>• Early access when we launch</Text>
+            <Text style={bulletItem}>• Updates and sneak peeks as we build</Text>
+            <Text style={bulletItem}>
+              • Occasional dating tips you can use right away
+            </Text>
+          </Section>
 
           <Section style={ctaSection}>
             <Text style={ctaText}>
@@ -106,6 +111,24 @@ const paragraph: React.CSSProperties = {
   fontSize: "16px",
   lineHeight: "1.6",
   margin: "0 0 16px",
+};
+
+const sectionTitle: React.CSSProperties = {
+  color: "#1a1a1a",
+  fontSize: "16px",
+  fontWeight: "600",
+  margin: "8px 0 12px",
+};
+
+const bulletList: React.CSSProperties = {
+  marginBottom: "24px",
+};
+
+const bulletItem: React.CSSProperties = {
+  fontSize: "14px",
+  color: "#4a4a4a",
+  lineHeight: "1.7",
+  margin: "0 0 6px",
 };
 
 const ctaSection: React.CSSProperties = {

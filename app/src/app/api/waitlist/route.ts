@@ -4,6 +4,7 @@ import { getResend, EMAIL_FROM } from "@/lib/email/resend";
 import { render } from "@react-email/render";
 import { WaitlistConfirmation } from "@/emails/WaitlistConfirmation";
 import { QuizResultsEmail } from "@/emails/QuizResultsEmail";
+import { getPublicArchetypeById } from "@/lib/quiz/archetypes";
 import { verifyTurnstileToken } from "@/lib/turnstile";
 import type {
   JoinWaitlistRequest,
@@ -32,8 +33,6 @@ export async function POST(
       utmCampaign,
       referrer,
       quizResultId,
-      archetypeName,
-      archetypeEmoji,
       turnstileToken,
     } = body;
 
@@ -110,24 +109,52 @@ export async function POST(
       try {
         const resend = getResend();
 
-        // Use quiz-specific email if archetype info is present
-        const isQuizSignup = quizResultId && archetypeName && archetypeEmoji;
+        const baseUrl =
+          process.env.NEXT_PUBLIC_SITE_URL || "https://firstdatelabs.com";
 
-        const emailComponent = isQuizSignup
+        // Use quiz-specific email only if we can resolve archetype image server-side
+        let quizEmailPayload:
+          | {
+              archetypeName: string;
+              archetypeImageUrl: string;
+              quizResultUrl: string;
+            }
+          | undefined;
+
+        if (quizResultId) {
+          const { data: quizResult } = await supabase
+            .from("quiz_results")
+            .select("archetype_slug")
+            .eq("id", quizResultId)
+            .single();
+
+          if (quizResult?.archetype_slug) {
+            const archetype = getPublicArchetypeById(quizResult.archetype_slug);
+            if (archetype?.image && archetype.name) {
+              quizEmailPayload = {
+                archetypeName: archetype.name,
+                archetypeImageUrl: `${baseUrl}${archetype.image}`,
+                quizResultUrl: `${baseUrl}/quiz/results/${quizResultId}`,
+              };
+            }
+          }
+        }
+
+        const emailComponent = quizEmailPayload
           ? QuizResultsEmail({
               email,
               unsubscribeToken: result.unsubscribe_token,
-              archetypeName,
-              archetypeEmoji,
-              quizResultUrl: `https://firstdatelabs.com/quiz/results/${quizResultId}`,
+              archetypeName: quizEmailPayload.archetypeName,
+              archetypeImageUrl: quizEmailPayload.archetypeImageUrl,
+              quizResultUrl: quizEmailPayload.quizResultUrl,
             })
           : WaitlistConfirmation({
               email,
               unsubscribeToken: result.unsubscribe_token,
             });
 
-        const subject = isQuizSignup
-          ? `Your Dating Pattern: ${archetypeEmoji} ${archetypeName}`
+        const subject = quizEmailPayload
+          ? `Your Dating Pattern: ${quizEmailPayload.archetypeName}`
           : "Welcome to First Date Labs!";
 
         // Pre-render React Email to HTML (fixes Turbopack bundling issue)

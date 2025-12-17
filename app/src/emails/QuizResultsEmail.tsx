@@ -4,6 +4,7 @@ import {
   Head,
   Heading,
   Html,
+  Img,
   Link,
   Preview,
   Section,
@@ -14,7 +15,7 @@ interface QuizResultsEmailProps {
   email: string;
   unsubscribeToken: string;
   archetypeName: string;
-  archetypeEmoji: string;
+  archetypeImageUrl: string;
   quizResultUrl?: string;
 }
 
@@ -22,7 +23,7 @@ export function QuizResultsEmail({
   email,
   unsubscribeToken,
   archetypeName,
-  archetypeEmoji,
+  archetypeImageUrl,
   quizResultUrl,
 }: QuizResultsEmailProps) {
   const unsubscribeUrl = `https://firstdatelabs.com/unsubscribe?token=${unsubscribeToken}`;
@@ -30,7 +31,7 @@ export function QuizResultsEmail({
   return (
     <Html>
       <Head />
-      <Preview>Your Dating Pattern: {archetypeEmoji} {archetypeName}</Preview>
+      <Preview>Your Dating Pattern: {archetypeName}</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={logoSection}>
@@ -38,7 +39,7 @@ export function QuizResultsEmail({
           </Section>
 
           <Heading style={heading}>
-            Your Dating Pattern: {archetypeEmoji} {archetypeName}
+            Your Dating Pattern: {archetypeName}
           </Heading>
 
           <Text style={paragraph}>Hi {email}!</Text>
@@ -57,7 +58,13 @@ export function QuizResultsEmail({
           )}
 
           <Section style={resultCard}>
-            <Text style={resultEmoji}>{archetypeEmoji}</Text>
+            <Img
+              src={archetypeImageUrl}
+              alt={archetypeName}
+              width={96}
+              height={96}
+              style={resultImage}
+            />
             <Text style={resultTitle}>{archetypeName}</Text>
             <Text style={resultDescription}>
               We&apos;re building personalized coaching insights based on your
@@ -71,15 +78,17 @@ export function QuizResultsEmail({
           </Text>
 
           <Section style={bulletList}>
-            <Text style={bulletItem}>Personalized coaching recommendations</Text>
-            <Text style={bulletItem}>Red flags to watch for in relationships</Text>
-            <Text style={bulletItem}>Communication strategies that work for you</Text>
-            <Text style={bulletItem}>Attachment style insights</Text>
+            <Text style={bulletItem}>• Personalized coaching recommendations</Text>
+            <Text style={bulletItem}>• Red flags to watch for in relationships</Text>
+            <Text style={bulletItem}>• Communication strategies that work for you</Text>
+            <Text style={bulletItem}>• Attachment style insights</Text>
           </Section>
 
           <Section style={ctaSection}>
-            <Text style={ctaText}>
+            <Text style={ctaLinePrimary}>
               We&apos;ll notify you as soon as the full analysis is ready.
+            </Text>
+            <Text style={ctaLineSecondary}>
               Questions? Just reply to this email.
             </Text>
           </Section>
@@ -149,9 +158,10 @@ const resultCard: React.CSSProperties = {
   border: "1px solid #eee",
 };
 
-const resultEmoji: React.CSSProperties = {
-  fontSize: "48px",
-  margin: "0 0 12px",
+const resultImage: React.CSSProperties = {
+  display: "block",
+  margin: "0 auto 12px",
+  borderRadius: "999px",
 };
 
 const resultTitle: React.CSSProperties = {
@@ -169,16 +179,14 @@ const resultDescription: React.CSSProperties = {
 };
 
 const bulletList: React.CSSProperties = {
-  paddingLeft: "20px",
   marginBottom: "24px",
 };
 
 const bulletItem: React.CSSProperties = {
   fontSize: "14px",
   color: "#4a4a4a",
-  lineHeight: "1.8",
-  margin: "0",
-  paddingLeft: "8px",
+  lineHeight: "1.7",
+  margin: "0 0 6px",
 };
 
 const ctaSection: React.CSSProperties = {
@@ -189,12 +197,20 @@ const ctaSection: React.CSSProperties = {
   marginBottom: "32px",
 };
 
-const ctaText: React.CSSProperties = {
+const ctaLinePrimary: React.CSSProperties = {
+  color: "#1a1a1a",
+  fontSize: "14px",
+  fontWeight: "600",
+  textAlign: "center" as const,
+  margin: "0",
+};
+
+const ctaLineSecondary: React.CSSProperties = {
   color: "#1a1a1a",
   fontSize: "14px",
   fontWeight: "500",
   textAlign: "center" as const,
-  margin: "0",
+  margin: "6px 0 0",
 };
 
 const ctaButtonSection: React.CSSProperties = {
