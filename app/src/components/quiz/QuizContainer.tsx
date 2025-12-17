@@ -139,10 +139,26 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
     try {
       // Serialize answers for server-side scoring
       const answerMap = serializeAnswers(responses);
+
+      // Calculate duration from FIRST ANSWER to submission (not page load)
+      // This measures actual quiz-taking time, excluding idle time before starting
+      const responseTimestamps = Object.values(responses)
+        .map(r => r.timestamp)
+        .filter((t): t is number => typeof t === "number");
+      const firstAnswerTime = responseTimestamps.length > 0
+        ? Math.min(...responseTimestamps)
+        : Date.now();
+      const durationSeconds = Math.round((Date.now() - firstAnswerTime) / 1000);
+
       const payload: SubmitQuizRequest = {
         sessionId: state.sessionId,
         fingerprintHash: fingerprint,
         answers: answerMap,
+        durationSeconds,
+        // UTM params captured at quiz start (from state, not current URL)
+        utmSource: state.utmSource,
+        utmMedium: state.utmMedium,
+        utmCampaign: state.utmCampaign,
       };
 
       const res = await fetch("/api/quiz/complete", {
@@ -206,7 +222,7 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
       setIsSubmitting(false);
       submitInFlightRef.current = false;
     }
-  }, [responses, state.sessionId, fingerprint, clearProgress, onComplete]);
+  }, [responses, state.sessionId, state.utmSource, state.utmMedium, state.utmCampaign, fingerprint, clearProgress, onComplete]);
 
   return (
     <div className="mx-auto flex min-h-[calc(100vh-4.5rem)] w-full max-w-6xl flex-col px-4 py-8 sm:px-6 lg:px-8">
