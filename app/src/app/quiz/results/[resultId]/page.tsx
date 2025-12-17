@@ -91,6 +91,7 @@ export default async function SavedResultPage({ params }: Props) {
         archetype={archetype}
         quizResultId={resultId}
         isFullView={false}  // Preview route - never show locked content
+        viewMode="shared"
       />
 
       <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">

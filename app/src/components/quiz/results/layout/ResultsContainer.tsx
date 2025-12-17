@@ -32,6 +32,11 @@ interface ResultsContainerProps {
   lockedContent?: ArchetypeLocked;
   /** Whether to show full unlocked content (true only on share routes) */
   isFullView?: boolean;
+  /**
+   * Controls behavior differences between an owner's result view vs a public share view.
+   * Shared views must not allow users to "claim" a specific quiz result via email.
+   */
+  viewMode?: "owner" | "shared";
   quizResultId?: string;
   className?: string;
 }
@@ -45,6 +50,7 @@ export function ResultsContainer({
   archetype,
   lockedContent,
   isFullView = false,
+  viewMode = "owner",
   quizResultId,
   className,
 }: ResultsContainerProps) {
@@ -403,6 +409,7 @@ export function ResultsContainer({
                   quizResultId={quizResultId}
                   archetypeName={archetype.name}
                   archetypeEmoji={archetype.emoji}
+                  intent={viewMode === "shared" ? "waitlist" : "claim"}
                 />
               </div>
             </motion.div>
