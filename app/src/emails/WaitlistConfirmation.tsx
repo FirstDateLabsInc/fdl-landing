@@ -2,7 +2,7 @@ import {
   Body,
   Container,
   Head,
-  Heading,
+  Hr,
   Html,
   Link,
   Preview,
@@ -25,39 +25,101 @@ export function WaitlistConfirmation({
   return (
     <Html>
       <Head />
-      <Preview>Welcome to First Date Labs - You&apos;re on the list!</Preview>
+      <Preview>
+        🎉 You&apos;re in! Ready to get more dates and build real connections
+      </Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={logoSection}>
             <Text style={logoText}>First Date Labs</Text>
           </Section>
 
-          <Heading style={heading}>Welcome to First Date Labs!</Heading>
-
-          <Text style={paragraph}>Thanks for signing up, {email}!</Text>
+          <Text style={paragraph}>Thanks for signing up.</Text>
 
           <Text style={paragraph}>
-            You&apos;re now on our early access list. We&apos;re building
-            something special to help you have better first dates, and
-            you&apos;ll be among the first to experience it.
+            You&apos;re joining something rare: a community of people who
+            admitted the truth most won&apos;t say out loud.
           </Text>
 
-          <Text style={sectionTitle}>What to expect next:</Text>
+          <Text style={boldStatement}>Swiping endlessly isn&apos;t working.</Text>
 
-          <Section style={bulletList}>
-            <Text style={bulletItem}>• Early access when we launch</Text>
-            <Text style={bulletItem}>• Updates and sneak peeks as we build</Text>
-            <Text style={bulletItem}>
-              • Occasional dating tips you can use right away
-            </Text>
-          </Section>
+          <Text style={paragraph}>
+            Not because you&apos;re not good enough. Not because the right
+            person isn&apos;t out there.
+          </Text>
+
+          <Text style={paragraph}>
+            It&apos;s because dating conversations are skills. And you&apos;ve
+            never actually <em>practiced</em> them.
+          </Text>
+
+          <Hr style={divider} />
+
+          <Text style={sectionHeader}>
+            Here&apos;s what separates people who build real relationships:
+          </Text>
+
+          <Text style={paragraph}>
+            They don&apos;t go on more dates. They have <em>better</em>{" "}
+            conversations.
+          </Text>
+
+          <Text style={paragraph}>
+            Better at reading chemistry. Better at showing up as themselves.
+            Better at recognizing someone worth a second date.
+          </Text>
+
+          <Text style={paragraph}>
+            Most people never get that skill. You just joined a community that
+            does.
+          </Text>
+
+          <Hr style={divider} />
+
+          <Text style={sectionHeader}>What we&apos;re building for you:</Text>
+
+          <Text style={paragraph}>
+            An AI training partner like a flight simulator for pilots — except
+            the stakes are your dating life and genuine relationships.
+          </Text>
+
+          <Text style={paragraph}>
+            No judgment. No awkwardness. Just practice that builds real
+            confidence.
+          </Text>
+
+          <Hr style={divider} />
+
+          <Text style={sectionHeader}>You&apos;ll experience:</Text>
+
+          <Text style={emojiItem}>
+            🎯 That breakthrough moment when you suddenly see what builds real
+            chemistry and realize you&apos;ve been capable all along—you just
+            needed the practice reps
+          </Text>
+
+          <Text style={emojiItem}>
+            🎯 Your confidence growing visibly each week as you recognize your
+            patterns shifting in how you connect, the questions you ask, and the
+            moments you create
+          </Text>
+
+          <Text style={emojiItem}>
+            🎯 Walking into real dates with a completely different energy
+          </Text>
+
+          <Hr style={divider} />
 
           <Section style={ctaSection}>
+            <Text style={ctaHeader}>Your move:</Text>
             <Text style={ctaText}>
-              Questions? Just reply to this email - we&apos;d love to hear from
-              you.
+              Reply with ONE answer: What&apos;s the dating conversation moment
+              that matters most to you?
             </Text>
           </Section>
+
+          <Text style={signOff}>See you on the other side,</Text>
+          <Text style={brandSignature}>FirstDateLabs</Text>
 
           <EmailSocialLinks source="waitlist" />
 
@@ -101,14 +163,6 @@ const logoText: React.CSSProperties = {
   margin: "0",
 };
 
-const heading: React.CSSProperties = {
-  color: "#1a1a1a",
-  fontSize: "28px",
-  fontWeight: "600",
-  textAlign: "center" as const,
-  margin: "0 0 24px",
-};
-
 const paragraph: React.CSSProperties = {
   color: "#4a4a4a",
   fontSize: "16px",
@@ -116,38 +170,71 @@ const paragraph: React.CSSProperties = {
   margin: "0 0 16px",
 };
 
-const sectionTitle: React.CSSProperties = {
+const boldStatement: React.CSSProperties = {
+  color: "#1a1a1a",
+  fontSize: "18px",
+  fontWeight: "700",
+  lineHeight: "1.4",
+  margin: "24px 0 16px",
+};
+
+const sectionHeader: React.CSSProperties = {
   color: "#1a1a1a",
   fontSize: "16px",
   fontWeight: "600",
-  margin: "8px 0 12px",
+  lineHeight: "1.4",
+  margin: "0 0 16px",
 };
 
-const bulletList: React.CSSProperties = {
-  marginBottom: "24px",
+const divider: React.CSSProperties = {
+  borderTop: "1px solid #eee",
+  borderBottom: "none",
+  borderLeft: "none",
+  borderRight: "none",
+  margin: "24px 0",
 };
 
-const bulletItem: React.CSSProperties = {
-  fontSize: "14px",
+const emojiItem: React.CSSProperties = {
   color: "#4a4a4a",
+  fontSize: "14px",
   lineHeight: "1.7",
-  margin: "0 0 6px",
+  margin: "0 0 16px",
 };
 
 const ctaSection: React.CSSProperties = {
   backgroundColor: "#f9d544",
   borderRadius: "12px",
   padding: "20px",
-  marginTop: "32px",
-  marginBottom: "32px",
+  marginTop: "8px",
+  marginBottom: "24px",
+};
+
+const ctaHeader: React.CSSProperties = {
+  color: "#1a1a1a",
+  fontSize: "16px",
+  fontWeight: "600",
+  margin: "0 0 12px",
 };
 
 const ctaText: React.CSSProperties = {
   color: "#1a1a1a",
   fontSize: "14px",
-  fontWeight: "500",
-  textAlign: "center" as const,
-  margin: "0",
+  lineHeight: "1.6",
+  margin: "0 0 12px",
+};
+
+const signOff: React.CSSProperties = {
+  color: "#4a4a4a",
+  fontSize: "14px",
+  lineHeight: "1.6",
+  margin: "24px 0 4px",
+};
+
+const brandSignature: React.CSSProperties = {
+  color: "#1a1a1a",
+  fontSize: "14px",
+  fontWeight: "600",
+  margin: "0 0 24px",
 };
 
 const footer: React.CSSProperties = {
