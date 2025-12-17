@@ -11,10 +11,18 @@ import type { ArchetypePublic } from "@/lib/quiz/archetypes";
 interface MobileFloatingNavProps {
   activeSection: string;
   archetype: ArchetypePublic;
+  showShareAction?: boolean;
+  primaryCtaLabel?: string;
   className?: string;
 }
 
-export function MobileFloatingNav({ activeSection, archetype, className }: MobileFloatingNavProps) {
+export function MobileFloatingNav({
+  activeSection,
+  archetype,
+  showShareAction = true,
+  primaryCtaLabel = "Get Full Report",
+  className,
+}: MobileFloatingNavProps) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -87,17 +95,19 @@ export function MobileFloatingNav({ activeSection, archetype, className }: Mobil
               }}
               className="w-full rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground"
             >
-              Get Full Report
+              {primaryCtaLabel}
             </button>
-            <button
-              onClick={() => {
-                scrollToId("share-results");
-                setIsOpen(false);
-              }}
-              className="w-full rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted"
-            >
-              Share Results
-            </button>
+            {showShareAction && (
+              <button
+                onClick={() => {
+                  scrollToId("share-results");
+                  setIsOpen(false);
+                }}
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted"
+              >
+                Share Results
+              </button>
+            )}
           </div>
         </nav>
 

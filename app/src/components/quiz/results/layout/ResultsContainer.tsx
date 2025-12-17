@@ -55,6 +55,8 @@ export function ResultsContainer({
   className,
 }: ResultsContainerProps) {
   const prefersReducedMotion = useReducedMotion();
+  const showShareUi = viewMode !== "shared";
+  const primaryCtaLabel = viewMode === "shared" ? "Get Early Access" : "Get Full Report";
 
   // Track active section for sidebar
   const [activeSection, setActiveSection] = useState("pattern");
@@ -385,16 +387,18 @@ export function ResultsContainer({
           </motion.div>
 
           {/* Share Results */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.7 }}
-          >
-            <div id="share-results" className="rounded-2xl bg-white p-6 shadow-sm">
-              <ShareResults shareUrl={shareUrl} archetype={archetype.name} />
-            </div>
-          </motion.div>
+          {showShareUi && (
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: 0.7 }}
+            >
+              <div id="share-results" className="rounded-2xl bg-white p-6 shadow-sm">
+                <ShareResults shareUrl={shareUrl} archetype={archetype.name} />
+              </div>
+            </motion.div>
+          )}
 
           {/* Waitlist Signup - Only show if we have a quiz result ID */}
           {quizResultId && (
@@ -416,16 +420,23 @@ export function ResultsContainer({
           )}
         </div>
 
-        {/* Right Column: Sticky Sidebar (desktop only) */}
-        <ResultsNavSidebar
-          archetype={archetype}
-          sections={SECTIONS}
-          activeSection={activeSection}
-        />
-      </div>
+      {/* Right Column: Sticky Sidebar (desktop only) */}
+      <ResultsNavSidebar
+        archetype={archetype}
+        sections={SECTIONS}
+        activeSection={activeSection}
+        showShareAction={showShareUi}
+        primaryCtaLabel={primaryCtaLabel}
+      />
+    </div>
 
-      {/* Mobile Floating Nav */}
-      <MobileFloatingNav activeSection={activeSection} archetype={archetype} />
+    {/* Mobile Floating Nav */}
+      <MobileFloatingNav
+        activeSection={activeSection}
+        archetype={archetype}
+        showShareAction={showShareUi}
+        primaryCtaLabel={primaryCtaLabel}
+      />
     </div>
   );
 }
