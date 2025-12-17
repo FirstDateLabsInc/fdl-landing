@@ -63,7 +63,7 @@ export function HeroSection() {
             </div>
 
             <div className="mt-8 w-full max-w-md">
-              <WaitlistForm variant="inline" />
+              <WaitlistForm variant="inline" source="web-hero" />
               <p className="text-white/80 mt-3 flex items-center gap-1.5 text-xs">
                 <Sparkles className="h-3.5 w-3.5 shrink-0" />
                 Nail every first date. Join now to claim your early-bird offer.

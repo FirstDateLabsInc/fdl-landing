@@ -45,7 +45,7 @@ export function FinalCTASection() {
           </div>
 
           <div className="mx-auto w-full max-w-md">
-            <WaitlistForm variant="inline" />
+            <WaitlistForm variant="inline" source="web-cta" />
           </div>
 
           <div className="mt-5 flex items-center justify-center gap-2 text-sm text-muted-foreground sm:mt-6 sm:text-base">

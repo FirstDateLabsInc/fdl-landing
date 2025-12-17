@@ -21,6 +21,8 @@ const waitlistSchema = z.object({
 type WaitlistFormData = z.infer<typeof waitlistSchema>;
 
 interface WaitlistFormProps {
+  /** Source identifier for tracking (e.g., 'web-hero', 'web-cta'). Defaults to 'web' */
+  source?: string;
   quizResultId?: string;
   archetypeName?: string;
   archetypeEmoji?: string;
@@ -29,6 +31,7 @@ interface WaitlistFormProps {
 }
 
 export function WaitlistForm({
+  source,
   quizResultId,
   archetypeName,
   archetypeEmoji,
@@ -63,7 +66,7 @@ export function WaitlistForm({
 
     const payload: JoinWaitlistRequest = {
       email: data.email,
-      source: quizResultId ? "quiz" : "web",
+      source: quizResultId ? "quiz" : (source || "web"),
       utmSource: params.get("utm_source") || undefined,
       utmMedium: params.get("utm_medium") || undefined,
       utmCampaign: params.get("utm_campaign") || undefined,

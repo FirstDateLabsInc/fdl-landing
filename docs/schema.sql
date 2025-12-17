@@ -726,7 +726,7 @@ CREATE TABLE public.waitlist (
     CHECK (status IN ('pending', 'active', 'unsubscribed', 'converted')),
 
   -- Attribution
-  source TEXT DEFAULT 'web' CHECK (source IN ('web', 'quiz', 'referral', 'api', 'other')),
+  source TEXT DEFAULT 'web' CHECK (source IN ('web', 'web-hero', 'web-cta', 'quiz', 'referral', 'other')),
   utm_source TEXT,
   utm_medium TEXT,
   utm_campaign TEXT,
