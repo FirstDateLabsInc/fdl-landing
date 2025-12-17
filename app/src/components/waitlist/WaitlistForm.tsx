@@ -7,6 +7,7 @@ import { z } from "zod/v4";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Turnstile } from "@/components/ui/turnstile";
 import { cn } from "@/lib/utils";
 import type {
   JoinWaitlistRequest,
@@ -20,6 +21,8 @@ const waitlistSchema = z.object({
 type WaitlistFormData = z.infer<typeof waitlistSchema>;
 
 interface WaitlistFormProps {
+  /** Source identifier for tracking (e.g., 'web-hero', 'web-cta'). Defaults to 'web' */
+  source?: string;
   quizResultId?: string;
   archetypeName?: string;
   archetypeEmoji?: string;
@@ -28,6 +31,7 @@ interface WaitlistFormProps {
 }
 
 export function WaitlistForm({
+  source,
   quizResultId,
   archetypeName,
   archetypeEmoji,
@@ -40,6 +44,9 @@ export function WaitlistForm({
     "idle" | "loading" | "success" | "already-subscribed" | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [turnstileToken, setTurnstileToken] = useState<string>("");
+  // Use key to reset Turnstile widget by forcing remount
+  const [turnstileKey, setTurnstileKey] = useState(0);
 
   const {
     register,
@@ -59,7 +66,7 @@ export function WaitlistForm({
 
     const payload: JoinWaitlistRequest = {
       email: data.email,
-      source: quizResultId ? "quiz" : "web",
+      source: quizResultId ? "quiz" : (source || "web"),
       utmSource: params.get("utm_source") || undefined,
       utmMedium: params.get("utm_medium") || undefined,
       utmCampaign: params.get("utm_campaign") || undefined,
@@ -67,6 +74,7 @@ export function WaitlistForm({
       quizResultId,
       archetypeName,
       archetypeEmoji,
+      turnstileToken: turnstileToken || undefined,
     };
 
     try {
@@ -76,6 +84,15 @@ export function WaitlistForm({
         body: JSON.stringify(payload),
       });
 
+      // Handle rate limiting before parsing JSON
+      if (res.status === 429) {
+        setStatus("error");
+        setErrorMessage(
+          "Too many attempts. Please wait a minute and try again."
+        );
+        return;
+      }
+
       const result: JoinWaitlistResponse = await res.json();
 
       if (result.success) {
@@ -83,10 +100,25 @@ export function WaitlistForm({
         reset();
       } else {
         setStatus("error");
-        setErrorMessage(result.error || "Something went wrong");
+        // Reset turnstile on error so user can retry
+        setTurnstileKey((k) => k + 1);
+        setTurnstileToken("");
+        // Handle rate limit from response body
+        if (
+          (result as { errorCode?: string }).errorCode === "RATE_LIMITED"
+        ) {
+          setErrorMessage(
+            "Too many attempts. Please wait a minute and try again."
+          );
+        } else {
+          setErrorMessage(result.error || "Something went wrong");
+        }
       }
     } catch {
       setStatus("error");
+      // Reset turnstile on error so user can retry
+      setTurnstileKey((k) => k + 1);
+      setTurnstileToken("");
       setErrorMessage("Network error. Please try again.");
     }
   };
@@ -104,7 +136,9 @@ export function WaitlistForm({
           You&apos;re on the list!
         </p>
         <p className="text-sm text-muted-foreground sm:text-base">
-          Check your inbox for confirmation.
+          {quizResultId
+            ? "Check your inbox for your quiz results."
+            : "Check your inbox for confirmation."}
         </p>
       </div>
     );
@@ -120,10 +154,14 @@ export function WaitlistForm({
         )}
       >
         <p className="text-lg font-semibold text-foreground sm:text-xl">
-          You&apos;re already on the list.
+          {quizResultId
+            ? "Check your inbox for your quiz results!"
+            : "You&apos;re already on the list."}
         </p>
         <p className="text-sm text-muted-foreground sm:text-base">
-          We&apos;ll notify you when we launch.
+          {quizResultId
+            ? "You're already on the early access list — we've saved your latest results."
+            : "We&apos;ll notify you when we launch."}
         </p>
       </div>
     );
@@ -168,11 +206,19 @@ export function WaitlistForm({
               "h-10 shrink-0 rounded-full px-4 text-base font-medium",
               "w-full sm:w-auto"
             )}
-            disabled={status === "loading"}
+            disabled={status === "loading" || !turnstileToken}
           >
             {status === "loading" ? "Joining..." : "Get Early Access"}
           </Button>
         </div>
+
+        {/* Turnstile widget */}
+        <Turnstile
+          key={turnstileKey}
+          onSuccess={setTurnstileToken}
+          onExpire={() => setTurnstileToken("")}
+          className="px-3"
+        />
 
         {/* Error messages */}
         {errors.email && (
@@ -214,12 +260,18 @@ export function WaitlistForm({
           )}
         </div>
 
+        <Turnstile
+          key={turnstileKey}
+          onSuccess={setTurnstileToken}
+          onExpire={() => setTurnstileToken("")}
+        />
+
         <Button
           type="submit"
           variant="primary"
           size="lg"
           className="w-full"
-          disabled={status === "loading"}
+          disabled={status === "loading" || !turnstileToken}
         >
           {status === "loading" ? "Joining..." : "Get Early Access"}
         </Button>

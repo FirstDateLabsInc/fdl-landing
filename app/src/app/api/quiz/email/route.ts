@@ -1,23 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { getSupabaseServer } from "@/lib/supabase/server";
-import type { UpdateEmailRequest, UpdateEmailResponse } from "@/lib/api/quiz";
+import type { UpdateEmailResponse } from "@/lib/api/quiz";
+
+// Zod schema aligned with quiz_results table constraints
+const UpdateEmailSchema = z.object({
+  resultId: z.string().uuid(),
+  sessionId: z.string().uuid(),
+  email: z.string().email(),
+});
 
 export async function POST(
   request: NextRequest
 ): Promise<NextResponse<UpdateEmailResponse>> {
   try {
-    const body = (await request.json()) as UpdateEmailRequest;
-    const { resultId, sessionId, email } = body;
+    const rawBody: unknown = await request.json();
+    const parsed = UpdateEmailSchema.safeParse(rawBody);
 
-    if (!email || !resultId || !sessionId) {
+    if (!parsed.success) {
       return NextResponse.json(
         {
           success: false,
-          error: "Missing required fields",
+          error: "Invalid request payload",
         },
         { status: 400 }
       );
     }
+
+    const { resultId, sessionId, email } = parsed.data;
 
     const supabase = getSupabaseServer();
 

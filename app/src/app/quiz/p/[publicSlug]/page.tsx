@@ -100,6 +100,7 @@ export default async function PublicSharePage({ params }: Props) {
         lockedContent={lockedContent}
         quizResultId={data.id}
         isFullView={true}  // Full share route - show ALL content
+        viewMode="shared"
       />
 
       <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">

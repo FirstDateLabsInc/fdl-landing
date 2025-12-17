@@ -15,6 +15,10 @@ interface QuizState {
   currentPage: number;
   shuffledQuestionIds: string[];
   responses: AnswerState;
+  // UTM params captured at quiz start for accurate attribution
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
 }
 
 interface UseQuizReturn {
@@ -42,6 +46,9 @@ interface UseQuizReturn {
 const STORAGE_KEY = "juliet-quiz-state";
 const QUESTIONS_PER_PAGE = 6;
 const TOTAL_PAGES = Math.ceil(allQuestions.length / QUESTIONS_PER_PAGE);
+// Session timeout: 30 minutes of inactivity = start fresh quiz
+// Ensures duration (first answer to submit) is accurate within each session
+const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
 
 // ============================================================================
 // HELPERS
@@ -61,6 +68,13 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
+/** SSR-safe URL parameter extraction */
+function getUrlParam(key: string): string | undefined {
+  if (typeof window === "undefined") return undefined;
+  const params = new URLSearchParams(window.location.search);
+  return params.get(key) || undefined;
+}
+
 function createInitialState(): QuizState {
   const shuffledIds = shuffleArray(allQuestions.map(q => q.id));
 
@@ -70,6 +84,10 @@ function createInitialState(): QuizState {
     currentPage: 0,
     shuffledQuestionIds: shuffledIds,
     responses: {},
+    // Capture UTM params at quiz start for accurate attribution
+    utmSource: getUrlParam("utm_source"),
+    utmMedium: getUrlParam("utm_medium"),
+    utmCampaign: getUrlParam("utm_campaign"),
   };
 }
 
@@ -170,7 +188,25 @@ export function useQuiz(resume = true): UseQuizReturn {
   const [state, setState] = useState<QuizState>(() => {
     if (resume) {
       const saved = loadFromStorage();
-      if (saved) return saved;
+      if (saved) {
+        // Check inactivity based on last response timestamp (not startedAt)
+        // This ensures duration calculation (first answer to submit) is accurate
+        const responseTimestamps = Object.values(saved.responses)
+          .map((r) => r.timestamp)
+          .filter((t): t is number => typeof t === "number");
+        const lastActivityAt = responseTimestamps.length > 0
+          ? Math.max(...responseTimestamps)
+          : saved.startedAt;
+        const inactiveMs = Date.now() - lastActivityAt;
+
+        if (inactiveMs > SESSION_TIMEOUT_MS) {
+          // User was inactive > 30 min - start fresh quiz
+          // This ensures duration is accurate for this session
+          return createInitialState();
+        }
+        // Recent activity (e.g., page refresh) - keep progress
+        return saved;
+      }
     }
     return createInitialState();
   });

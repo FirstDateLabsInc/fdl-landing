@@ -1,13 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { getSupabaseServer } from "@/lib/supabase/server";
 import { getResend, EMAIL_FROM } from "@/lib/email/resend";
 import { render } from "@react-email/render";
 import { WaitlistConfirmation } from "@/emails/WaitlistConfirmation";
 import { QuizResultsEmail } from "@/emails/QuizResultsEmail";
-import type {
-  JoinWaitlistRequest,
-  JoinWaitlistResponse,
-} from "@/lib/api/waitlist";
+import { getPublicArchetypeById } from "@/lib/quiz/archetypes";
+import { verifyTurnstileToken } from "@/lib/turnstile";
+import type { JoinWaitlistResponse } from "@/lib/api/waitlist";
+
+// Zod schema aligned with waitlist table CHECK constraints
+const JoinWaitlistSchema = z.object({
+  email: z.string().email(),
+  source: z
+    .enum(["web", "web-hero", "web-cta", "quiz", "referral", "other"])
+    .optional(),
+  utmSource: z.string().optional(),
+  utmMedium: z.string().optional(),
+  utmCampaign: z.string().optional(),
+  referrer: z.string().optional(),
+  quizResultId: z.string().uuid().optional(),
+  turnstileToken: z.string().optional(),
+});
 
 /** Response shape from join_waitlist() RPC */
 interface JoinWaitlistRpcResult {
@@ -22,18 +36,49 @@ export async function POST(
   request: NextRequest
 ): Promise<NextResponse<JoinWaitlistResponse>> {
   try {
-    const body = (await request.json()) as JoinWaitlistRequest;
-    const { email, source, utmSource, utmMedium, utmCampaign, referrer, quizResultId, archetypeName, archetypeEmoji } = body;
+    const rawBody: unknown = await request.json();
+    const parsed = JoinWaitlistSchema.safeParse(rawBody);
 
-    if (!email) {
+    if (!parsed.success) {
       return NextResponse.json(
         {
           success: false,
-          error: "Email is required",
+          error: "Invalid request payload",
           errorCode: "VALIDATION_ERROR",
         },
         { status: 400 }
       );
+    }
+
+    const {
+      email,
+      source,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      referrer,
+      quizResultId,
+      turnstileToken,
+    } = parsed.data;
+
+    // Verify Turnstile token if provided (before any DB operations)
+    if (turnstileToken) {
+      const clientIP =
+        request.headers.get("cf-connecting-ip") ||
+        request.headers.get("x-forwarded-for") ||
+        undefined;
+      const verification = await verifyTurnstileToken(turnstileToken, clientIP);
+
+      if (!verification.success) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: verification.error || "Verification failed",
+            errorCode: "TURNSTILE_FAILED",
+          },
+          { status: 400 }
+        );
+      }
     }
 
     const supabase = getSupabaseServer();
@@ -73,29 +118,60 @@ export async function POST(
       );
     }
 
-    // Send confirmation email for new signups
-    if (result.is_new && result.unsubscribe_token) {
+    // Send email for:
+    // 1) New signups (welcome or quiz email)
+    // 2) Returning users coming from quiz flow (they expect quiz results email)
+    const isQuizSubmission = !!quizResultId;
+    if (result.unsubscribe_token && (result.is_new || isQuizSubmission)) {
       try {
         const resend = getResend();
 
-        // Use quiz-specific email if archetype info is present
-        const isQuizSignup = quizResultId && archetypeName && archetypeEmoji;
+        const baseUrl =
+          process.env.NEXT_PUBLIC_SITE_URL || "https://firstdatelabs.com";
 
-        const emailComponent = isQuizSignup
+        // Use quiz-specific email only if we can resolve archetype image server-side
+        let quizEmailPayload:
+          | {
+              archetypeName: string;
+              archetypeImageUrl: string;
+              quizResultUrl: string;
+            }
+          | undefined;
+
+        if (quizResultId) {
+          const { data: quizResult } = await supabase
+            .from("quiz_results")
+            .select("archetype_slug")
+            .eq("id", quizResultId)
+            .single();
+
+          if (quizResult?.archetype_slug) {
+            const archetype = getPublicArchetypeById(quizResult.archetype_slug);
+            if (archetype?.image && archetype.name) {
+              quizEmailPayload = {
+                archetypeName: archetype.name,
+                archetypeImageUrl: `${baseUrl}${archetype.image}`,
+                quizResultUrl: `${baseUrl}/quiz/results/${quizResultId}`,
+              };
+            }
+          }
+        }
+
+        const emailComponent = quizEmailPayload
           ? QuizResultsEmail({
               email,
               unsubscribeToken: result.unsubscribe_token,
-              archetypeName,
-              archetypeEmoji,
-              quizResultUrl: `https://firstdatelabs.com/quiz/results/${quizResultId}`,
+              archetypeName: quizEmailPayload.archetypeName,
+              archetypeImageUrl: quizEmailPayload.archetypeImageUrl,
+              quizResultUrl: quizEmailPayload.quizResultUrl,
             })
           : WaitlistConfirmation({
               email,
               unsubscribeToken: result.unsubscribe_token,
             });
 
-        const subject = isQuizSignup
-          ? `Your Dating Pattern: ${archetypeEmoji} ${archetypeName}`
+        const subject = quizEmailPayload
+          ? `Your Dating Pattern: ${quizEmailPayload.archetypeName}`
           : "Welcome to First Date Labs!";
 
         // Pre-render React Email to HTML (fixes Turbopack bundling issue)

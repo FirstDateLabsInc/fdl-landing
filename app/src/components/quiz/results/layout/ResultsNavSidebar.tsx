@@ -15,6 +15,8 @@ interface ResultsNavSidebarProps {
   archetype: ArchetypePublic;
   sections: Section[];
   activeSection: string;
+  showShareAction?: boolean;
+  primaryCtaLabel?: string;
   className?: string;
 }
 
@@ -31,6 +33,8 @@ export function ResultsNavSidebar({
   archetype,
   sections = SECTIONS,
   activeSection,
+  showShareAction = true,
+  primaryCtaLabel = "Get Full Report",
   className,
 }: ResultsNavSidebarProps) {
   const scrollToId = (id: string): boolean => {
@@ -104,14 +108,16 @@ export function ResultsNavSidebar({
           onClick={() => handleClick("full-picture")}
           className="w-full rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
         >
-          Get Full Report
+          {primaryCtaLabel}
         </button>
-        <button
-          onClick={() => handleClick("share-results")}
-          className="w-full rounded-lg border border-muted px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted"
-        >
-          Share Results
-        </button>
+        {showShareAction && (
+          <button
+            onClick={() => handleClick("share-results")}
+            className="w-full rounded-lg border border-muted px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted"
+          >
+            Share Results
+          </button>
+        )}
       </div>
     </aside>
   );

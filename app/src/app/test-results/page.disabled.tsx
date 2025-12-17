@@ -1,3 +1,4 @@
+// Disabled for production safety: rename back to `page.tsx` to re-enable locally.
 "use client";
 
 import { useCallback, useState } from "react";

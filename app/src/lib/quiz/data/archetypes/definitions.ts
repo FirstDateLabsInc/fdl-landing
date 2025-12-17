@@ -70,7 +70,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Trusting your gut when something feels off, even if they seem nice',
     ],
 
-    callToActionCopy: 'Get Coaching on Finding Your Match',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -130,7 +130,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Dating as yourself, not as a people-pleaser',
     ],
 
-    callToActionCopy: 'Get Coaching on Finding Your Voice in Dating',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -191,7 +191,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Finding partners who are secure enough to match your energy',
     ],
 
-    callToActionCopy: 'Get Coaching on Collaborative Dating',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -251,7 +251,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Building emotional safety alongside playfulness',
     ],
 
-    callToActionCopy: 'Get Coaching on Serious Conversations',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -311,7 +311,7 @@ export const archetypes: ArchetypeDefinition[] = [
       "Recognize when you're escalating from anxiety",
     ],
 
-    callToActionCopy: 'Get Coaching on Pacing Your Love',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -371,7 +371,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Date people who give back equally',
     ],
 
-    callToActionCopy: 'Get Coaching on Healthy Giving in Relationships',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -431,7 +431,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Self-soothe when anxious instead of pursuing',
     ],
 
-    callToActionCopy: 'Get Coaching on Healthy Pursuit in Dating',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -491,7 +491,7 @@ export const archetypes: ArchetypeDefinition[] = [
       "Recognize when you're creating tests no one can pass",
     ],
 
-    callToActionCopy: 'Get Coaching on Direct Communication',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -551,7 +551,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Understanding the difference between healthy boundaries and walls',
     ],
 
-    callToActionCopy: 'Get Coaching on Opening Up Without Losing Yourself',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -611,7 +611,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Use words instead of disappearing',
     ],
 
-    callToActionCopy: 'Get Coaching on Staying Present',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -671,7 +671,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Learning gentleness without being weak',
     ],
 
-    callToActionCopy: 'Get Coaching on Opening Your Heart',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -731,7 +731,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Using words instead of coldness',
     ],
 
-    callToActionCopy: 'Get Coaching on Warm Communication',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -791,7 +791,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Moving from analysis to action',
     ],
 
-    callToActionCopy: 'Get Coaching on Turning Awareness Into Change',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -851,7 +851,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Learning to be yourself instead of adapting',
     ],
 
-    callToActionCopy: 'Get Coaching on Finding Your True Self',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -911,7 +911,7 @@ export const archetypes: ArchetypeDefinition[] = [
       'Building stability in relationships',
     ],
 
-    callToActionCopy: 'Get Coaching on Managing Your Intensity',
+    callToActionCopy: 'Practice This in the App',
   },
 
   // ========================================================================
@@ -971,6 +971,6 @@ export const archetypes: ArchetypeDefinition[] = [
       'Learning to be transparent instead of mysterious',
     ],
 
-    callToActionCopy: 'Get Coaching on Clear Communication',
+    callToActionCopy: 'Practice This in the App',
   },
 ];

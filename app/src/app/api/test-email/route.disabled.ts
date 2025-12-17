@@ -1,3 +1,4 @@
+// Disabled for production safety: rename back to `route.ts` to re-enable locally.
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { render } from "@react-email/render";

@@ -6,9 +6,6 @@ import {
   Clock,
   Lock,
   Sparkles,
-  Heart,
-  Brain,
-  MessageCircle,
   ArrowRight,
 } from "lucide-react";
 
@@ -158,7 +155,7 @@ export default function QuizPage() {
         >
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
-            <span>~8 minutes</span>
+            <span>~6 minutes</span>
           </div>
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4" />
@@ -183,7 +180,7 @@ export default function QuizPage() {
             className="bg-primary shadow-soft hover:bg-accent hover:shadow-hover px-8 text-slate-900 transition-all hover:-translate-y-0.5"
           >
             <Link href="/quiz/questions?new=true">
-              Start Free Quiz
+              Reveal My Archetype
               <ArrowRight className="ml-2 size-4" aria-hidden />
             </Link>
           </Button>
