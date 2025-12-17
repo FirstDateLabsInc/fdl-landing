@@ -24,10 +24,10 @@ const securityHeaders = [
     value: "camera=(), microphone=(), geolocation=()",
   },
 
-  // Content Security Policy (Report-Only mode for safe testing)
-  // Change to "Content-Security-Policy" after verifying no violations
+  // Content Security Policy (enforced)
+  // Verified: No violations on homepage, /contact, /quiz pages
   {
-    key: "Content-Security-Policy-Report-Only",
+    key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com",
