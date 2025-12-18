@@ -12,8 +12,8 @@ interface LikertScaleProps {
 }
 
 const defaultLabels = {
-  low: "Strongly Disagree",
-  high: "Strongly Agree",
+  low: "Disagree",
+  high: "Agree",
 };
 
 // Gradient opacity levels for each rating
@@ -32,19 +32,19 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
     };
 
     return (
-      <div ref={ref} className={cn("flex flex-col gap-4 sm:gap-6", className)}>
-        {/* Mobile: Labels on top */}
-        <div className="flex items-center justify-between sm:hidden">
-          <span className="text-xs text-slate-600">
+      <div ref={ref} className={cn("flex flex-col gap-3 sm:gap-4", className)}>
+        {/* Mobile/Tablet: Labels on top */}
+        <div className="flex items-center justify-between lg:hidden w-full max-w-md sm:max-w-lg mx-auto">
+          <span className="text-sm sm:text-base text-slate-600">
             {labels.low}
           </span>
-          <span className="text-xs text-slate-600">
+          <span className="text-sm sm:text-base text-slate-600">
             {labels.high}
           </span>
         </div>
 
         {/* Desktop: Labels on sides */}
-        <div className="hidden sm:flex sm:items-center sm:gap-3">
+        <div className="hidden lg:flex lg:items-center lg:gap-4">
           {/* Left label - desktop only */}
           <span className="text-base text-slate-600 whitespace-nowrap">
             {labels.low}
@@ -54,7 +54,7 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
           <RadioGroupPrimitive.Root
             value={value?.toString() ?? ""}
             onValueChange={handleValueChange}
-            className="flex items-center justify-start sm:gap-6 lg:gap-8"
+            className="flex items-center justify-start lg:gap-8"
             orientation="horizontal"
           >
             {[1, 2, 3, 4, 5].map((num) => {
@@ -66,8 +66,8 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
                   key={num}
                   value={num.toString()}
                   className={cn(
-                    "relative sm:size-14 lg:size-16 shrink-0 rounded-full border transition-all duration-200",
-                    "flex items-center justify-center text-xs sm:text-base lg:text-lg font-medium",
+                    "relative lg:size-16 shrink-0 rounded-full border transition-all duration-200",
+                    "flex items-center justify-center lg:text-lg font-medium",
                     "outline-none focus-visible:ring-2 focus-visible:ring-[#f9d544] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffdf6]",
                     "cursor-pointer hover:scale-105",
                     // Default state (unselected)
@@ -98,7 +98,7 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
         <RadioGroupPrimitive.Root
           value={value?.toString() ?? ""}
           onValueChange={handleValueChange}
-          className="flex sm:hidden items-center justify-between w-full max-w-md mx-auto"
+          className="flex lg:hidden items-center justify-between w-full max-w-md sm:max-w-lg mx-auto"
           orientation="horizontal"
         >
           {[1, 2, 3, 4, 5].map((num) => {
@@ -110,8 +110,8 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
                 key={num}
                 value={num.toString()}
                 className={cn(
-                  "relative size-11 min-[375px]:size-[50px] min-[480px]:size-14 shrink-0 rounded-full border transition-all duration-200",
-                  "flex items-center justify-center text-xs min-[375px]:text-sm min-[480px]:text-base font-medium",
+                  "relative size-11 min-[375px]:size-[50px] min-[480px]:size-14 sm:size-[60px] shrink-0 rounded-full border transition-all duration-200",
+                  "flex items-center justify-center text-xs min-[375px]:text-sm min-[480px]:text-base sm:text-lg font-medium",
                   "outline-none focus-visible:ring-2 focus-visible:ring-[#f9d544] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffdf6]",
                   "cursor-pointer hover:scale-105",
                   // Default state (unselected)

@@ -55,7 +55,6 @@ export function QuizQuestion({
         <LikertScale
           value={typeof value === "number" ? value : null}
           onValueChange={handleLikertChange}
-          labels={{ low: "Strongly Disagree", high: "Strongly Agree" }}
           className="w-full"
         />
       )}
