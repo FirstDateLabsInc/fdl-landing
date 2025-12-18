@@ -54,7 +54,7 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
           <RadioGroupPrimitive.Root
             value={value?.toString() ?? ""}
             onValueChange={handleValueChange}
-            className="flex items-center justify-start gap-3 sm:gap-4 lg:gap-6"
+            className="flex items-center justify-start sm:gap-6 lg:gap-8"
             orientation="horizontal"
           >
             {[1, 2, 3, 4, 5].map((num) => {
@@ -66,7 +66,7 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
                   key={num}
                   value={num.toString()}
                   className={cn(
-                    "relative size-10 sm:size-13 lg:size-14 rounded-full border transition-all duration-200",
+                    "relative sm:size-14 lg:size-16 shrink-0 rounded-full border transition-all duration-200",
                     "flex items-center justify-center text-xs sm:text-base lg:text-lg font-medium",
                     "outline-none focus-visible:ring-2 focus-visible:ring-[#f9d544] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffdf6]",
                     "cursor-pointer hover:scale-105",
@@ -98,7 +98,7 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
         <RadioGroupPrimitive.Root
           value={value?.toString() ?? ""}
           onValueChange={handleValueChange}
-          className="flex sm:hidden items-center justify-center gap-2"
+          className="flex sm:hidden items-center justify-between w-full max-w-md mx-auto"
           orientation="horizontal"
         >
           {[1, 2, 3, 4, 5].map((num) => {
@@ -110,8 +110,8 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
                 key={num}
                 value={num.toString()}
                 className={cn(
-                  "relative size-10 rounded-full border transition-all duration-200",
-                  "flex items-center justify-center text-xs font-medium",
+                  "relative size-11 min-[375px]:size-[50px] min-[480px]:size-14 shrink-0 rounded-full border transition-all duration-200",
+                  "flex items-center justify-center text-xs min-[375px]:text-sm min-[480px]:text-base font-medium",
                   "outline-none focus-visible:ring-2 focus-visible:ring-[#f9d544] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffdf6]",
                   "cursor-pointer hover:scale-105",
                   // Default state (unselected)
