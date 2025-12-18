@@ -62,8 +62,7 @@ export function QuizResultsEmail({
             <Img
               src={archetypeImageUrl}
               alt={archetypeName}
-              width={96}
-              height={96}
+              width={240}
               style={resultImage}
             />
             <Text style={resultTitle}>{archetypeName}</Text>
@@ -163,8 +162,11 @@ const resultCard: React.CSSProperties = {
 
 const resultImage: React.CSSProperties = {
   display: "block",
-  margin: "0 auto 12px",
-  borderRadius: "999px",
+  width: "240px",
+  maxWidth: "100%",
+  height: "auto",
+  margin: "0 auto 16px",
+  borderRadius: "12px",
 };
 
 const resultTitle: React.CSSProperties = {
