@@ -30,11 +30,11 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self'",
-      "connect-src 'self' https://api.web3forms.com https://challenges.cloudflare.com",
+      "connect-src 'self' https://api.web3forms.com https://challenges.cloudflare.com https://www.google-analytics.com https://analytics.google.com",
       "frame-src https://challenges.cloudflare.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",

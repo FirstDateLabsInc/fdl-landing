@@ -6,7 +6,8 @@
   "compatibility_flags": ["nodejs_compat"],
   "vars": {
     "NEXT_PUBLIC_TURNSTILE_SITE_KEY":"0x4AAAAAACHEU1eqFStgqkCY",
-    "NEXT_PUBLIC_SITE_URL": "https://firstdatelabs.com"
+    "NEXT_PUBLIC_SITE_URL": "https://firstdatelabs.com",
+    "NEXT_PUBLIC_GA_MEASUREMENT_ID": "G-KGW0WFFMZ5"
   },
   "assets": {
     "directory": ".open-next/assets",

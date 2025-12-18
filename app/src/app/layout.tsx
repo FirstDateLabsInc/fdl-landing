@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
+import Script from "next/script"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/sections/Footer"
 import { poppins } from "./fonts"
@@ -27,6 +28,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={poppins.variable}>
+      <Script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+      />
+      <Script id="google-analytics">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
+        `}
+      </Script>
       <body className="antialiased bg-[#fffdf6] text-slate-900">
         <div className="flex min-h-screen flex-col">
           <Navbar />
