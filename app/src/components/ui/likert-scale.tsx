@@ -33,16 +33,6 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
 
     return (
       <div ref={ref} className={cn("flex flex-col gap-3 sm:gap-4", className)}>
-        {/* Mobile/Tablet: Labels on top */}
-        <div className="flex items-center justify-between lg:hidden w-full max-w-md sm:max-w-lg mx-auto">
-          <span className="text-sm sm:text-base text-slate-600">
-            {labels.low}
-          </span>
-          <span className="text-sm sm:text-base text-slate-600">
-            {labels.high}
-          </span>
-        </div>
-
         {/* Desktop: Labels on sides */}
         <div className="hidden lg:flex lg:items-center lg:gap-4">
           {/* Left label - desktop only */}
@@ -131,6 +121,16 @@ const LikertScale = React.forwardRef<HTMLDivElement, LikertScaleProps>(
             );
           })}
         </RadioGroupPrimitive.Root>
+
+        {/* Mobile/Tablet: Labels below buttons */}
+        <div className="flex items-center justify-between lg:hidden w-full max-w-md sm:max-w-lg mx-auto">
+          <span className="text-sm sm:text-base text-slate-600">
+            {labels.low}
+          </span>
+          <span className="text-sm sm:text-base text-slate-600">
+            {labels.high}
+          </span>
+        </div>
       </div>
     );
   }
