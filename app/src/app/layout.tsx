@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   description:
     "Meet Juliet: an AI dating coach that helps you practice real first-date conversations, get instant feedback, and prepare for your next date—so you can build meaningful connections.",
   metadataBase: new URL("https://firstdatelabs.com"),
+  alternates: {
+    canonical: "https://firstdatelabs.com",
+  },
   openGraph: {
     title: "Juliet: Your AI Dating Coach for Real Connections",
     description:

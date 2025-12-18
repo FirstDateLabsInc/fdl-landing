@@ -1,0 +1,9 @@
+# Robots.txt for firstdatelabs.com
+# https://www.robotstxt.org/robotstxt.html
+
+User-agent: *
+Allow: /
+Disallow: /login
+
+# Sitemap location
+Sitemap: https://firstdatelabs.com/sitemap.xml
