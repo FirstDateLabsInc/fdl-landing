@@ -16,3 +16,6 @@ export function getResend(): Resend {
 
 // Use subdomain for email sending per Resend best practices
 export const EMAIL_FROM = "First Date Labs <hello@updates.firstdatelabs.com>";
+
+// Reply-To routes user replies to monitored inbox
+export const EMAIL_REPLY_TO = "First Date Labs <hello@firstdatelabs.com>";

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseServer } from "@/lib/supabase/server";
-import { getResend, EMAIL_FROM } from "@/lib/email/resend";
+import { getResend, EMAIL_FROM, EMAIL_REPLY_TO } from "@/lib/email/resend";
 import { render } from "@react-email/render";
 import { WaitlistConfirmation } from "@/emails/WaitlistConfirmation";
 import { QuizResultsEmail } from "@/emails/QuizResultsEmail";
@@ -180,6 +180,7 @@ export async function POST(
         await resend.emails.send({
           from: EMAIL_FROM,
           to: [email],
+          replyTo: EMAIL_REPLY_TO,
           subject,
           html: emailHtml,
         });
