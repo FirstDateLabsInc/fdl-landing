@@ -6,6 +6,7 @@ import { Users } from "lucide-react";
 
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 import { finalCtaContent } from "@/lib/constants";
+import { trackCtaClick } from "@/lib/analytics";
 
 export function FinalCTASection() {
   const prefersReducedMotion = useReducedMotion();
@@ -53,6 +54,15 @@ export function FinalCTASection() {
             <Link
               href={finalCtaContent.quizCta.href}
               className="font-semibold text-foreground underline-offset-4 transition-colors hover:text-primary"
+              onClick={() =>
+                trackCtaClick({
+                  ctaId: "quiz_cta",
+                  ctaText: "Discover your Dating Personality",
+                  ctaLocation: "final_cta_section",
+                  sectionId: "waitlist",
+                  pageType: "landing",
+                })
+              }
             >
               Discover your Dating Personality →
             </Link>

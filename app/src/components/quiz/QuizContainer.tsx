@@ -8,9 +8,17 @@ import { QuizQuestion } from "./QuizQuestion";
 import { QuizNavigation } from "./QuizNavigation";
 import { QuizStatement } from "./QuizStatement";
 import { useQuiz } from "@/hooks/use-quiz";
+import { useFlushOnHide } from "@/hooks/use-flush-on-hide";
 import { serializeAnswers } from "@/lib/quiz/utils/answer-transform";
 import { getArchetypeById } from "@/lib/quiz/data/archetypes";
 import { generateFingerprintHash } from "@/lib/fingerprint";
+import {
+  trackQuizStart,
+  trackQuizStepView,
+  trackQuizStepComplete,
+  trackQuizComplete,
+  trackQuizDropout,
+} from "@/lib/analytics";
 import type { QuizResults } from "@/lib/quiz/types";
 import type { ArchetypePublic } from "@/lib/quiz/archetypes";
 import type { CreateSessionResponse, SubmitQuizRequest, SubmitQuizResponse } from "@/lib/api/quiz";
@@ -47,6 +55,13 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
   const [fingerprint, setFingerprint] = useState<string>("");
   const sessionInitRef = useRef(false);
   const submitInFlightRef = useRef(false);
+
+  // Analytics tracking refs
+  const hasTrackedStartRef = useRef(false);
+  const stepEnterTimeRef = useRef(Date.now());
+  const quizStartTimeRef = useRef(0);
+  const quizCompletedRef = useRef(false);
+  const lastTrackedPageRef = useRef(-1);
 
   // Generate fingerprint and validate session on mount (runs once)
   useEffect(() => {
@@ -88,6 +103,34 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
     initSession();
   }, [state.sessionId, setSessionId]);
 
+  // Track step views when page changes
+  useEffect(() => {
+    // Only track if this is a new page we haven't tracked yet
+    if (currentPage !== lastTrackedPageRef.current) {
+      lastTrackedPageRef.current = currentPage;
+      stepEnterTimeRef.current = Date.now();
+      trackQuizStepView({
+        stepIndex: currentPage,
+        totalSteps: totalPages,
+      });
+    }
+  }, [currentPage, totalPages]);
+
+  // Count answered questions for dropout tracking
+  const answeredCount = Object.keys(responses).length;
+
+  // Track dropout when user leaves before completing
+  useFlushOnHide(() => {
+    if (!quizCompletedRef.current && hasTrackedStartRef.current) {
+      trackQuizDropout({
+        lastStepIndex: currentPage,
+        answeredCount,
+        elapsedMs: Date.now() - quizStartTimeRef.current,
+        reason: "page_hidden",
+      });
+    }
+  });
+
   // Ref for the progress bar section to enable auto-scroll
   const progressRef = useRef<HTMLDivElement>(null);
 
@@ -107,6 +150,16 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
 
   const handleValueChange = useCallback(
     (questionId: string) => (value: number | string) => {
+      // Track quiz start on first answer
+      if (!hasTrackedStartRef.current) {
+        hasTrackedStartRef.current = true;
+        quizStartTimeRef.current = Date.now();
+        trackQuizStart({
+          entrySource: state.utmSource || "direct",
+          quizVersion: "v1",
+        });
+      }
+
       setResponse(questionId, value);
 
       // Auto-scroll to the next unanswered question after answering
@@ -128,8 +181,25 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
         });
       });
     },
-    [setResponse, currentPageQuestions, responses]
+    [setResponse, currentPageQuestions, responses, state.utmSource]
   );
+
+  // Wrap goToNext to track step completion
+  const handleNext = useCallback(() => {
+    // Track step completion before navigating
+    const stepTime = Date.now() - stepEnterTimeRef.current;
+    const answersOnStep = currentPageQuestions.filter(
+      (q) => responses[q.id] !== undefined && responses[q.id] !== null
+    ).length;
+
+    trackQuizStepComplete({
+      stepIndex: currentPage,
+      stepTimeMs: stepTime,
+      answersOnStep,
+    });
+
+    goToNext();
+  }, [currentPage, currentPageQuestions, responses, goToNext]);
 
   const handleSubmit = useCallback(async () => {
     if (submitInFlightRef.current) return;
@@ -199,6 +269,16 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
       ) {
         const archetype = getArchetypeById(serverData.archetypeSlug);
         if (archetype) {
+          // Mark quiz as completed to prevent dropout tracking
+          quizCompletedRef.current = true;
+
+          // Track quiz completion
+          trackQuizComplete({
+            totalDurationMs: Date.now() - quizStartTimeRef.current,
+            archetypeId: serverData.archetypeSlug,
+            quizVersion: "v1",
+          });
+
           clearProgress();
           onComplete(
             serverData.scores as unknown as QuizResults,
@@ -297,7 +377,7 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
         canGoNext={canGoNext}
         isLastQuestion={isLastPage}
         onBack={goToPrevious}
-        onNext={goToNext}
+        onNext={handleNext}
         onSubmit={handleSubmit}
         className="pb-4"
       />

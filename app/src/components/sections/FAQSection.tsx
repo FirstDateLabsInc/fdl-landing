@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useRef } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 
@@ -11,9 +12,43 @@ import {
 } from "@/components/ui/accordion";
 import { faqs } from "@/lib/constants";
 import cloudflareLoader from "@/lib/cloudflare-image-loader";
+import { trackFaqOpen, trackFaqClose } from "@/lib/analytics";
+
+// Create FAQ ID from question (alphanumeric + underscore only)
+function getFaqId(question: string): string {
+  return question
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_|_$/g, "")
+    .slice(0, 40);
+}
 
 export function FAQSection() {
   const prefersReducedMotion = useReducedMotion();
+  const openFaqRef = useRef<{ id: string; question: string; openedAt: number } | null>(null);
+
+  // Handle accordion value change for tracking
+  const handleValueChange = useCallback((value: string) => {
+    // If there was a previously open FAQ, track its close
+    if (openFaqRef.current) {
+      const timeOpen = Date.now() - openFaqRef.current.openedAt;
+      trackFaqClose({
+        faqId: openFaqRef.current.id,
+        timeOpenMs: timeOpen,
+      });
+      openFaqRef.current = null;
+    }
+
+    // If a new FAQ is being opened, track it
+    if (value) {
+      const faqId = getFaqId(value);
+      trackFaqOpen({
+        faqId,
+        faqQuestion: value.slice(0, 100), // Truncate for GA4 param limit
+      });
+      openFaqRef.current = { id: faqId, question: value, openedAt: Date.now() };
+    }
+  }, []);
 
   return (
     <section
@@ -70,7 +105,7 @@ export function FAQSection() {
           transition={{ duration: 0.5, ease: "easeOut", delay: prefersReducedMotion ? 0 : 0.05 }}
           className="mt-10 sm:mt-12"
         >
-          <Accordion type="single" collapsible className="divide-y divide-border">
+          <Accordion type="single" collapsible className="divide-y divide-border" onValueChange={handleValueChange}>
             {faqs.map((faq) => (
               <AccordionItem key={faq.question} value={faq.question} className="border-none">
                 <AccordionTrigger className="py-4 text-left text-base font-medium text-foreground hover:no-underline sm:py-5 sm:text-lg">

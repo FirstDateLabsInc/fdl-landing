@@ -11,6 +11,7 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { navigation } from "@/lib/constants";
 import { cn, smoothScrollToHash } from "@/lib/utils";
+import { trackCtaClick, getPageType } from "@/lib/analytics";
 
 const normalizePath = (href: string) => {
   const url = new URL(href, "http://placeholder");
@@ -26,10 +27,16 @@ export function Navbar() {
 
   const handleCtaClick = useCallback(
     (event: ReactMouseEvent<HTMLAnchorElement>) => {
+      trackCtaClick({
+        ctaId: "navbar_cta",
+        ctaText: navigation.cta.label,
+        ctaLocation: "navbar",
+        pageType: getPageType(pathname),
+      });
       smoothScrollToHash(event);
       setIsMenuOpen(false);
     },
-    []
+    [pathname]
   );
 
   const toggleMenu = useCallback(() => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod/v4";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Turnstile } from "@/components/ui/turnstile";
 import { cn } from "@/lib/utils";
+import { trackWaitlistStart, trackGenerateLead } from "@/lib/analytics";
 import type {
   JoinWaitlistRequest,
   JoinWaitlistResponse,
@@ -40,6 +41,8 @@ export function WaitlistForm({
 }: WaitlistFormProps) {
   const isInline = variant === "inline";
   const idPrefix = isInline ? "hero-email" : "email";
+  const formLocation = quizResultId ? "quiz_results" : source || "web";
+  const hasTrackedStartRef = useRef(false);
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "already-subscribed" | "error"
   >("idle");
@@ -56,6 +59,14 @@ export function WaitlistForm({
   } = useForm<WaitlistFormData>({
     resolver: zodResolver(waitlistSchema),
   });
+
+  // Track when user first focuses on email field
+  const handleEmailFocus = () => {
+    if (!hasTrackedStartRef.current) {
+      hasTrackedStartRef.current = true;
+      trackWaitlistStart({ formLocation });
+    }
+  };
 
   const onSubmit = async (data: WaitlistFormData) => {
     setStatus("loading");
@@ -98,6 +109,12 @@ export function WaitlistForm({
       if (result.success) {
         setStatus(result.isNew ? "success" : "already-subscribed");
         reset();
+        // Track successful lead generation (no PII!)
+        trackGenerateLead({
+          formLocation,
+          hasQuizResult: !!quizResultId,
+          archetypeId: archetypeName,
+        });
       } else {
         setStatus("error");
         // Reset turnstile on error so user can retry
@@ -196,6 +213,7 @@ export function WaitlistForm({
               "[&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:shadow-[inset_0_0_0px_1000px_white]"
             )}
             {...register("email")}
+            onFocus={handleEmailFocus}
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? `${idPrefix}-error` : undefined}
           />
@@ -250,6 +268,7 @@ export function WaitlistForm({
             placeholder="Enter your email"
             variant={errors.email ? "error" : "default"}
             {...register("email")}
+            onFocus={handleEmailFocus}
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? `${idPrefix}-error` : undefined}
           />

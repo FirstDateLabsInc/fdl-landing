@@ -6,6 +6,7 @@ import { Link2, Check, Twitter, Share2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { trackShare } from "@/lib/analytics";
 
 interface ShareResultsProps {
   shareUrl: string | null;
@@ -64,11 +65,12 @@ export function ShareResults({
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
+      trackShare({ method: "copy_link", contentType: "quiz_result", archetypeId: archetype });
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error("Failed to copy link:", err);
     }
-  }, [shareUrl]);
+  }, [shareUrl, archetype]);
 
   // Native share (Web Share API) - best UX on mobile
   const handleNativeShare = useCallback(async () => {
@@ -86,6 +88,7 @@ export function ShareResults({
     ) {
       try {
         await webShare.share(shareData);
+        trackShare({ method: "native", contentType: "quiz_result", archetypeId: archetype });
         return;
       } catch (err) {
         // User cancelled - not an error
@@ -100,17 +103,23 @@ export function ShareResults({
     if (!shareUrl) return;
     const tiktokText = `${shareText} ${shareUrl}`;
     navigator.clipboard.writeText(tiktokText).then(() => {
+      trackShare({ method: "tiktok", contentType: "quiz_result", archetypeId: archetype });
       window.open("https://www.tiktok.com/upload", "_blank");
     });
-  }, [shareText, shareUrl]);
+  }, [shareText, shareUrl, archetype]);
 
   const handleInstagramShare = useCallback(() => {
     if (!shareUrl) return;
     const instagramText = `${shareText}\n\n${shareUrl}`;
     navigator.clipboard.writeText(instagramText).then(() => {
+      trackShare({ method: "instagram", contentType: "quiz_result", archetypeId: archetype });
       window.open("https://www.instagram.com/", "_blank");
     });
-  }, [shareText, shareUrl]);
+  }, [shareText, shareUrl, archetype]);
+
+  const handleTwitterClick = useCallback(() => {
+    trackShare({ method: "twitter", contentType: "quiz_result", archetypeId: archetype });
+  }, [archetype]);
 
   // Early return: no shareable link available
   if (!shareUrl) {
@@ -187,6 +196,7 @@ export function ShareResults({
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Share on Twitter"
+            onClick={handleTwitterClick}
           >
             <Twitter className="mr-2 h-4 w-4" />
             Twitter
