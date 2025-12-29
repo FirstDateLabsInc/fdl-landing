@@ -100,7 +100,7 @@ Fires when a section is visible for ≥2 seconds.
 | `page_path` | string | "/" |
 
 **Sections tracked on landing:**
-- hero, social_proof, problem_solution, benefits, faq, waitlist
+- hero, social-proof, problem-solution, benefits, faq, waitlist
 
 ---
 

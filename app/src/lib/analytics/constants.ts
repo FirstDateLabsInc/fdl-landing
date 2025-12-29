@@ -132,8 +132,8 @@ export const GA4_LIMITS = {
 // Section IDs for landing page
 export const LANDING_SECTIONS = {
   HERO: "hero",
-  SOCIAL_PROOF: "social_proof",
-  PROBLEM_SOLUTION: "problem_solution",
+  SOCIAL_PROOF: "social-proof",
+  PROBLEM_SOLUTION: "problem-solution",
   BENEFITS: "benefits",
   FAQ: "faq",
   WAITLIST: "waitlist",
