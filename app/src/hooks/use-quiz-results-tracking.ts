@@ -83,6 +83,9 @@ export function useQuizResultsTracking(
   const maxScrollDepth = useRef(0)
   const hasTrackedReadingComplete = useRef(false)
 
+  // Track timeout IDs for cleanup (prevents memory leaks on unmount)
+  const viewTimeoutIds = useRef<Map<string, NodeJS.Timeout>>(new Map())
+
   const { getActiveTime } = useActiveTimer()
 
   // Initialize pageLoadTime in effect to comply with React Compiler rules
@@ -202,6 +205,8 @@ export function useQuizResultsTracking(
   // Set up IntersectionObserver for sections
   useEffect(() => {
     const observers: IntersectionObserver[] = []
+    // Capture ref value for cleanup to avoid stale ref warning
+    const timeoutIdsMap = viewTimeoutIds.current
 
     sections.forEach((section) => {
       const element = document.getElementById(section.id)
@@ -218,8 +223,15 @@ export function useQuizResultsTracking(
             // Section entered viewport
             state.enterTime = now
 
+            // Clear any existing timeout for this section
+            const existingTimeout = viewTimeoutIds.current.get(section.id)
+            if (existingTimeout) {
+              clearTimeout(existingTimeout)
+            }
+
             // Track section view after MIN_VIEW_MS
-            setTimeout(() => {
+            const timeoutId = setTimeout(() => {
+              viewTimeoutIds.current.delete(section.id)
               const currentState = sectionStates.current.get(section.id)
               if (
                 currentState &&
@@ -235,6 +247,7 @@ export function useQuizResultsTracking(
                 currentState.hasTrackedView = true
               }
             }, MIN_VIEW_MS)
+            viewTimeoutIds.current.set(section.id, timeoutId)
           } else if (state.enterTime !== null) {
             // Section left viewport
             const duration = now - state.enterTime
@@ -261,6 +274,9 @@ export function useQuizResultsTracking(
 
     return () => {
       observers.forEach((observer) => observer.disconnect())
+      // Clear all pending timeouts to prevent memory leaks
+      timeoutIdsMap.forEach((id) => clearTimeout(id))
+      timeoutIdsMap.clear()
     }
   }, [sections])
 }

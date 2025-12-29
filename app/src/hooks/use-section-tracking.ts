@@ -57,6 +57,9 @@ export function useSectionTracking(options: UseSectionTrackingOptions): void {
   // Track state for each section
   const sectionStates = useRef<Map<string, SectionState>>(new Map())
 
+  // Track timeout IDs for cleanup (prevents memory leaks on unmount)
+  const viewTimeoutIds = useRef<Map<string, NodeJS.Timeout>>(new Map())
+
   // Initialize section states
   useEffect(() => {
     sectionStates.current = new Map(
@@ -106,6 +109,8 @@ export function useSectionTracking(options: UseSectionTrackingOptions): void {
   // Set up IntersectionObserver
   useEffect(() => {
     const observers: IntersectionObserver[] = []
+    // Capture ref value for cleanup to avoid stale ref warning
+    const timeoutIdsMap = viewTimeoutIds.current
 
     sectionIds.forEach((sectionId) => {
       const element = document.getElementById(sectionId)
@@ -122,8 +127,15 @@ export function useSectionTracking(options: UseSectionTrackingOptions): void {
             // Section entered viewport
             state.enterTime = now
 
+            // Clear any existing timeout for this section
+            const existingTimeout = viewTimeoutIds.current.get(sectionId)
+            if (existingTimeout) {
+              clearTimeout(existingTimeout)
+            }
+
             // Schedule view tracking after MIN_VIEW_MS
-            setTimeout(() => {
+            const timeoutId = setTimeout(() => {
+              viewTimeoutIds.current.delete(sectionId)
               const currentState = sectionStates.current.get(sectionId)
               if (
                 currentState &&
@@ -138,6 +150,7 @@ export function useSectionTracking(options: UseSectionTrackingOptions): void {
                 currentState.hasTrackedView = true
               }
             }, MIN_VIEW_MS)
+            viewTimeoutIds.current.set(sectionId, timeoutId)
           } else if (state.enterTime !== null) {
             // Section left viewport
             const duration = now - state.enterTime
@@ -168,6 +181,9 @@ export function useSectionTracking(options: UseSectionTrackingOptions): void {
 
     return () => {
       observers.forEach((observer) => observer.disconnect())
+      // Clear all pending timeouts to prevent memory leaks
+      timeoutIdsMap.forEach((id) => clearTimeout(id))
+      timeoutIdsMap.clear()
     }
   }, [sectionIds, threshold, pageType, pathname])
 }

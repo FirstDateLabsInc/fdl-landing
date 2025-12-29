@@ -125,8 +125,10 @@ export function QuizContainer({ onComplete }: QuizContainerProps) {
       trackQuizDropout({
         lastStepIndex: currentPage,
         answeredCount,
+        progressPercent: progress,
         elapsedMs: Date.now() - quizStartTimeRef.current,
-        reason: "page_hidden",
+        timeOnStepMs: Date.now() - stepEnterTimeRef.current,
+        reason: "tab_hidden",
       });
     }
   });

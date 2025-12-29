@@ -1,15 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import { Users } from "lucide-react";
 
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 import { finalCtaContent } from "@/lib/constants";
-import { trackCtaClick } from "@/lib/analytics";
+import { trackCtaClick, getPageType } from "@/lib/analytics";
 
 export function FinalCTASection() {
   const prefersReducedMotion = useReducedMotion();
+  const pathname = usePathname();
 
   return (
     <section
@@ -60,7 +62,7 @@ export function FinalCTASection() {
                   ctaText: "Discover your Dating Personality",
                   ctaLocation: "final_cta_section",
                   sectionId: "waitlist",
-                  pageType: "landing",
+                  pageType: getPageType(pathname),
                 })
               }
             >
