@@ -358,6 +358,30 @@ Invalid names throw in development, log error in production.
 
 ---
 
+## Custom Dimensions (GA4 Configuration)
+
+These custom dimensions must be registered in GA4 Admin → Custom definitions to appear in reports.
+
+| # | Dimension | Parameter | Scope |
+|---|-----------|-----------|-------|
+| 1 | Archetype ID | `archetype_id` | Event |
+| 2 | CTA ID | `cta_id` | Event |
+| 3 | Dropout Reason | `reason` | Event |
+| 4 | Dwell Bucket | `dwell_bucket` | Event |
+| 5 | Dwell MS | `dwell_ms` | Event |
+| 6 | FAQ ID | `faq_id` | Event |
+| 7 | FAQ Question | `faq_question` | Event |
+| 8 | Form Location | `form_location` | Event |
+| 9 | Gated | `gated` | Event |
+| 10 | Page Path | `page_path` | Event |
+| 11 | Page Type | `page_type` | Event |
+| 12 | Percent Scrolled | `percent_scrolled` | Event |
+| 13 | Section ID | `section_id` | Event |
+| 14 | Step Index | `step_index` | Event |
+| 15 | View Mode | `view_mode` | Event |
+
+---
+
 ## PII Protection
 
 The implementation explicitly avoids sending PII:
