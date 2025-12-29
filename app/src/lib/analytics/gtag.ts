@@ -9,6 +9,7 @@
  */
 
 import { GA4_STANDARD_PARAMS, GA4_LIMITS } from "./constants"
+import { getUtmParams } from "./utm"
 
 // Validation regex: must start with letter, only alphanumeric + underscore
 const VALID_NAME_REGEX = /^[a-zA-Z][a-zA-Z0-9_]*$/
@@ -98,8 +99,12 @@ export function trackEvent(
     return
   }
 
+  // Merge UTM params for marketing attribution
+  const utmParams = getUtmParams()
+  const enrichedParams = { ...utmParams, ...params }
+
   // Clean and validate params
-  const cleanParams = params ? validateAndCleanParams(params) : undefined
+  const cleanParams = validateAndCleanParams(enrichedParams)
 
   // Dev logging
   if (process.env.NODE_ENV === "development") {

@@ -60,3 +60,7 @@ export type {
   DropoutReason,
   QuizAnalyticsState,
 } from "./types"
+
+// UTM attribution
+export { captureUtmParams, getUtmParams, clearUtmParams } from "./utm"
+export type { UtmParams } from "./utm"

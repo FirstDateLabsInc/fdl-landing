@@ -7,10 +7,11 @@
  * Must be wrapped in Suspense because it uses useSearchParams
  */
 
+import { useEffect } from "react"
 import { usePageViews } from "@/hooks/use-page-views"
 import { useScrollDepth } from "@/hooks/use-scroll-depth"
 import { useSectionTracking } from "@/hooks/use-section-tracking"
-import { LANDING_SECTIONS } from "@/lib/analytics"
+import { LANDING_SECTIONS, captureUtmParams } from "@/lib/analytics"
 import { usePathname } from "next/navigation"
 
 // Landing page section IDs to track
@@ -27,6 +28,11 @@ export function AnalyticsProvider({
 }): React.ReactNode {
   const pathname = usePathname()
   const isLandingPage = pathname === "/"
+
+  // Capture UTM params on first page load (before any events fire)
+  useEffect(() => {
+    captureUtmParams()
+  }, [])
 
   // Always track page views
   usePageViews()

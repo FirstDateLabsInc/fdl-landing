@@ -64,7 +64,7 @@ export function WaitlistForm({
   const handleEmailFocus = () => {
     if (!hasTrackedStartRef.current) {
       hasTrackedStartRef.current = true;
-      trackWaitlistStart({ formLocation });
+      trackWaitlistStart(formLocation);
     }
   };
 

@@ -3,10 +3,23 @@
  * TypeScript interfaces for GA4 event tracking
  */
 
-// GA4 gtag function type
+// GA4 gtag function type (inline definition to avoid @types/gtag.js dependency)
+type GtagCommand = "config" | "event" | "set" | "consent" | "js"
+type GtagConfigParams = Record<string, unknown>
+type GtagEventParams = Record<string, unknown>
+
+interface GtagFn {
+  (command: "config", targetId: string, config?: GtagConfigParams): void
+  (command: "event", eventName: string, eventParams?: GtagEventParams): void
+  (command: "set", config: GtagConfigParams): void
+  (command: "consent", consentArg: string, consentParams: Record<string, string>): void
+  (command: "js", date: Date): void
+  (command: GtagCommand, ...args: unknown[]): void
+}
+
 declare global {
   interface Window {
-    gtag: Gtag.Gtag
+    gtag: GtagFn
     dataLayer: unknown[]
   }
 }

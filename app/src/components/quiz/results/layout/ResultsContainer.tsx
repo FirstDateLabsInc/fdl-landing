@@ -23,6 +23,7 @@ import {
   type ArchetypeLocked,
 } from "@/lib/quiz/archetypes";
 import { ListGate, SectionGate } from "../gating";
+import { useQuizResultsTracking } from "@/hooks/use-quiz-results-tracking";
 
 interface ResultsContainerProps {
   results: QuizResults;
@@ -57,6 +58,13 @@ export function ResultsContainer({
   const prefersReducedMotion = useReducedMotion();
   const showShareUi = viewMode !== "shared";
   const primaryCtaLabel = viewMode === "shared" ? "Get Early Access" : "Get Full Report";
+
+  // Track quiz results page engagement
+  useQuizResultsTracking({
+    resultId: quizResultId || "",
+    archetypeId: archetype.id,
+    viewMode,
+  });
 
   // Track active section for sidebar
   const [activeSection, setActiveSection] = useState("pattern");
