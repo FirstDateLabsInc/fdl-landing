@@ -44,24 +44,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;
 
 
 -- ============================================================
--- 2. TABLE: profiles
--- ============================================================
-CREATE TABLE public.profiles (
-    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-    email TEXT,
-    display_name TEXT,
-    avatar_url TEXT,
-    plan TEXT NOT NULL DEFAULT 'free' 
-        CHECK (plan IN ('free', 'premium')),
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
-CREATE INDEX idx_profiles_plan ON profiles(plan);
-
-
--- ============================================================
--- 3. TABLE: anonymous_sessions
+-- 2. TABLE: anonymous_sessions
 -- ============================================================
 CREATE TABLE public.anonymous_sessions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -175,13 +158,8 @@ CREATE INDEX idx_results_claimed_at ON quiz_results(claimed_at)
 
 
 -- ============================================================
--- 6. AUTO-UPDATE TRIGGERS
+-- 5. AUTO-UPDATE TRIGGERS
 -- ============================================================
-CREATE TRIGGER handle_updated_at_profiles 
-    BEFORE UPDATE ON profiles 
-    FOR EACH ROW 
-    EXECUTE PROCEDURE extensions.moddatetime(updated_at);
-
 CREATE TRIGGER handle_updated_at_quiz_results 
     BEFORE UPDATE ON quiz_results 
     FOR EACH ROW 
@@ -189,21 +167,10 @@ CREATE TRIGGER handle_updated_at_quiz_results
 
 
 -- ============================================================
--- 7. ROW LEVEL SECURITY
+-- 6. ROW LEVEL SECURITY
 -- ============================================================
-ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE quiz_results ENABLE ROW LEVEL SECURITY;
 ALTER TABLE anonymous_sessions ENABLE ROW LEVEL SECURITY;
-
--- PROFILES POLICIES
-CREATE POLICY "profiles_select_own" ON profiles
-    FOR SELECT TO authenticated
-    USING (auth.uid() = id);
-
-CREATE POLICY "profiles_update_own" ON profiles 
-    FOR UPDATE TO authenticated
-    USING ((SELECT auth.uid()) = id)
-    WITH CHECK ((SELECT auth.uid()) = id);
 
 -- ANONYMOUS_SESSIONS POLICIES
 CREATE POLICY "sessions_service_only" ON anonymous_sessions 
@@ -623,30 +590,9 @@ BEGIN
 END;
 $$;
 
--- ───────────────────────────────────────────────────────────
--- FUNCTION: handle_new_user (Profile Creation)
--- ───────────────────────────────────────────────────────────
-CREATE OR REPLACE FUNCTION handle_new_user()
-RETURNS TRIGGER
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = public
-AS $$
-BEGIN
-    INSERT INTO public.profiles (id, email)
-    VALUES (NEW.id, NEW.email);
-    RETURN NEW;
-END;
-$$;
-
-CREATE TRIGGER on_auth_user_created
-    AFTER INSERT ON auth.users
-    FOR EACH ROW
-    EXECUTE FUNCTION handle_new_user();
-
 
 -- ============================================================
--- 9. FUNCTION PERMISSIONS (Security Lockdown v1 - 2025-12-15)
+-- 8. FUNCTION PERMISSIONS (Security Lockdown v1 - 2025-12-15)
 -- ============================================================
 -- ARCHITECTURE:
 --   Web: Cloudflare WAF → Next.js API routes → service_role key → Supabase
@@ -697,17 +643,9 @@ GRANT EXECUTE ON FUNCTION claim_quizzes_by_email() TO authenticated, service_rol
 REVOKE EXECUTE ON FUNCTION create_or_get_full_report_slug(UUID, TEXT) FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION create_or_get_full_report_slug(UUID, TEXT) TO authenticated, service_role;
 
--- -----------------------------------------------------------------------------
--- 9.3 Auth Trigger Functions → supabase_auth_admin + service_role
--- CRITICAL: These are triggers on auth.users, executed by supabase_auth_admin
--- -----------------------------------------------------------------------------
-
-REVOKE EXECUTE ON FUNCTION handle_new_user() FROM PUBLIC, anon, authenticated;
-GRANT EXECUTE ON FUNCTION handle_new_user() TO supabase_auth_admin, service_role;
-
 
 -- ============================================================
--- 10. SCHEDULED MAINTENANCE
+-- 9. SCHEDULED MAINTENANCE
 -- ============================================================
 SELECT cron.schedule(
     'cleanup-sessions',
@@ -1358,33 +1296,7 @@ GRANT EXECUTE ON FUNCTION archive_old_answers() TO service_role;
 
 
 -- ============================================================
--- INITIAL DATA / MIGRATIONS
--- ============================================================
--- Add any seed data or migration helpers here
-
--- Example: Create profile automatically when user signs up
--- (Usually done via Supabase trigger or Edge Function)
-/*
-CREATE OR REPLACE FUNCTION handle_new_user()
-RETURNS TRIGGER
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = public
-AS $$
-BEGIN
-    INSERT INTO public.profiles (id, email)
-    VALUES (NEW.id, NEW.email);
-    RETURN NEW;
-END;
-$$;
-
-CREATE TRIGGER on_auth_user_created
-    AFTER INSERT ON auth.users
-    FOR EACH ROW
-    EXECUTE FUNCTION handle_new_user();
-*/
-
-
--- ============================================================
 -- SCHEMA COMPLETE
 -- ============================================================
+-- Note: profiles table will be added separately via onboarding flow spec
+-- See: specs/001-user-onboarding/data-model.md
