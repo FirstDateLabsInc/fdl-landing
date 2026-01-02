@@ -1,7 +1,7 @@
 {
-  "name": "Juliet - AI Dating Coach",
+  "name": "Juliet by First Date Labs - AI Dating Coach",
   "short_name": "Juliet",
-  "description": "Meet Juliet: an AI dating coach that helps you practice real first-date conversations, get instant feedback, and prepare for your next date.",
+  "description": "First Date Labs presents Juliet - an AI dating coach that helps you practice real first-date conversations, get instant feedback, and prepare for your next date.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fffdf6",

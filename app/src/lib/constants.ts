@@ -328,7 +328,7 @@ export const finalCtaContent: FinalCtaContent = {
 };
 
 export const footerContent: FooterContent = {
-  tagline: "Your AI dating coach for meaningful connections",
+  tagline: "First Date Labs - Your AI dating coach for meaningful connections",
   brandName: "First Date Labs",
   columns: [
     {

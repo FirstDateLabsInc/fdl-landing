@@ -10,17 +10,17 @@ import { poppins } from "./fonts"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Juliet: Your AI Dating Coach for Real Connections",
+  title: "Juliet by First Date Labs: Your AI Dating Coach for Real Connections",
   description:
-    "Meet Juliet: an AI dating coach that helps you practice real first-date conversations, get instant feedback, and prepare for your next date—so you can build meaningful connections.",
+    "First Date Labs presents Juliet - an AI dating coach that helps you practice real first-date conversations, get instant feedback, and prepare for your next date—so you can build meaningful connections.",
   metadataBase: new URL("https://firstdatelabs.com"),
   alternates: {
     canonical: "https://firstdatelabs.com",
   },
   openGraph: {
-    title: "Juliet: Your AI Dating Coach for Real Connections",
+    title: "Juliet by First Date Labs: Your AI Dating Coach for Real Connections",
     description:
-      "Meet Juliet: an AI dating coach that helps you practice real first-date conversations, get instant feedback, and prepare for your next date—so you can build meaningful connections.",
+      "First Date Labs presents Juliet - an AI dating coach that helps you practice real first-date conversations, get instant feedback, and prepare for your next date—so you can build meaningful connections.",
     url: "https://firstdatelabs.com",
     siteName: "First Date Labs",
   },
@@ -33,6 +33,30 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={poppins.variable}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "First Date Labs",
+              "url": "https://firstdatelabs.com",
+              "logo": "https://firstdatelabs.com/logo.png",
+              "sameAs": [
+                "https://www.linkedin.com/company/first-date-labs/",
+                "https://www.instagram.com/firstdatelabs",
+                "https://x.com/firstdatelabs",
+                "https://www.tiktok.com/@firstdatelabs"
+              ],
+              "brand": {
+                "@type": "Brand",
+                "name": "Juliet"
+              }
+            })
+          }}
+        />
+      </head>
       {/* Region-based Consent Mode - MUST run before gtag config */}
       <Script id="google-consent" strategy="beforeInteractive">
         {`
